@@ -248,11 +248,11 @@ otp_expiry = 3600
 # sender_name = "Admin"
 
 # Email đăng nhập: có cả link (token_hash) và mã 6 số cho app cài trên màn hình chính.
-# Gói miễn phí dùng máy gửi mail mặc định thì Supabase không cho sửa mẫu email.
-# Bỏ comment khi đã cấu hình SMTP riêng ([auth.email.smtp]).
-# [auth.email.template.magic_link]
-# subject = "Đăng nhập Deutsch"
-# content_path = "./supabase/templates/magic_link.html"
+# Cần SMTP riêng: gói miễn phí dùng máy gửi mail mặc định thì Supabase không cho sửa mẫu email.
+# SMTP (Gmail) cấu hình trên dashboard, không khai ở đây để mật khẩu không vào repo.
+[auth.email.template.magic_link]
+subject = "Đăng nhập Deutsch"
+content_path = "./supabase/templates/magic_link.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

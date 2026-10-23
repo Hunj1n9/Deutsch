@@ -10,3 +10,4 @@
 - 2026-10-24 · Email không được phép vẫn nhận thông báo "đã gửi" như email đúng, để không lộ email nào dùng được app; proxy và bước xác thực mới là chỗ chặn thật.
 - 2026-10-24 · Màu chữ phụ `--muted` sáng đổi #8A8D97 → #6B6E77 để đạt tương phản 4.5:1 trên nền #F2F3F7.
 - 2026-10-24 · Next 16 bật sẵn `cacheComponents`; giữ nguyên. Trang đọc request (cookie, searchParams) đặt trong `<Suspense>`.
+- 2026-10-24 · Gửi mail đăng nhập qua SMTP Gmail của chính người dùng (mật khẩu ứng dụng, chỉ nhập trên dashboard Supabase, không khai trong `config.toml`). Nhờ có SMTP riêng, mẫu email có cả link `token_hash` và mã 6 số đã bật.
