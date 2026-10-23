@@ -1,0 +1,8 @@
+# Không tải lên Vercel: khóa bí mật chỉ ở máy, biến môi trường đặt trên Vercel.
+.env*
+!.env.example
+.next
+node_modules
+supabase/.temp
+supabase/.branches
+.claude
