@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/* Token theo design/DESIGN.md. Chế độ tối theo hệ thống. */
+:root {
+  --bg: #f2f3f7;
+  --surface: #ffffff;
+  --ink: #0e0e10;
+  --muted: #6b6e77;
+  --line: #e6e7ec;
+  --primary: #0e0e10;
+  --on-primary: #ffffff;
+  --yellow: #fce8a6;
+  --pink: #f8d2e2;
+  --lilac: #ddd2ef;
+  --sage: #d5e6df;
+  --sky: #dce6fb;
+  --der: #2f6feb;
+  --die: #e5484d;
+  --das: #2e9e5b;
+  --ok: #2e9e5b;
+  --bad: #e5484d;
+  --scribble-opacity: 0.65;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111216;
+    --surface: #1c1d22;
+    --ink: #f4f4f6;
+    --muted: #9a9ca6;
+    --line: #2c2d33;
+    --primary: #f4f4f6;
+    --on-primary: #0e0e10;
+    --yellow: #4a4127;
+    --pink: #47293a;
+    --lilac: #362e47;
+    --sage: #2a3b35;
+    --sky: #26304a;
+    --der: #6e9bff;
+    --die: #ff7b7f;
+    --das: #5fcb8a;
+    --ok: #5fcb8a;
+    --bad: #ff7b7f;
+    --scribble-opacity: 0.08;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-pastel-yellow: var(--yellow);
+  --color-pastel-pink: var(--pink);
+  --color-pastel-lilac: var(--lilac);
+  --color-pastel-sage: var(--sage);
+  --color-pastel-sky: var(--sky);
+  --color-der: var(--der);
+  --color-die: var(--die);
+  --color-das: var(--das);
+  --color-ok: var(--ok);
+  --color-bad: var(--bad);
+  --font-sans: var(--font-be-vietnam), system-ui, sans-serif;
+  --radius-block: 28px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Nét vẽ nguệch ngoạc trên khối pastel (ảnh tham khảo). */
+@utility scribble {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    opacity: var(--scribble-opacity);
+    pointer-events: none;
+    background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'%3E%3Cpath d='M18 118C60 74 98 46 168 18M30 140C82 96 122 70 192 44M70 148C116 116 150 98 198 86' fill='none' stroke='white' stroke-width='15' stroke-linecap='round'/%3E%3C/svg%3E")
+      no-repeat right top / 78% auto;
+  }
+}

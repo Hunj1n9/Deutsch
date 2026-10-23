@@ -1,0 +1,517 @@
+# SPEC — App tự học tiếng Đức đến TestDaF (giai đoạn 1: lõi 4 tuần)
+
+> Ngôn ngữ: tài liệu và giao diện bằng tiếng Việt; tên biến, bảng, hàm bằng tiếng Anh; nội dung học bằng tiếng Đức.
+
+## 1. Bối cảnh và mục tiêu
+
+- **Người dùng:** đúng một người (chủ dự án), người Việt, bắt đầu từ số 0, mục tiêu TestDaF đạt 4 điểm cả 4 phần (TDN 4×4, mức C1) để học thạc sĩ dạy bằng tiếng Đức. Mốc trung gian: thi Goethe B2 sau khoảng 11 tháng.
+- **Cách học:** giáo trình (Netzwerk neu A1–B1) + khóa eDeutsch / bài Deutsch.vn cho phần giảng. App này **không dạy bài mới**. App làm những việc các nguồn kia làm chưa tốt:
+  1. Gom mọi từ, mẫu câu, điểm ngữ pháp và **lỗi** từ mọi nguồn về một chỗ.
+  2. Ôn bằng **gợi nhớ chủ động** (gõ ra đáp án, không lật thẻ) với **lịch giãn cách thích ứng (FSRS)**.
+  3. **Sổ lỗi cá nhân:** lỗi lặp lại được gom nhóm và ôn đến khi hết mắc.
+  4. **Gia sư AI bằng tiếng Việt** giải thích ngữ pháp.
+  5. **Nhật ký và kế hoạch** để giữ kỷ luật tự học.
+- **Nguyên tắc sản phẩm (từ nghiên cứu):** tự kiểm tra + ôn giãn cách có hiệu quả cao nhất; luyện xen kẽ; sửa lỗi phải bắt người học tự sửa trước rồi mới cho đáp án; không có màn hình kiểu "đọc lại bài".
+- **Ràng buộc quan trọng nhất:** thời gian xây app không được ăn vào thời gian học. Giai đoạn 1 phải dùng được hằng ngày sau tối đa 4 tuần. Mọi thứ ngoài phạm vi ở mục 2 đều để sau.
+
+## 2. Phạm vi
+
+### Trong phạm vi giai đoạn 1
+- F1 Đăng nhập một người dùng
+- F2 Thêm nội dung (thủ công, AI điền giúp, nhập hàng loạt)
+- F3 Ôn tập FSRS với 4 kiểu thẻ gợi nhớ chủ động
+- F4 Sổ lỗi cá nhân
+- F5 Kiểm tra câu / đoạn viết ngắn bằng AI
+- F6 Gia sư AI tiếng Việt
+- F7 Trang "Hôm nay"
+- F8 Nhật ký học, kế hoạch, dự báo, báo cáo tuần
+- F9 Xuất / nhập dữ liệu (sao lưu JSON)
+
+### Ngoài phạm vi (KHÔNG làm ở giai đoạn 1)
+- Chấm phát âm đến âm vị (giai đoạn A1–A2, dùng Azure Pronunciation Assessment de-DE)
+- Chấm bài viết dài theo thang Goethe/TestDaF, thi thử, mô phỏng TestDaF (giai đoạn B1–C1)
+- Chạy offline, app di động gốc, nhiều người dùng, thanh toán, mạng xã hội, xếp hạng, huy hiệu, trò chơi
+
+## 3. Công nghệ
+
+| Thành phần | Lựa chọn |
+| --- | --- |
+| Framework | Next.js (App Router) + TypeScript (strict) |
+| Giao diện | Tailwind CSS; mobile-first; cài được lên màn hình chính (PWA manifest, không cần service worker offline) |
+| CSDL, đăng nhập | Supabase (Postgres + Auth magic link + Row Level Security) |
+| AI | Anthropic Claude API qua `@anthropic-ai/sdk`; model đặt trong biến môi trường; đầu ra có cấu trúc qua tool use + JSON schema |
+| Ôn giãn cách | `ts-fsrs` |
+| Đọc tiếng Đức | Web Speech API (`speechSynthesis`, giọng `de-DE`) |
+| Kiểm thử | Vitest (logic), Playwright (luồng chính, tùy chọn) |
+| Triển khai | Vercel |
+
+Biến môi trường (`.env.local`, không commit):
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=      # chỉ dùng ở server
+ALLOWED_EMAIL=                  # email duy nhất được đăng nhập
+ANTHROPIC_API_KEY=              # chỉ dùng ở server
+ANTHROPIC_MODEL=claude-sonnet-5-5
+```
+Mọi lời gọi AI chạy ở server (Route Handler / Server Action). Khóa API không bao giờ xuống trình duyệt.
+
+## 4. Mô hình dữ liệu
+
+Mọi bảng có `user_id uuid not null references auth.users` (trừ bảng con nối qua khóa ngoại), bật RLS với chính sách `user_id = auth.uid()`. Migration đặt trong `supabase/migrations/`.
+
+```sql
+-- Cấp độ và nguồn
+create type cefr_level as enum ('A1','A2','B1','B2','C1');
+create type source_kind as enum ('textbook','edeutsch','deutschvn','tutor','writing','other');
+
+create table sources (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  kind source_kind not null,
+  title text not null,            -- vd 'Netzwerk neu A1'
+  chapter text,                   -- vd 'Kapitel 3'
+  created_at timestamptz default now()
+);
+
+-- Đơn vị nội dung
+create type item_type as enum ('word','phrase','grammar','error_fix');
+
+create table items (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  type item_type not null,
+  german text not null,           -- từ (không kèm mạo từ), cụm, câu mẫu ngữ pháp
+  article text check (article in ('der','die','das')),  -- chỉ cho danh từ
+  plural text,                    -- vd '-e', 'Tische'
+  vietnamese text not null,
+  example_de text,
+  example_vi text,
+  grammar_note_vi text,           -- ghi chú ngữ pháp ngắn bằng tiếng Việt
+  level cefr_level,
+  source_id uuid references sources(id) on delete set null,
+  error_id uuid,                  -- cho type='error_fix', FK thêm sau khi tạo errors
+  tags text[] default '{}',
+  created_at timestamptz default now()
+);
+
+-- Thẻ ôn (một item có thể có nhiều thẻ)
+create type card_kind as enum ('vi_de','audio_de','cloze','error_fix');
+
+create table cards (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  item_id uuid not null references items(id) on delete cascade,
+  kind card_kind not null,
+  -- trạng thái FSRS (khớp kiểu Card của ts-fsrs)
+  due timestamptz not null default now(),
+  stability double precision not null default 0,
+  difficulty double precision not null default 0,
+  elapsed_days int not null default 0,
+  scheduled_days int not null default 0,
+  reps int not null default 0,
+  lapses int not null default 0,
+  state smallint not null default 0,     -- 0 New,1 Learning,2 Review,3 Relearning
+  last_review timestamptz,
+  suspended boolean not null default false,
+  created_at timestamptz default now(),
+  unique (item_id, kind)
+);
+create index on cards (user_id, due) where suspended = false;
+
+create table review_logs (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  card_id uuid not null references cards(id) on delete cascade,
+  rating smallint not null,              -- 1 Again,2 Hard,3 Good,4 Easy
+  suggested_rating smallint not null,    -- do app đề xuất
+  answer_given text,
+  correct boolean not null,
+  flags text[] default '{}',             -- vd {'umlaut_fallback','capitalization'}
+  response_ms int,
+  state_before smallint, due_before timestamptz,
+  stability_before double precision, difficulty_before double precision,
+  reviewed_at timestamptz default now()
+);
+
+-- Sổ lỗi
+create type error_category as enum (
+  'gender','case','adjective_ending','verb_position','conjugation',
+  'preposition','separable_verb','plural','spelling','word_choice','tense','other'
+);
+create type error_status as enum ('open','resolved');
+
+create table errors (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  rule_key text not null,                -- khóa chuẩn hóa, vd 'dativ-nach-mit'
+  category error_category not null,
+  title_vi text not null,                -- vd 'mit luôn đi với Dativ'
+  explanation_vi text not null,
+  occurrences int not null default 1,
+  first_seen timestamptz default now(),
+  last_seen timestamptz default now(),
+  status error_status not null default 'open',
+  resolved_at timestamptz,
+  unique (user_id, rule_key)
+);
+alter table items add constraint items_error_fk foreign key (error_id) references errors(id) on delete cascade;
+
+create table error_occurrences (
+  id uuid primary key default gen_random_uuid(),
+  error_id uuid not null references errors(id) on delete cascade,
+  source source_kind not null,
+  text_wrong text not null,
+  text_correct text not null,
+  created_at timestamptz default now()
+);
+
+-- Bài viết ngắn
+create table writings (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  prompt text,
+  original_text text not null,
+  revised_text text,
+  ai_feedback jsonb not null,
+  created_at timestamptz default now()
+);
+
+-- Gia sư
+create table tutor_threads (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  title text,
+  created_at timestamptz default now()
+);
+create table tutor_messages (
+  id uuid primary key default gen_random_uuid(),
+  thread_id uuid not null references tutor_threads(id) on delete cascade,
+  role text not null check (role in ('user','assistant')),
+  content text not null,
+  created_at timestamptz default now()
+);
+
+-- Nhật ký và kế hoạch
+create type activity_kind as enum ('review','writing','tutor','lesson','other');
+
+create table study_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  activity activity_kind not null,
+  started_at timestamptz not null,
+  ended_at timestamptz,
+  active_seconds int not null default 0
+);
+
+create table daily_tasks (                -- việc học bài mới ngoài app
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  task_date date not null,
+  title text not null,                    -- vd 'Netzwerk neu A1 Kapitel 4, phần A–B'
+  minutes int,                            -- thời gian đã học, người dùng nhập khi tick
+  done boolean not null default false
+);
+
+create table settings (
+  user_id uuid primary key,
+  current_level cefr_level not null default 'A1',
+  current_source_id uuid references sources(id),
+  next_exam_name text default 'Goethe-Zertifikat B2',
+  next_exam_date date,
+  daily_minutes_target int not null default 120,
+  weekly_days_target int not null default 6,
+  new_cards_per_day int not null default 15,
+  desired_retention double precision not null default 0.9,
+  hours_offset numeric not null default 0  -- giờ đã học trước khi dùng app
+);
+
+create table weekly_reports (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  week_start date not null,
+  stats jsonb not null,
+  summary_vi text not null,
+  created_at timestamptz default now(),
+  unique (user_id, week_start)
+);
+```
+
+## 5. Tính năng
+
+Mỗi tính năng có **Tiêu chí hoàn thành (TCHT)**. Một tính năng chỉ coi là xong khi mọi TCHT đều đạt và có test cho phần logic.
+
+### F1. Đăng nhập một người dùng
+- Supabase magic link. Tắt đăng ký tự do trong Supabase; tạo sẵn tài khoản cho `ALLOWED_EMAIL`.
+- Middleware chặn mọi route (trừ `/login`) nếu chưa đăng nhập hoặc email ≠ `ALLOWED_EMAIL`.
+- Lần đăng nhập đầu tạo dòng `settings` mặc định.
+
+TCHT:
+- Email khác `ALLOWED_EMAIL` không vào được bất kỳ trang nào.
+- Phiên đăng nhập giữ được ít nhất 30 ngày trên điện thoại.
+
+### F2. Thêm nội dung
+**Thêm một mục:** form chọn loại (`word`, `phrase`, `grammar`), nguồn và chương (mặc định lấy từ `settings.current_source_id`), cấp độ (mặc định `settings.current_level`).
+- **AI điền giúp:** người dùng gõ một từ hoặc cụm tiếng Đức (vd `Tisch`) rồi bấm "Điền giúp". Server gọi AI (prompt P1) và trả về mạo từ, số nhiều, nghĩa tiếng Việt, câu ví dụ đúng trình độ, bản dịch, ghi chú ngữ pháp. Người dùng sửa được mọi trường trước khi lưu.
+- **Nhập hàng loạt:** ô dán văn bản, mỗi dòng một mục. Chấp nhận các dạng:
+  - `der Tisch, -e = cái bàn`
+  - `Tisch` (chỉ từ, để AI điền)
+  - TSV có tiêu đề: `german	article	plural	vietnamese	example_de	example_vi`
+  
+  Các dòng thiếu thông tin được gửi AI điền theo lô (tối đa 20 dòng một lần). Hiện bảng xem trước, người dùng duyệt rồi mới lưu.
+- **Tự sinh thẻ khi lưu:**
+  - `word`, `phrase` → `vi_de` + `audio_de`; thêm `cloze` nếu có `example_de` và từ xuất hiện trong câu.
+  - `grammar` → `cloze` (bắt buộc có `example_de`; phần bỏ trống do người dùng đánh dấu hoặc AI đề xuất).
+- **Chống trùng:** cùng `german` + `article` + `type` thì cảnh báo, cho chọn gộp hoặc vẫn thêm.
+
+TCHT:
+- Thêm một danh từ bằng "Điền giúp" mất dưới 15 giây thao tác.
+- Dán 30 dòng hỗn hợp các dạng trên → xem trước đúng → lưu đủ 30 mục, mỗi mục có thẻ đúng loại.
+- Danh từ không có mạo từ thì không lưu được, báo lỗi rõ ràng.
+
+### F3. Ôn tập (FSRS)
+**Phiên ôn:** lấy thẻ đến hạn (`due <= now()`, không bị treo), cộng tối đa `new_cards_per_day` thẻ mới trong ngày.
+- **Trộn xen kẽ:** không để quá 3 thẻ cùng `kind` liên tiếp nếu còn thẻ loại khác.
+- **Không ôn hai thẻ của cùng một item trong cùng một ngày** (trừ thẻ vừa trả lời sai, được phép quay lại trong phiên).
+
+**4 kiểu thẻ, đều phải gõ ra đáp án:**
+| Kiểu | Hiện | Người dùng gõ |
+| --- | --- | --- |
+| `vi_de` | Nghĩa tiếng Việt (+ cấp độ, loại từ) | Từ tiếng Đức; danh từ phải kèm mạo từ (vd `der Tisch`) |
+| `audio_de` | Nút nghe (tự phát lần đầu, nghe lại được) | Từ / câu vừa nghe (chính tả) |
+| `cloze` | Câu ví dụ có chỗ trống + bản dịch tiếng Việt | Từ còn thiếu, đúng dạng trong câu |
+| `error_fix` | Một câu sai lấy từ `error_occurrences` (xoay vòng) + tiêu đề lỗi ẩn, có nút "Gợi ý" | Câu đã sửa đúng |
+
+**Chấm đáp án** (`lib/answer-check.ts`, hàm thuần, có unit test):
+1. Chuẩn hóa: bỏ khoảng trắng thừa, chuẩn hóa dấu nháy, bỏ dấu chấm câu cuối.
+2. So khớp chính xác → đúng.
+3. Chấp nhận nhưng gắn cờ (rating tối đa Hard):
+   - `ae/oe/ue` thay cho `ä/ö/ü`: cờ `umlaut_fallback`
+   - `ss` thay cho `ß`: cờ `eszett_fallback`
+   - Sai viết hoa: cờ `capitalization`
+4. Danh từ sai mạo từ → **sai**, cờ `wrong_article`. Đồng thời ghi một lần mắc lỗi vào sổ lỗi với `rule_key = gender-<từ viết thường>`, `category = gender`.
+5. Riêng `error_fix`: không khớp chính xác với `text_correct` nào đã lưu thì gọi AI (prompt P4) để phán đúng/sai; nếu AI xác nhận đúng thì lưu câu đó thành một đáp án hợp lệ mới.
+
+**Đề xuất rating** (người dùng xác nhận bằng một chạm hoặc phím Enter, đổi được):
+- Sai → Again (1)
+- Đúng nhưng có dùng gợi ý, có cờ, hoặc mất trên 15 giây → Hard (2)
+- Đúng → Good (3)
+- Đúng, không cờ, dưới 4 giây, và thẻ đang ở trạng thái Review → Easy (4)
+
+Sau khi trả lời, hiện đáp án đúng, câu ví dụ, nút nghe và nút "Hỏi gia sư về thẻ này" (mở F6 kèm ngữ cảnh thẻ).
+
+**Lập lịch:** dùng `ts-fsrs` với `request_retention = settings.desired_retention`, bật `enable_fuzz`. Mọi thay đổi trạng thái thẻ và `review_logs` ghi trong cùng một giao dịch. Có nút "Hoàn tác" cho lần chấm gần nhất (khôi phục trạng thái từ `*_before`).
+
+TCHT:
+- Unit test `answer-check` phủ đủ: đúng chính xác; mạo từ sai; umlaut thay thế; ß/ss; viết hoa; khoảng trắng thừa; dấu câu cuối.
+- Unit test lập lịch: chấm Again một thẻ Review → `lapses` +1 và `due` trong vòng 1 ngày; chấm Good một thẻ New → `state` chuyển khỏi New.
+- Một phiên 50 thẻ trên điện thoại không có trễ cảm nhận được (lấy sẵn thẻ kế tiếp).
+- Hoàn tác khôi phục chính xác trạng thái trước đó.
+
+### F4. Sổ lỗi cá nhân
+**Nguồn ghi lỗi:**
+- F5 (kiểm tra câu)
+- F3 (sai mạo từ, sai ở thẻ `error_fix`)
+- F6 (người dùng bấm "Lưu lỗi này" trên một câu gia sư đã sửa)
+- Thêm tay (lỗi giáo viên hoặc eDeutsch chỉ ra)
+
+**Gom nhóm theo `rule_key`:**
+- Nếu `rule_key` đã có: tăng `occurrences`, cập nhật `last_seen`, thêm `error_occurrences`. Nếu lỗi đang `resolved` thì chuyển về `open`.
+- Nếu chưa có: tạo `errors` mới, một `items` loại `error_fix` (german = câu đúng, vietnamese = `title_vi`) và một thẻ `error_fix`.
+
+**Khóa lỗi nhất quán:** khi gọi AI ở F5 và F6, gửi kèm danh sách tối đa 200 `rule_key` hiện có (kèm `title_vi`) và yêu cầu dùng lại khóa cũ nếu cùng quy tắc. Định dạng khóa: chữ thường, gạch nối, tối đa 40 ký tự, vd `dativ-nach-mit`, `verb-position-nebensatz`, `adj-ending-dativ-definite`, `gender-tisch`.
+
+**Đóng lỗi tự động:** chuyển `resolved` khi đủ cả ba điều kiện:
+1. Thẻ `error_fix` của lỗi đúng 3 lần liên tiếp.
+2. Lần đúng gần nhất có `scheduled_days ≥ 21`.
+3. Không phát sinh lần mắc mới trong 30 ngày.
+
+**Màn hình Sổ lỗi:**
+- Lọc theo trạng thái và loại lỗi; sắp xếp mặc định theo `occurrences` giảm dần, rồi `last_seen`.
+- Mỗi lỗi hiện tiêu đề, giải thích, 3 câu sai gần nhất kèm câu đúng.
+- Biểu đồ đơn giản: số lỗi đang mở theo tuần (8 tuần gần nhất).
+
+TCHT:
+- Kiểm tra hai câu cùng sai "mit + Akkusativ" ở hai lần khác nhau → chỉ có một lỗi với `occurrences = 2` và một thẻ `error_fix`.
+- Unit test quy tắc đóng lỗi và mở lại lỗi.
+
+### F5. Kiểm tra câu / đoạn viết ngắn
+**Luồng:**
+1. Người dùng nhập 1–10 câu tiếng Đức, có thể kèm đề bài (vd "Viết 5 câu về buổi sáng của bạn, dùng động từ tách").
+2. Server gọi AI (prompt P2). AI trả JSON theo schema S2.
+3. **Bước tự sửa (bắt buộc):** hiện văn bản gốc, gạch chân từng chỗ sai kèm `hint_vi` (gợi ý không lộ đáp án). Người dùng sửa ngay trong ô văn bản.
+4. Bấm "Kiểm tra lại": AI so bản sửa với lời giải (prompt P2, chế độ `recheck`), báo chỗ nào đã đúng, chỗ nào còn sai.
+5. Bấm "Xem đáp án": hiện `corrected_text` và `explanation_vi` cho từng lỗi.
+6. Lưu `writings`, ghi mọi lỗi vào F4 (`source = writing`).
+
+Nút "Tạo thẻ từ câu này" lưu một câu đúng thành item `phrase` (F2).
+
+TCHT:
+- Câu `Ich fahre mit den Bus.` → bắt lỗi `case`, `rule_key` kiểu `dativ-nach-mit`, gợi ý không chứa chữ `dem`.
+- Câu đúng hoàn toàn → không tạo lỗi, hiện lời khen ngắn kèm một gợi ý nâng cấp câu (tùy chọn).
+- Đáp án AI trả về sai schema → thử lại tối đa 2 lần, sau đó báo lỗi thân thiện, không mất văn bản người dùng đã gõ.
+
+### F6. Gia sư AI tiếng Việt
+- Giao diện chat theo luồng (`tutor_threads`), trả lời dạng stream.
+- **Ngữ cảnh gửi kèm mỗi lượt:** cấp độ hiện tại, nguồn và chương đang học, 10 lỗi đang mở nhiều nhất (`title_vi`), và thẻ hiện tại nếu mở từ F3.
+- Mỗi câu ví dụ tiếng Đức trong câu trả lời có nút "Lưu thành thẻ" (mở F2 điền sẵn).
+- Khi người dùng gửi câu tiếng Đức và nhờ sửa, có nút "Lưu lỗi này" để chuyển lỗi sang F4.
+
+TCHT:
+- Hỏi "Tại sao 'Ich gebe dem Mann den Schlüssel' dùng dem?" → câu trả lời bằng tiếng Việt, đúng (Dativ cho người nhận, Akkusativ cho vật), có ít nhất một ví dụ mới kèm bản dịch.
+- Câu trả lời mặc định dưới 200 từ, trừ khi người dùng xin giải thích chi tiết.
+
+### F7. Trang "Hôm nay" (trang chủ)
+Thứ tự hiển thị, mỗi phần là một khối có nút bắt đầu:
+1. **Ôn thẻ:** số thẻ đến hạn + số thẻ mới → bắt đầu F3.
+2. **Sổ lỗi:** số thẻ `error_fix` đến hạn (đã nằm trong F3, hiện riêng để nhấn mạnh).
+3. **Bài mới hôm nay:** checklist `daily_tasks`. Người dùng tự thêm việc (vd "eDeutsch A1 buổi 12"). Mặc định gợi ý chép lại việc chưa xong của hôm qua. Khi tick xong thì nhập số phút đã học.
+4. **Viết 5 câu:** lối tắt sang F5 với đề gợi ý theo chương đang học (AI sinh, cache theo ngày).
+5. **Tiến độ:** thanh tiến độ phút học hôm nay so với `daily_minutes_target`; số ngày đã học tuần này so với `weekly_days_target`; đếm ngược đến `next_exam_date`.
+
+TCHT: mở app trên điện thoại thấy ngay việc cần làm, bắt đầu phiên ôn chỉ bằng một chạm.
+
+### F8. Nhật ký, kế hoạch, dự báo, báo cáo tuần
+**Đo thời gian học thật:**
+- Client gửi heartbeat mỗi 30 giây khi người dùng có thao tác trong vòng 120 giây gần nhất, trên các màn F3, F5, F6.
+- Server cộng `active_seconds` vào `study_sessions` theo `activity`.
+- Không tương tác quá 120 giây thì phiên dừng tính giờ.
+- Phút học bài mới lấy từ `daily_tasks.minutes`.
+
+**Màn hình Tiến độ:**
+- Giờ học mỗi tuần (12 tuần gần nhất).
+- Số ngày học mỗi tuần.
+- Tỉ lệ nhớ thực tế (tỉ lệ đúng ở các lần ôn thẻ trạng thái Review, 30 ngày gần nhất).
+- Số thẻ theo trạng thái.
+- Số lỗi đang mở.
+
+**Dự báo ngày sẵn sàng thi:**
+- Mốc giờ học tích lũy: A1 = 105, A2 = 205, B1 = 375, B2 = 525, C1 = 675 (trung điểm khoảng ước tính của Goethe).
+- Giờ đã học = `hours_offset` + tổng giờ trong app.
+- Tốc độ = trung bình giờ/tuần của 4 tuần gần nhất.
+- Hiện ngày dự kiến đạt từng mốc còn lại.
+- Nếu ngày đạt B2 muộn hơn `next_exam_date` thì cảnh báo và tính số giờ/ngày cần tăng.
+
+**Báo cáo tuần:**
+- Nút "Tạo báo cáo tuần" (gợi ý vào Chủ nhật).
+- Server tính `stats` (giờ, ngày, số thẻ đã ôn, tỉ lệ nhớ, lỗi mới, lỗi đã đóng, top 3 lỗi) rồi gọi AI (prompt P5) viết tóm tắt tiếng Việt ≤ 120 từ kèm 3 điều chỉnh cụ thể cho tuần sau.
+- Lưu vào `weekly_reports`.
+
+**Cài đặt:** sửa mọi trường trong `settings`; quản lý `sources`.
+
+TCHT:
+- Unit test dự báo: tốc độ 10 giờ/tuần, đã học 205 giờ → mốc B1 sau 17 tuần.
+- Treo máy 5 phút giữa phiên ôn thì không bị cộng thêm quá 2 phút.
+
+### F9. Sao lưu
+- "Xuất dữ liệu": tải về một file JSON chứa toàn bộ bảng của người dùng.
+- "Nhập dữ liệu": khôi phục từ file đó vào CSDL trống, có xác nhận trước khi ghi.
+
+TCHT: xuất → xóa sạch → nhập lại → số thẻ, trạng thái FSRS và sổ lỗi khớp 100%.
+
+## 6. AI: prompt và schema
+
+Quy định chung:
+- Đặt trong `lib/ai/`. Mỗi prompt là một hàm nhận đầu vào có kiểu và trả về kết quả đã kiểm bằng Zod.
+- Dùng tool use với `input_schema` để ép JSON.
+- Nhiệt độ thấp (0–0.3) cho chấm và điền; 0.7 cho gia sư và sinh đề.
+- Ghi log mỗi lời gọi (prompt id, thời gian, lỗi) để gỡ rối.
+
+Quy tắc chung đưa vào mọi system prompt:
+> Người học là người Việt, đang học tiếng Đức ở trình độ {level}. Giải thích bằng tiếng Việt, ngắn gọn, chính xác. Ví dụ tiếng Đức phải tự nhiên, đúng chuẩn, kèm bản dịch tiếng Việt. Khi hữu ích, đối chiếu với cấu trúc tiếng Việt. Không bịa quy tắc; nếu có ngoại lệ hoặc không chắc, nói rõ.
+
+**P1 — Điền mục từ** (đầu vào: `german`, `level`). Schema S1:
+```json
+{ "german": "Tisch", "type": "word", "pos": "noun",
+  "article": "der", "plural": "-e",
+  "vietnamese": "cái bàn",
+  "example_de": "Der Tisch steht in der Küche.", "example_vi": "Cái bàn ở trong bếp.",
+  "grammar_note_vi": "Danh từ giống đực, số nhiều: die Tische.",
+  "level_guess": "A1" }
+```
+Ràng buộc: `article` bắt buộc khi `pos = noun`; câu ví dụ không vượt trình độ `level`; với động từ thì ghi các dạng chính (Präsens ngôi 3, Perfekt) trong `grammar_note_vi`.
+
+**P2 — Kiểm tra câu** (đầu vào: `text`, `prompt?`, `level`, `existing_rule_keys`, `mode: 'check'|'recheck'`, `previous_feedback?`). Schema S2:
+```json
+{ "corrected_text": "Ich fahre mit dem Bus.",
+  "errors": [
+    { "wrong": "den Bus", "correct": "dem Bus",
+      "start": 13, "end": 20,
+      "category": "case", "rule_key": "dativ-nach-mit",
+      "title_vi": "mit luôn đi với Dativ",
+      "hint_vi": "Giới từ mit đòi hỏi cách nào?",
+      "explanation_vi": "mit + Dativ, nên der Bus → dem Bus." } ],
+  "overall_vi": "Câu đúng trật tự, chỉ sai cách sau mit.",
+  "upgrade_suggestion_de": null }
+```
+Ràng buộc:
+- `start` và `end` là vị trí ký tự trong `text` gốc; server kiểm `text.slice(start,end) === wrong`, sai thì tự tìm lại theo `wrong`.
+- `hint_vi` không được chứa chuỗi `correct`.
+- Chỉ đánh dấu lỗi thật, không sửa văn phong khi câu đã đúng và tự nhiên.
+- Chế độ `recheck`: trả thêm `fixed: string[]` (rule_key đã sửa đúng) và `still_wrong: string[]`.
+
+**P3 — Gia sư** (stream, không ép JSON). System prompt = quy tắc chung + ngữ cảnh F6 +:
+> Nếu người học hỏi đáp án của một bài tập, trước hết gợi ý một bước để họ tự nghĩ; chỉ đưa đáp án khi họ xin lần nữa.
+
+**P4 — Phán câu sửa lỗi** (đầu vào: `wrong`, `accepted_corrections[]`, `answer`, `rule_title_vi`). Schema:
+```json
+{ "correct": true, "fixes_target_error": true, "other_errors": [], "note_vi": "Đúng, cách viết khác nhưng hợp lệ." }
+```
+Chỉ tính đúng khi `correct` và `fixes_target_error` đều là `true`.
+
+**P5 — Báo cáo tuần** (đầu vào: `stats`, `settings`, báo cáo tuần trước). Đầu ra:
+```json
+{ "summary_vi": "…", "adjustments": ["…","…","…"] }
+```
+Điều chỉnh phải cụ thể và đo được (vd "Giảm thẻ mới còn 10/ngày vì tỉ lệ nhớ 82% < 90%").
+
+## 7. Màn hình và route
+
+| Route | Nội dung |
+| --- | --- |
+| `/login` | Đăng nhập magic link |
+| `/` | Hôm nay (F7) |
+| `/review` | Phiên ôn (F3) |
+| `/add` | Thêm một mục / nhập hàng loạt (F2) |
+| `/items` | Danh sách mục: tìm, lọc theo nguồn/cấp/loại, sửa, treo thẻ |
+| `/errors` | Sổ lỗi (F4) |
+| `/write` | Kiểm tra câu (F5); `/write/history` lịch sử |
+| `/tutor` | Gia sư (F6) |
+| `/progress` | Tiến độ, dự báo, báo cáo tuần (F8) |
+| `/settings` | Cài đặt, nguồn, sao lưu (F8, F9) |
+
+Điều hướng: thanh dưới trên điện thoại gồm 5 mục: Hôm nay · Ôn · Thêm · Viết · Gia sư. Các trang còn lại vào từ menu.
+
+Yêu cầu giao diện:
+- Chữ tiếng Đức dễ đọc (≥ 18px trên thẻ ôn).
+- Bàn phím ảo không che ô nhập.
+- Có hàng nút chèn nhanh `ä ö ü ß Ä Ö Ü` ngay trên ô nhập ở mọi màn hình gõ tiếng Đức.
+- Mạo từ tô màu thống nhất (der xanh dương, die đỏ, das xanh lá), kèm chữ để không phụ thuộc màu.
+- Chế độ tối theo hệ thống.
+
+## 8. Yêu cầu phi chức năng
+- Bảo mật: RLS trên mọi bảng; khóa service role và Anthropic chỉ dùng ở server; không ghi nội dung người dùng vào log của bên thứ ba.
+- Hiệu năng: trang Hôm nay tải dưới 1,5 giây trên 4G; phiên ôn tải sẵn thẻ kế tiếp.
+- Độ bền: lỗi gọi AI không làm mất dữ liệu người dùng đã nhập; mọi lời gọi AI có timeout 30 giây và thử lại có backoff.
+- Chất lượng mã: TypeScript strict, ESLint, không `any` ở logic lõi; logic thuần (chấm đáp án, lập lịch, gom lỗi, dự báo) tách khỏi UI và có unit test.
+
+## 9. Thứ tự build (mốc)
+
+Làm tuần tự, mỗi mốc kết thúc bằng: test xanh, chạy thử trên điện thoại thật, commit. Không bắt đầu mốc sau khi mốc trước chưa đạt TCHT.
+
+| Mốc | Nội dung | Ước lượng |
+| --- | --- | --- |
+| M1 | Khởi tạo Next.js + Tailwind + Supabase; migration toàn bộ schema mục 4; RLS; F1; khung điều hướng; PWA manifest | 2–3 ngày |
+| M2 | F2 (thêm tay, P1 điền giúp, nhập hàng loạt, tự sinh thẻ) + `/items` | 3–4 ngày |
+| M3 | F3 đầy đủ (answer-check + test, ts-fsrs + test, 4 kiểu thẻ, hoàn tác) + phần ôn của F7 | 4–5 ngày |
+| M4 | F5 + F4 (gom lỗi, thẻ error_fix, P4, quy tắc đóng lỗi + test) | 4–5 ngày |
+| M5 | F6 gia sư (stream, ngữ cảnh, lưu thẻ, lưu lỗi) | 2 ngày |
+| M6 | F7 hoàn chỉnh + F8 (heartbeat, tiến độ, dự báo + test, báo cáo tuần) + F9 | 3–4 ngày |
+
+**Điểm dừng để bắt đầu học thật:** sau M3 là đủ để dùng hằng ngày. Từ đó, việc build làm song song nhưng không quá 20% thời gian học mỗi tuần.
+
+## 10. Sau giai đoạn 1 (chỉ để định hướng, KHÔNG làm bây giờ)
+- **A1–A2:** chấm phát âm theo câu và bài cặp tối thiểu (Azure Pronunciation Assessment de-DE); sổ lỗi phát âm riêng cho người Việt (cụm phụ âm, phụ âm cuối, ü/ö, độ dài nguyên âm).
+- **B1:** chấm bài viết dài theo thang Goethe; luyện hỏi đáp nói với AI; thư viện bài đọc phân cấp có chạm tra từ.
+- **B2:** thuyết trình và thảo luận kiểu Goethe B2; kho mẫu câu học thuật; nghe bài giảng và ghi chú.
+- **C1:** mô phỏng TestDaF số đủ 4 phần (Đọc 7 nhiệm vụ ~55 phút, Nghe 7 ~40, Viết 2 ~60, Nói 7 ~35, có ghi âm và đếm giờ); chấm theo bậc TDN 3–5; hiệu chỉnh AI bằng điểm thi thật.
