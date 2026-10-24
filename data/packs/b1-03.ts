@@ -67,7 +67,7 @@ p|einen Kurs belegen|||đăng ký học một khóa|Dieses Semester {belege} ich
 p|Fortschritte machen|||tiến bộ|Du {machst} große Fortschritte!|Bạn tiến bộ nhiều lắm!|
 g|obwohl: nhượng bộ trong câu phụ|||mặc dù …|Obwohl es regnet, {gehen} wir spazieren.|Mặc dù trời mưa, chúng tôi vẫn đi dạo.|obwohl + động từ cuối; câu phụ đứng trước thì động từ câu chính đứng ngay sau.
 g|trotzdem hay obwohl?|||cùng ý nhượng bộ, khác vị trí động từ|Es regnet, trotzdem {gehen} wir spazieren.|Trời mưa, dù vậy chúng tôi vẫn đi dạo.|trotzdem (trạng từ) → động từ ngay sau; obwohl (liên từ phụ) → động từ cuối.
-g|nicht nur … sondern auch|||liên từ hai vế|Er lernt nicht nur Deutsch, sondern {auch} Englisch.|Anh ấy không chỉ học tiếng Đức mà còn học tiếng Anh.|Nhấn mạnh thêm thông tin.
+g|Liên từ hai vế: nicht nur … sondern auch|||liên từ hai vế|Er lernt nicht nur Deutsch, sondern {auch} Englisch.|Anh ấy không chỉ học tiếng Đức mà còn học tiếng Anh.|Nhấn mạnh thêm thông tin.
 g|Danh từ hóa động từ: das + Infinitiv|||das Lernen, das Lesen|Das {Lernen} macht mir Spaß.|Tôi thích việc học.|Động từ nguyên mẫu viết hoa, giống trung.
 n|Lernziel|das|-e|mục tiêu học tập|Mein {Lernziel} ist das B1-Zertifikat.|Mục tiêu học của tôi là chứng chỉ B1.|
 n|Lerngruppe|die|-n|nhóm học|Wir treffen uns in einer {Lerngruppe}.|Chúng tôi gặp nhau trong một nhóm học.|

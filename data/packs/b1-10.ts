@@ -57,9 +57,9 @@ p|sowohl … als auch|||vừa … vừa|Das betrifft {sowohl} Kinder als auch Er
 p|weder … noch|||không … cũng không|Ich bin {weder} dafür noch dagegen.|Tôi không ủng hộ cũng không phản đối.|
 p|entweder … oder|||hoặc … hoặc|{Entweder} wir handeln jetzt oder nie.|Hoặc chúng ta hành động bây giờ, hoặc không bao giờ.|
 g|Konjunktiv II quá khứ: hätte/wäre + Partizip II|||điều đã không xảy ra|Wenn ich das gewusst hätte, {wäre} ich gekommen.|Nếu biết điều đó thì tôi đã đến.|hätte/wäre + Partizip II; diễn tả hối tiếc, giả định trong quá khứ.
-g|sowohl … als auch|||cả … lẫn|Sowohl die Regierung {als} auch die Opposition sind dafür.|Cả chính phủ lẫn phe đối lập đều ủng hộ.|Chủ ngữ kép → động từ số nhiều.
-g|weder … noch|||không … cũng không|Er hat weder Zeit {noch} Geld.|Anh ấy không có thời gian cũng không có tiền.|Bản thân đã mang nghĩa phủ định, không thêm nicht.
-g|entweder … oder|||hoặc … hoặc|Entweder du hilfst mir, {oder} ich mache es allein.|Hoặc bạn giúp tôi, hoặc tôi tự làm.|Sau oder trật tự câu bình thường.
+g|Liên từ hai vế: sowohl … als auch|||cả … lẫn|Sowohl die Regierung {als} auch die Opposition sind dafür.|Cả chính phủ lẫn phe đối lập đều ủng hộ.|Chủ ngữ kép → động từ số nhiều.
+g|Liên từ hai vế: weder … noch|||không … cũng không|Er hat weder Zeit {noch} Geld.|Anh ấy không có thời gian cũng không có tiền.|Bản thân đã mang nghĩa phủ định, không thêm nicht.
+g|Liên từ hai vế: entweder … oder|||hoặc … hoặc|Entweder du hilfst mir, {oder} ich mache es allein.|Hoặc bạn giúp tôi, hoặc tôi tự làm.|Sau oder trật tự câu bình thường.
 n|Wahlkampf|der|¨-e|chiến dịch tranh cử|Im {Wahlkampf} machen alle Parteien Versprechungen.|Trong chiến dịch tranh cử các đảng đều hứa hẹn.|
 n|Kandidat|der|-en|ứng cử viên (nam)|Der {Kandidat} hält eine Rede.|Ứng cử viên đọc diễn văn.|n-Deklination. Nữ: die Kandidatin.
 n|Opposition|die|-en|phe đối lập|Die {Opposition} kritisiert die Regierung.|Phe đối lập chỉ trích chính phủ.|
