@@ -27,3 +27,10 @@
 - 2026-10-24 · Phiên ôn tải sẵn toàn bộ thẻ (tối đa 200 thẻ đến hạn) một lần; chấm xong chuyển thẻ ngay, lưu chạy nền. Thẻ trả lời "Lại" quay lại sau 3 thẻ, tối đa 3 lần mỗi phiên. Lưu lỗi thì thẻ được đưa lại cuối phiên.
 - 2026-10-24 · Thẻ nghe dùng giọng đọc có sẵn của trình duyệt (Web Speech API, `de-DE`), không lưu file âm thanh. Danh từ đọc và gõ kèm mạo từ ở cả thẻ Việt→Đức lẫn thẻ nghe.
 - 2026-10-24 · Gõ danh từ thiếu mạo từ tính là sai (cờ `missing_article`), nhưng không ghi vào sổ lỗi; chỉ sai mạo từ (`wrong_article`) mới ghi sổ lỗi (nối ở M4 cùng logic gom lỗi).
+- 2026-10-24 · Câu cho thẻ sửa lỗi từ bài viết: câu sai chỉ giữ đúng lỗi đó (các lỗi khác trong cùng câu đã sửa), câu đúng là câu sửa hết, để mỗi thẻ luyện đúng một quy tắc.
+- 2026-10-24 · Đáp án hợp lệ mới của thẻ sửa lỗi (AI P4 xác nhận) lưu thành một dòng `error_occurrences` cùng câu sai, không tăng `occurrences`. Thẻ xoay vòng theo các câu sai khác nhau; đáp án chấp nhận là mọi câu đúng đã lưu cho câu sai đó. Viết sai mà vẫn mắc đúng lỗi đó (P4 `fixes_target_error = false`) thì ghi thêm một lần mắc.
+- 2026-10-24 · Lỗi phát sinh trong phiên ôn (sai mạo từ, sai thẻ sửa lỗi) ghi nguồn `other`, vì enum `source_kind` không có giá trị cho phiên ôn.
+- 2026-10-24 · Lỗi từ bài viết được ghi vào sổ lỗi ngay ở lần kiểm đầu (không đợi bấm "Xem đáp án"), để rời trang giữa chừng không mất lỗi.
+- 2026-10-24 · Thẻ sửa lỗi điền sẵn câu sai vào ô trả lời để sửa tại chỗ, đỡ phải gõ lại cả câu trên điện thoại.
+- 2026-10-24 · "Tạo thẻ từ câu này" mở form Thêm với câu điền sẵn (loại cụm từ) thay vì lưu thẳng, vì mục cần nghĩa tiếng Việt (dùng "Điền giúp").
+- 2026-10-24 · Biểu đồ "lỗi đang mở theo tuần" tính theo `first_seen` và `resolved_at` hiện tại; lỗi đóng rồi mở lại không có lịch sử chuyển trạng thái nên được tính theo trạng thái hiện tại.

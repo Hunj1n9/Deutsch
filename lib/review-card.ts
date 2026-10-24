@@ -20,7 +20,8 @@ export type ReviewItem = {
 export type CardFace =
   | { kind: 'vi_de'; vietnamese: string; level: string | null; posLabel: string | null }
   | { kind: 'audio_de'; speak: string }
-  | { kind: 'cloze'; before: string; after: string; translation: string | null };
+  | { kind: 'cloze'; before: string; after: string; translation: string | null }
+  | { kind: 'error_fix'; wrong: string; title: string };
 
 export type CardView = {
   face: CardFace;
@@ -80,4 +81,18 @@ export function viewCard(kind: string, item: ReviewItem): CardView | null {
     default:
       return null;
   }
+}
+
+/** Thẻ sửa lỗi: hiện một câu sai (xoay vòng), tiêu đề lỗi ẩn sau nút Gợi ý; gõ lại câu đúng. */
+export function viewErrorFix(error: { title_vi: string; wrong: string; accepted: string[] }): CardView | null {
+  if (!error.wrong || error.accepted.length === 0) return null;
+  return {
+    face: { kind: 'error_fix', wrong: error.wrong, title: error.title_vi },
+    accepted: error.accepted,
+    article: null,
+    answer: error.accepted[0],
+    speak: error.accepted[0],
+    example: null,
+    exampleVi: null,
+  };
 }

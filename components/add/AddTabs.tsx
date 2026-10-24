@@ -1,13 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import type { Level } from '@/lib/items/types';
+import type { ItemDraft, Level } from '@/lib/items/types';
 import type { SourceOption } from '../SourcePicker';
 import { chipClass } from '../ui';
 import { BulkImport } from './BulkImport';
 import { SingleItemForm } from './SingleItemForm';
 
-export function AddTabs(props: { level: Level; sources: SourceOption[]; sourceId: string | null }) {
+export function AddTabs({
+  prefill,
+  ...props
+}: {
+  level: Level;
+  sources: SourceOption[];
+  sourceId: string | null;
+  prefill?: ItemDraft;
+}) {
   const [tab, setTab] = useState<'single' | 'bulk'>('single');
   return (
     <>
@@ -30,7 +38,7 @@ export function AddTabs(props: { level: Level; sources: SourceOption[]; sourceId
           </button>
         ))}
       </div>
-      {tab === 'single' ? <SingleItemForm {...props} /> : <BulkImport {...props} />}
+      {tab === 'single' ? <SingleItemForm {...props} prefill={prefill} /> : <BulkImport {...props} />}
     </>
   );
 }

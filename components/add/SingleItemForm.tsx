@@ -14,12 +14,14 @@ export function SingleItemForm({
   level: initialLevel,
   sources: initialSources,
   sourceId: initialSourceId,
+  prefill,
 }: {
   level: Level;
   sources: SourceOption[];
   sourceId: string | null;
+  prefill?: ItemDraft;
 }) {
-  const [draft, setDraft] = useState<ItemDraft>(emptyDraft());
+  const [draft, setDraft] = useState<ItemDraft>(prefill ?? emptyDraft());
   const [level, setLevel] = useState<Level>(initialLevel);
   const [sources, setSources] = useState(initialSources);
   const [sourceId, setSourceId] = useState(initialSourceId);

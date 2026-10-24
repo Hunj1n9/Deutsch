@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { submitReviewAction, undoReviewAction } from '@/app/(app)/review/actions';
+import { judgeErrorFixAction, submitReviewAction, undoReviewAction, type SubmitInput } from '@/app/(app)/review/actions';
 import { checkAnswer, suggestRating, type AnswerFlag, type CheckResult } from '@/lib/answer-check';
 import type { SessionCard } from '@/lib/review/load';
-import { viewCard, type CardView } from '@/lib/review-card';
+import { viewCard, viewErrorFix, type CardView } from '@/lib/review-card';
 import { formatInterval, previewIntervals, RATING_VI, type CardState, type Rating } from '@/lib/scheduler';
 import { ArticleChip } from '../ArticleChip';
 import { UmlautBar } from '../UmlautBar';
@@ -29,6 +29,9 @@ type Answered = {
   given: string;
   responseMs: number;
   suggested: Rating;
+  usedHint: boolean;
+  /** Nhận xét của AI (thẻ error_fix khi câu khác đáp án đã lưu). */
+  note?: string;
 };
 
 type UndoEntry = { card: SessionCard; logId: string; before: CardState; correct: boolean };
@@ -39,7 +42,10 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
     Object.fromEntries(initialCards.map((c) => [c.id, c.state])),
   );
   const [answered, setAnswered] = useState<Answered | null>(null);
-  const [input, setInput] = useState('');
+  // null = chưa gõ gì: thẻ sửa lỗi điền sẵn câu sai để người học sửa tại chỗ.
+  const [input, setInput] = useState<string | null>(null);
+  const [hintShown, setHintShown] = useState(false);
+  const [judging, setJudging] = useState(false);
   const [done, setDone] = useState({ count: 0, correct: 0 });
   const [undo, setUndo] = useState<UndoEntry | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +57,12 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
   const inputRef = useRef<HTMLInputElement>(null);
 
   const card = queue[0] ?? null;
-  const view: CardView | null = useMemo(() => (card ? viewCard(card.kind, card.item) : null), [card]);
+  const view: CardView | null = useMemo(() => {
+    if (!card) return null;
+    if (card.kind === 'error_fix') return card.error ? viewErrorFix(card.error) : null;
+    return viewCard(card.kind, card.item);
+  }, [card]);
+  const value = input ?? (view?.face.kind === 'error_fix' ? view.face.wrong : '');
   const total = done.count + queue.length;
 
   // Mỗi thẻ hiện ra: bấm giờ, thẻ nghe thì tự phát lần đầu.
@@ -62,27 +73,48 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
     inputRef.current?.focus();
   }, [card, view, turn]);
 
-  function check(giveUp = false) {
-    if (!card || !view || answered) return;
+  async function check(giveUp = false) {
+    if (!card || !view || answered || judging) return;
     const responseMs = Math.round(performance.now() - shownAt.current);
-    const result = giveUp
+    let result: CheckResult = giveUp
       ? { correct: false, flags: [], matched: null }
-      : checkAnswer(input, view.accepted, view.article);
+      : checkAnswer(value, view.accepted, view.article);
+    let note: string | undefined;
+
+    // Thẻ sửa lỗi: khác đáp án đã lưu thì nhờ AI phán (P4) trước khi tính sai.
+    if (!giveUp && !result.correct && view.face.kind === 'error_fix' && card.error && value.trim()) {
+      setJudging(true);
+      try {
+        const judged = await judgeErrorFixAction({ cardId: card.id, wrong: card.error.wrong, answer: value });
+        if (judged.ok) {
+          result = { correct: judged.correct, flags: [], matched: judged.correct ? value.trim() : null };
+          note = [judged.note, ...judged.otherErrors].join(' ');
+        } else {
+          note = judged.error;
+        }
+      } catch {
+        note = 'Không gọi được AI để phán câu này.';
+      } finally {
+        setJudging(false);
+      }
+    }
+
     const suggested = suggestRating({
       correct: result.correct,
       flags: result.flags,
-      usedHint: false,
+      usedHint: hintShown,
       responseMs,
       state: states[card.id]?.state ?? card.state.state,
     });
-    setAnswered({ result, given: giveUp ? '' : input, responseMs, suggested });
+    setAnswered({ result, given: giveUp ? '' : value, responseMs, suggested, usedHint: hintShown, note });
   }
 
   const rate = useCallback(
     (rating: Rating) => {
       if (!card || !answered) return;
       const current = card;
-      const { result, given, responseMs, suggested } = answered;
+      const { result, given, responseMs, suggested, usedHint } = answered;
+      const flags: SubmitInput['flags'] = usedHint ? [...result.flags, 'used_hint'] : [...result.flags];
 
       // Chuyển thẻ ngay, lưu chạy nền để không có trễ giữa các thẻ.
       setQueue((q) => {
@@ -98,7 +130,8 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
       setDone((d) => ({ count: d.count + 1, correct: d.correct + (result.correct ? 1 : 0) }));
       setUndo(null);
       setTurn((t) => t + 1);
-      setInput('');
+      setInput(null);
+      setHintShown(false);
       setAnswered(null);
       setSaving((n) => n + 1);
 
@@ -108,7 +141,7 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
         suggested,
         answer: given,
         correct: result.correct,
-        flags: result.flags,
+        flags,
         responseMs,
       })
         .then((res) => {
@@ -143,7 +176,8 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
     }
     setStates((s) => ({ ...s, [entry.card.id]: entry.before }));
     setTurn((t) => t + 1);
-    setInput('');
+    setInput(null);
+    setHintShown(false);
     setAnswered(null);
     setQueue((q) => [entry.card, ...q.filter((c) => c.id !== entry.card.id)]);
     setDone((d) => ({ count: d.count - 1, correct: d.correct - (entry.correct ? 1 : 0) }));
@@ -192,7 +226,12 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
       </div>
 
       <section className="scribble rounded-block bg-pastel-yellow p-5">
-        <CardFront view={view} isNew={(states[card.id] ?? card.state).state === 0} />
+        <CardFront
+          view={view}
+          isNew={(states[card.id] ?? card.state).state === 0}
+          hintShown={hintShown || Boolean(answered)}
+          onHint={() => setHintShown(true)}
+        />
       </section>
 
       {!answered ? (
@@ -200,14 +239,14 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
           className="flex flex-col gap-2"
           onSubmit={(e) => {
             e.preventDefault();
-            check();
+            void check();
           }}
         >
           <UmlautBar targetId="review-answer" />
           <input
             id="review-answer"
             ref={inputRef}
-            value={input}
+            value={value}
             onChange={(e) => setInput(e.target.value)}
             lang="de"
             autoComplete="off"
@@ -216,15 +255,15 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
             spellCheck={false}
             enterKeyHint="done"
             aria-label="Đáp án tiếng Đức"
-            placeholder={view.article ? 'der/die/das + từ' : 'Gõ đáp án'}
+            placeholder={view.article ? 'der/die/das + từ' : view.face.kind === 'error_fix' ? 'Gõ câu đã sửa' : 'Gõ đáp án'}
             className="h-14 w-full rounded-[20px] bg-surface px-4 text-[22px] outline-2 outline-line focus:outline-ink"
           />
           <div className="flex gap-2">
-            <button type="button" onClick={() => check(true)} className={`${secondaryClass} flex-1`}>
+            <button type="button" onClick={() => void check(true)} disabled={judging} className={`${secondaryClass} flex-1`}>
               Không nhớ
             </button>
-            <button type="submit" className={`${primaryClass} flex-[2]`}>
-              Kiểm tra
+            <button type="submit" disabled={judging} className={`${primaryClass} flex-[2]`}>
+              {judging ? 'AI đang phán…' : 'Kiểm tra'}
             </button>
           </div>
         </form>
@@ -252,12 +291,22 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
   );
 }
 
-function CardFront({ view, isNew }: { view: CardView; isNew: boolean }) {
+function CardFront({
+  view,
+  isNew,
+  hintShown,
+  onHint,
+}: {
+  view: CardView;
+  isNew: boolean;
+  hintShown: boolean;
+  onHint: () => void;
+}) {
   const face = view.face;
   return (
     <div className="flex min-h-[132px] flex-col justify-center gap-2">
       <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
-        {face.kind === 'vi_de' ? 'Việt → Đức' : face.kind === 'audio_de' ? 'Nghe và viết' : 'Điền chỗ trống'}
+        {{ vi_de: 'Việt → Đức', audio_de: 'Nghe và viết', cloze: 'Điền chỗ trống', error_fix: 'Sửa câu sai' }[face.kind]}
         {isNew && ' · thẻ mới'}
       </p>
       {face.kind === 'vi_de' && (
@@ -278,6 +327,20 @@ function CardFront({ view, isNew }: { view: CardView; isNew: boolean }) {
         >
           ▶ Nghe lại
         </button>
+      )}
+      {face.kind === 'error_fix' && (
+        <>
+          <p className="text-[24px] font-semibold leading-snug" lang="de">
+            {face.wrong}
+          </p>
+          {hintShown ? (
+            <p className="text-[15px] font-semibold">Lỗi: {face.title}</p>
+          ) : (
+            <button type="button" onClick={onHint} className="self-start rounded-full bg-surface px-4 py-2 text-[14px] font-semibold">
+              Gợi ý
+            </button>
+          )}
+        </>
       )}
       {face.kind === 'cloze' && (
         <>
@@ -306,7 +369,8 @@ function ResultPanel({
   intervals: Record<Rating, number>;
   onRate: (rating: Rating) => void;
 }) {
-  const { result, given, suggested } = answered;
+  const { result, given, suggested, note } = answered;
+  const isErrorFix = view.face.kind === 'error_fix';
   return (
     <div className="flex flex-col gap-3">
       <div className={`rounded-[20px] p-4 ${result.correct ? 'bg-pastel-sage' : 'bg-pastel-pink'}`} role="status">
@@ -327,6 +391,7 @@ function ResultPanel({
             ))}
           </ul>
         )}
+        {note && <p className="mt-1 text-[14px]">{note}</p>}
       </div>
 
       <div className="rounded-[20px] bg-surface p-4">
@@ -335,7 +400,7 @@ function ResultPanel({
             Số nhiều: {card.item.plural}
           </p>
         )}
-        <p className="text-[15px]">{card.item.vietnamese}</p>
+        <p className="text-[15px]">{isErrorFix ? `Lỗi: ${card.item.vietnamese}` : card.item.vietnamese}</p>
         {view.example && (
           <p className="mt-2 text-[17px]" lang="de">
             {view.example}

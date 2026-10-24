@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { viewCard, type ReviewItem } from '@/lib/review-card';
+import { viewCard, viewErrorFix, type ReviewItem } from '@/lib/review-card';
 import { addDays, localDate, startOfLocalDay, weekStart } from '@/lib/time';
 
 const tisch: ReviewItem = {
@@ -65,5 +65,18 @@ describe('time', () => {
     expect(addDays('2026-10-31', 1)).toBe('2026-11-01');
     expect(weekStart('2026-10-25')).toBe('2026-10-19'); // Chủ nhật → thứ Hai trước đó
     expect(weekStart('2026-10-26')).toBe('2026-10-26');
+  });
+});
+
+describe('viewErrorFix', () => {
+  it('hiện câu sai, đáp án là các câu đúng đã lưu', () => {
+    expect(
+      viewErrorFix({ title_vi: 'mit + Dativ', wrong: 'Ich fahre mit den Bus.', accepted: ['Ich fahre mit dem Bus.'] }),
+    ).toMatchObject({
+      face: { kind: 'error_fix', wrong: 'Ich fahre mit den Bus.', title: 'mit + Dativ' },
+      accepted: ['Ich fahre mit dem Bus.'],
+      answer: 'Ich fahre mit dem Bus.',
+    });
+    expect(viewErrorFix({ title_vi: 't', wrong: 'x', accepted: [] })).toBeNull();
   });
 });

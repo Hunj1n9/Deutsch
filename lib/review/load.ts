@@ -1,4 +1,5 @@
 import 'server-only';
+import { rotateOccurrence } from '@/lib/errors';
 import { buildSessionQueue } from '@/lib/review-queue';
 import { viewCard, type ReviewItem } from '@/lib/review-card';
 import type { CardState } from '@/lib/scheduler';
@@ -77,7 +78,7 @@ async function todayInfo({ supabase }: Session, newPerDay: number, now: Date) {
 export const SESSION_LIMIT = 200;
 
 /** Kiểu thẻ đưa vào phiên ôn. */
-export const REVIEW_KINDS = ['vi_de', 'audio_de', 'cloze'] as const;
+export const REVIEW_KINDS = ['vi_de', 'audio_de', 'cloze', 'error_fix'] as const;
 
 /** Toàn bộ thẻ của một phiên, tải sẵn một lần để chuyển thẻ không phải chờ mạng (TCHT F3). */
 export async function loadReviewSession(
@@ -115,10 +116,51 @@ export async function loadReviewSession(
   const due = usable(dueRes.data).map((c) => ({ ...c, due: c.state.due }));
   const fresh = usable(freshRes.data).map((c) => ({ ...c, due: c.state.due }));
 
-  return buildSessionQueue({ due, fresh, newLimit: newLeft, reviewedToday }).map((c) => {
+  const queue = buildSessionQueue({ due, fresh, newLimit: newLeft, reviewedToday }).map((c) => {
     const { due: _due, ...card } = c;
     void _due;
     return card;
+  });
+  return attachErrors(session, queue);
+}
+
+type ErrorRow = {
+  id: string;
+  title_vi: string;
+  error_occurrences: { text_wrong: string; text_correct: string; created_at: string }[];
+};
+
+/** Thẻ error_fix: lấy câu sai theo vòng xoay và mọi câu đúng đã chấp nhận cho câu sai đó (SPEC F3, F4). */
+async function attachErrors(session: Session, cards: SessionCard[]): Promise<SessionCard[]> {
+  const errorIds = [
+    ...new Set(
+      cards.flatMap((c) => {
+        const id = (c.item as { error_id?: string | null }).error_id;
+        return c.kind === 'error_fix' && id ? [id] : [];
+      }),
+    ),
+  ];
+  if (errorIds.length === 0) return cards.filter((c) => c.kind !== 'error_fix');
+
+  const { data } = await session.supabase
+    .from('errors')
+    .select('id, title_vi, error_occurrences(text_wrong, text_correct, created_at)')
+    .in('id', errorIds);
+  const byId = new Map(((data ?? []) as ErrorRow[]).map((e) => [e.id, e]));
+
+  return cards.flatMap((c) => {
+    if (c.kind !== 'error_fix') return [c];
+    const err = byId.get((c.item as { error_id?: string | null }).error_id ?? '');
+    if (!err) return [];
+    const groups = new Map<string, Set<string>>();
+    for (const o of [...err.error_occurrences].sort((a, b) => a.created_at.localeCompare(b.created_at))) {
+      const set = groups.get(o.text_wrong) ?? new Set<string>();
+      set.add(o.text_correct);
+      groups.set(o.text_wrong, set);
+    }
+    const picked = rotateOccurrence([...groups.entries()], c.state.reps);
+    if (!picked) return [];
+    return [{ ...c, error: { id: err.id, title_vi: err.title_vi, wrong: picked[0], accepted: [...picked[1]] } }];
   });
 }
 
