@@ -122,7 +122,11 @@ Từ A1 còn thiếu chủ yếu là số đếm, từ chức năng (bei, für, 
 
 ## Đề xuất còn lại (cần duyệt trước khi làm)
 
-1. ~~**Bổ sung mục từ cho A1–A2, ưu tiên phát hiện 1 và 2.**~~ Đã làm, xem mục trên. Phát hiện 3 (từ đời sống A2) chưa làm. Khoảng 150–250 mục: từ giấy tờ, nơi công cộng, động từ cơ bản, đủ 12 tháng. Đây là sửa dữ liệu gói và bài học, không phải tính năng mới, nhưng mỗi mục mới phải được gán vào một bài.
+1. ~~**Bổ sung mục từ cho A1–A2, ưu tiên phát hiện 1 và 2.**~~ Đã làm, xem mục trên. Phát hiện 3 (từ đời sống A2) đã làm ở M17, xem mục dưới. Khoảng 150–250 mục: từ giấy tờ, nơi công cộng, động từ cơ bản, đủ 12 tháng. Đây là sửa dữ liệu gói và bài học, không phải tính năng mới, nhưng mỗi mục mới phải được gán vào một bài.
 2. **Cân lại gói B1:** thêm các nhóm ở phát hiện 4, có thể bớt bớt từ chuyên đề. Làm sau khi xong M15.
 3. **Thêm một số điểm ngữ pháp còn thiếu** trong bảng trên. Việc này thay đổi số điểm ngữ pháp mỗi chặng (hiện cố định 3), nên cần quyết định trong `SPEC.md`.
 4. **Giữ script đối chiếu** để chạy lại sau mỗi lần sửa gói. Hiện script ở thư mục tạm, chưa đưa vào repo vì cần các file PDF.
+
+## Đã xử lý (2026-10-25, M17): phát hiện 3
+
+Thêm **60 mục** tự soạn vào gói A2 và gán vào bài theo chủ đề: trạng từ thời gian morgens … abends, montags … sonntags, übermorgen (A2-01-3, bài trạng từ thời gian); đồ đạc và chuyển nhà (einpacken, auspacken, Schere, Geschirr…, A2-02); ăn uống (backen, Rest, Rind…, A2-03); mua sắm và miêu tả (Jeans, egal, sportlich…, A2-04); cùng một số từ lẻ (Führerschein, Fahrplan, Ermäßigung, Hauptstadt, Pferd…). baden đã có ở A1-06 nên không thêm. Gói A2: 661 → 721 mục. Chưa chạy lại script đối chiếu (script ở thư mục tạm của phiên trước, cần các file PDF Goethe).

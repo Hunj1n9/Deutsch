@@ -51,5 +51,26 @@ g|Perfekt: Partizip II của động từ bất quy tắc|||ge- … -en, có th�
 g|Perfekt của động từ tách|||-ge- chen giữa tiền tố và gốc|Er ist um sechs {aufgestanden}.|Anh ấy dậy lúc sáu giờ.|aufstehen → aufgestanden, einkaufen → eingekauft.
 g|Perfekt với sein: chuyển động và thay đổi|||sein + Partizip II|Ich {bin} nach Hause gegangen.|Tôi đã về nhà.|Đi từ A đến B hoặc đổi trạng thái (aufwachen, sterben, werden) dùng sein.
 g|Perfekt của động từ hỗn hợp|||đổi nguyên âm nhưng đuôi -t|Ich habe an dich {gedacht}.|Tôi đã nghĩ về bạn.|denken → gedacht, bringen → gebracht, kennen → gekannt, wissen → gewusst.
+adv|morgens|||vào buổi sáng (mỗi sáng)|{Morgens} trinke ich immer Kaffee.|Buổi sáng tôi luôn uống cà phê.|Trạng từ: buổi sáng, thường lặp lại.
+adv|vormittags|||vào buổi sáng muộn (khoảng 9–12 giờ)|{Vormittags} arbeite ich im Büro.|Buổi sáng muộn tôi làm ở văn phòng.|Trạng từ: khoảng 9–12 giờ, thường lặp lại.
+adv|nachmittags|||vào buổi chiều (mỗi chiều)|{Nachmittags} gehe ich oft spazieren.|Buổi chiều tôi hay đi dạo.|
+adv|abends|||vào buổi tối (mỗi tối)|{Abends} sehe ich gern fern.|Buổi tối tôi thích xem tivi.|
+adv|montags|||vào các thứ Hai|{Montags} habe ich Deutschkurs.|Thứ Hai nào tôi cũng có lớp tiếng Đức.|Viết thường, đuôi -s: mỗi thứ Hai.
+adv|dienstags|||vào các thứ Ba|{Dienstags} gehe ich schwimmen.|Thứ Ba nào tôi cũng đi bơi.|
+adv|mittwochs|||vào các thứ Tư|{Mittwochs} ist der Markt geöffnet.|Thứ Tư nào chợ cũng mở.|
+adv|donnerstags|||vào các thứ Năm|{Donnerstags} kocht mein Vater.|Thứ Năm nào bố tôi cũng nấu ăn.|
+adv|freitags|||vào các thứ Sáu|{Freitags} arbeite ich nur bis zwölf.|Thứ Sáu nào tôi cũng chỉ làm đến 12 giờ.|
+adv|samstags|||vào các thứ Bảy|{Samstags} schlafe ich lange.|Thứ Bảy nào tôi cũng ngủ dậy muộn.|
+adv|sonntags|||vào các Chủ nhật|{Sonntags} besuchen wir meine Großeltern.|Chủ nhật nào chúng tôi cũng thăm ông bà.|
+adv|übermorgen|||ngày kia|{Übermorgen} fahren wir in den Urlaub.|Ngày kia chúng tôi đi nghỉ.|
+n|Traum|der|Träume|giấc mơ; ước mơ|Ich hatte heute Nacht einen schönen {Traum}.|Đêm qua tôi có một giấc mơ đẹp.|
+v|träumen|||mơ|Als Kind habe ich oft vom Fliegen {geträumt}.|Hồi nhỏ tôi hay mơ được bay.|er träumt, hat geträumt; träumen von + Dat
+v|basteln|||làm đồ thủ công|Früher haben wir oft zusammen {gebastelt}.|Ngày xưa chúng tôi hay cùng nhau làm đồ thủ công.|er bastelt, hat gebastelt
+n|Witz|der|-e|chuyện cười|Mein Opa hat immer {Witze} erzählt.|Ông tôi lúc nào cũng kể chuyện cười.|
+n|Lüge|die|-n|lời nói dối|Das ist eine {Lüge}!|Đó là lời nói dối!|
+adj|wahr|||thật, đúng sự thật|Die Geschichte ist {wahr}.|Câu chuyện này là có thật.|
+n|Ahnung|die|-en|ý niệm, sự biết|Ich habe keine {Ahnung}, wo er ist.|Tôi không biết anh ấy ở đâu.|Keine Ahnung! = Không biết!
+n|Situation|die|-en|tình huống|Das war eine schwierige {Situation}.|Đó là một tình huống khó khăn.|
+adj|komisch|||kỳ lạ; buồn cười|Die Situation war wirklich {komisch}.|Tình huống đó thật sự kỳ lạ.|
 `;
 export default pack;

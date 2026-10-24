@@ -56,5 +56,18 @@ v|erlauben|||cho phép|Der Vermieter {erlaubt} keine Haustiere.|Chủ nhà khôn
 adj|verboten|||bị cấm|Parken ist hier {verboten}.|Đỗ xe ở đây bị cấm.|
 n|Paket|das|-e|bưu kiện|Kannst du mein {Paket} annehmen?|Bạn nhận giúp bưu kiện của tôi được không?|
 p|Bescheid sagen|||báo cho biết|Sag mir bitte {Bescheid}, wenn du später kommst.|Báo cho tôi biết nếu bạn đến muộn.|jemandem Bescheid sagen/geben.
+v|einpacken|||đóng gói, cho vào|Hast du die Bücher schon {eingepackt}?|Bạn đã đóng gói sách chưa?|er packt ein, hat eingepackt
+v|auspacken|||mở ra, dỡ đồ|Wir müssen noch die Kartons {auspacken}.|Chúng tôi còn phải dỡ các thùng các-tông.|er packt aus, hat ausgepackt
+v|aufmachen|||mở|Kannst du bitte das Fenster {aufmachen}?|Bạn mở cửa sổ giúp mình được không?|er macht auf, hat aufgemacht
+v|zumachen|||đóng|Kannst du bitte die Tür {zumachen}?|Bạn đóng cửa giúp mình được không?|er macht zu, hat zugemacht
+n|Schere|die|-n|cái kéo|Wo ist die {Schere}? Ich muss den Karton aufmachen.|Cái kéo đâu rồi? Mình phải mở thùng.|
+n|Ding|das|-e|đồ vật, thứ|Wohin kommen all die {Dinge}?|Tất cả đồ đạc này để đâu?|
+n|Sache|die|-n|đồ đạc, việc|Meine {Sachen} sind noch im Auto.|Đồ đạc của tôi vẫn còn trong ô tô.|
+v|renovieren|||sửa sang (nhà)|Wir haben die Küche selbst {renoviert}.|Chúng tôi tự sửa sang bếp.|er renoviert, hat renoviert
+n|Garage|die|-n|nhà để xe|Das Fahrrad steht in der {Garage}.|Xe đạp ở trong nhà để xe.|
+n|Geschirr|das||bát đĩa|Das {Geschirr} stellen wir in den Schrank.|Chúng tôi xếp bát đĩa vào tủ.|
+adv|nirgends|||không ở đâu cả|Ich finde meinen Schlüssel {nirgends}.|Tôi không tìm thấy chìa khóa ở đâu cả.|
+n|Zettel|der|-|mẩu giấy|Der Nachbar hat einen {Zettel} an die Tür gehängt.|Hàng xóm đã dán một mẩu giấy lên cửa.|
+adv|drüben|||ở bên kia|Die Mülltonnen stehen da {drüben}.|Thùng rác ở đằng kia.|
 `;
 export default pack;

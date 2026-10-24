@@ -189,6 +189,7 @@ export default defineStage({
       items: [
         'Natur', 'Tier', 'Vogel', 'Baum', 'Blatt', 'Gras', 'Erde', 'Welt', 'Luft', 'Überschwemmung', 'steigen', 'sinken',
         'wachsen', 'blühen', 'gefährlich', 'natürlich', 'Mệnh đề quan hệ (giới thiệu)',
+        'Pferd', 'Schwein',
       ],
       grammar: {
         point: 'relativ',

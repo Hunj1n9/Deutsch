@@ -33,6 +33,7 @@ export default defineStage({
       items: [
         'Gefühl', 'Liebe', 'Glück', 'Freude', 'Single', 'Paar', 'Verabredung', 'sich verlieben', 'hoffen', 'lachen',
         'lächeln', 'küssen', 'verliebt', 'sympathisch', 'Konjunktiv II: würde + Infinitiv', 'Konjunktiv II: hätte, wäre',
+        'blöd', 'furchtbar',
       ],
       grammar: {
         point: 'konj2',

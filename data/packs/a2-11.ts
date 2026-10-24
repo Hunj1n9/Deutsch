@@ -50,5 +50,7 @@ g|Konjunktiv II: würde + Infinitiv|||diễn đạt mong ước, giả định|I
 g|Konjunktiv II: hätte, wäre|||dạng riêng của haben, sein|Wenn ich Zeit {hätte}, würde ich dich besuchen.|Nếu có thời gian, tôi sẽ thăm bạn.|haben → hätte, sein → wäre; können → könnte.
 g|Lời khuyên với sollte|||bạn nên …|Du {solltest} mit ihr sprechen.|Bạn nên nói chuyện với cô ấy.|sollte = Konjunktiv II của sollen.
 g|An deiner Stelle würde ich …|||nếu tôi là bạn|An deiner Stelle {würde} ich mich entschuldigen.|Nếu tôi là bạn, tôi sẽ xin lỗi.|Cách khuyên lịch sự.
+adj|blöd|||ngốc; tệ (văn nói)|Das war eine {blöde} Idee.|Đó là một ý tưởng ngốc nghếch.|Văn nói, hơi suồng sã.
+adj|furchtbar|||kinh khủng|Ich habe mich {furchtbar} geärgert.|Tôi đã bực kinh khủng.|Cũng dùng như trạng từ nhấn mạnh: furchtbar nett.
 `;
 export default pack;

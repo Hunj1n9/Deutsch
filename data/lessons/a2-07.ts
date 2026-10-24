@@ -33,6 +33,7 @@ export default defineStage({
       items: [
         'Ausbildung', 'Studium', 'Fach', 'Note', 'Zeugnis', 'Abschluss', 'Abitur', 'Klasse', 'Grundschule', 'Kindergarten',
         'Stundenplan', 'Semester', 'Vorlesung', 'wenn', 'faul', 'streng', 'eine Prüfung ablegen', 'Câu với wenn',
+        'Mannschaft',
       ],
       grammar: {
         point: 'wenn',

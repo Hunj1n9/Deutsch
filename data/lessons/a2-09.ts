@@ -111,6 +111,7 @@ export default defineStage({
         'Geschenk', 'Blume', 'Einladung', 'Gastgeber', 'Gästeliste', 'schenken', 'verpacken', 'überraschen',
         'zusagen', 'absagen', 'persönlich', 'herzlich', 'Herzlich willkommen', 'Hai tân ngữ: Dativ trước Akkusativ',
         'Mạo từ ở Dativ',
+        'Rose',
       ],
       grammar: {
         point: 'dat-akk',

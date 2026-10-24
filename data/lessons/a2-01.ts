@@ -34,6 +34,7 @@ export default defineStage({
         'Kindheit', 'Jugend', 'Ferien', 'Dorf', 'Spielzeug', 'Erinnerung', 'Geschichte', 'erzählen', 'sich erinnern',
         'aufwachsen', 'denken', 'geboren werden', 'Als Kind', 'Weißt du noch?',
         'Perfekt: Partizip II của động từ bất quy tắc', 'Perfekt của động từ hỗn hợp',
+        'Traum', 'träumen', 'basteln', 'Witz',
       ],
       grammar: {
         point: 'perfekt-unreg',
@@ -118,6 +119,7 @@ export default defineStage({
         'Unfall', 'Überraschung', 'Moment', 'Umzug', 'Lehre', 'passieren', 'vergessen', 'verlieren', 'laufen',
         'fallen', 'rennen', 'umziehen', 'kennenlernen', 'sterben', 'Perfekt của động từ tách',
         'Perfekt với sein: chuyển động và thay đổi',
+        'Lüge', 'wahr', 'Ahnung', 'Situation', 'komisch',
       ],
       grammar: {
         point: 'perfekt-trennbar',
@@ -198,6 +200,7 @@ export default defineStage({
         'Vergangenheit', 'Erlebnis', 'feiern', 'früher', 'damals', 'letztes Jahr', 'vor kurzem', 'plötzlich', 'endlich',
         'zuletzt', 'einmal', 'vorgestern', 'traurig', 'glücklich', 'schrecklich', 'wunderbar', 'aufgeregt', 'anstrengend',
         'Es war einmal',
+        'morgens', 'vormittags', 'nachmittags', 'abends', 'montags', 'dienstags', 'mittwochs', 'donnerstags', 'freitags', 'samstags', 'sonntags', 'übermorgen',
       ],
       grammar: {
         point: 'zeitadverb',

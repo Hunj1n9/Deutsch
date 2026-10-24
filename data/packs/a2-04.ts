@@ -57,5 +57,11 @@ n|Schaufenster|das|-|tủ kính bày hàng|Im {Schaufenster} sehe ich eine schö
 v|anhaben|||đang mặc|Was {hast} du heute an?|Hôm nay bạn mặc gì?|Động từ tách: er hat an, hat angehabt
 adj|modisch|||hợp thời trang|Sie ist immer sehr {modisch} angezogen.|Cô ấy luôn ăn mặc hợp thời trang.|
 p|Was kostet …?|||… giá bao nhiêu?|{Was kostet} die Tasche?|Cái túi giá bao nhiêu?|
+n|Jeans|die|-|quần bò|Ich suche eine {Jeans} in Größe 38.|Tôi tìm một chiếc quần bò cỡ 38.|Danh từ giống cái, số ít và số nhiều giống nhau.
+adv|mindestens|||ít nhất|Die Jacke kostet {mindestens} 100 Euro.|Chiếc áo khoác giá ít nhất 100 euro.|
+adj|egal|||không quan trọng, sao cũng được|Die Farbe ist mir {egal}.|Màu nào tôi cũng được.|jemandem egal sein
+adj|blond|||tóc vàng|Meine Schwester hat {blonde} Haare.|Chị tôi có mái tóc vàng.|
+adj|sportlich|||thể thao, khỏe khoắn|Er trägt gern {sportliche} Kleidung.|Anh ấy thích mặc đồ thể thao.|
+adj|romantisch|||lãng mạn|Sie mag {romantische} Filme.|Cô ấy thích phim lãng mạn.|
 `;
 export default pack;

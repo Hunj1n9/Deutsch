@@ -34,6 +34,7 @@ export default defineStage({
         'Insel', 'See', 'Fluss', 'Wald', 'Küste', 'Landschaft', 'Ausflug', 'Wanderung', 'Sehenswürdigkeit', 'Altstadt',
         'Schloss', 'hin', 'zurück', 'aus', 'durch', 'um … herum', 'besichtigen', 'berühmt', 'historisch',
         'Woher? Wohin? Wo?',
+        'Hauptstadt',
       ],
       grammar: {
         point: 'wo-wohin',
@@ -115,6 +116,7 @@ export default defineStage({
         'losfahren', 'tanken', 'verpassen', 'sich verlaufen', 'fremd', 'abenteuerlich', 'eine Reise machen',
         'Wir haben Glück gehabt', 'nach / in / zu: đi đâu',
         'sicher',
+        'Fahrplan', 'Ermäßigung',
       ],
       grammar: {
         point: 'richtung',

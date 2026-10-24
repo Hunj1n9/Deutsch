@@ -58,5 +58,8 @@ n|Wanderung|die|-en|chuyến đi bộ đường dài|Die {Wanderung} dauert vier
 adj|preisgünstig|||giá rẻ|Wir suchen ein {preisgünstiges} Hotel.|Chúng tôi tìm khách sạn giá rẻ.|
 p|eine Reise machen|||đi du lịch|Nächstes Jahr {machen} wir eine Reise nach Europa.|Năm sau chúng tôi đi du lịch châu Âu.|
 adj|sicher|||an toàn; chắc chắn|Ist das Land {sicher}?|Nước đó có an toàn không?|
+n|Hauptstadt|die|Hauptstädte|thủ đô|Berlin ist die {Hauptstadt} von Deutschland.|Berlin là thủ đô của Đức.|
+n|Fahrplan|der|Fahrpläne|lịch chạy tàu xe|Laut {Fahrplan} kommt der Zug um zehn.|Theo lịch tàu, tàu đến lúc mười giờ.|
+n|Ermäßigung|die|-en|sự giảm giá|Mit dem Studentenausweis bekommen Sie eine {Ermäßigung}.|Với thẻ sinh viên bạn được giảm giá.|
 `;
 export default pack;

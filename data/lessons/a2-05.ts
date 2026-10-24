@@ -34,6 +34,7 @@ export default defineStage({
         'Ernährung', 'Bewegung', 'Gewicht', 'Diät', 'Vitamin', 'Schlaf', 'Fitnessstudio', 'Gewohnheit', 'sich bewegen',
         'sich ernähren', 'sich entspannen', 'sich fühlen', 'abnehmen', 'zunehmen', 'fit', 'regelmäßig', 'entspannt',
         'in Form bleiben', 'Động từ phản thân: mich, dich, sich',
+        'Handtuch', 'Seife', 'wecken',
       ],
       grammar: {
         point: 'reflexiv-akk',
