@@ -16,8 +16,12 @@ export function canSpeak(): boolean {
   return typeof window !== 'undefined' && 'speechSynthesis' in window;
 }
 
-export function speakGerman(text: string, rate = 0.9): void {
-  if (!canSpeak() || !text) return;
+/** `onEnd` gọi khi đọc xong (dùng cho "Mẫu rồi mình" ở phần nói theo). */
+export function speakGerman(text: string, rate = 0.9, onEnd?: () => void): void {
+  if (!canSpeak() || !text) {
+    onEnd?.();
+    return;
+  }
   const synth = window.speechSynthesis;
   synth.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
@@ -25,6 +29,7 @@ export function speakGerman(text: string, rate = 0.9): void {
   utterance.rate = rate;
   const voice = germanVoice();
   if (voice) utterance.voice = voice;
+  if (onEnd) utterance.onend = () => onEnd();
   synth.speak(utterance);
 }
 

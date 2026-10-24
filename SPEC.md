@@ -488,7 +488,7 @@ TCHT:
 1. **Mục tiêu:** 1–2 câu "Sau bài này bạn có thể…" (vd "giới thiệu tên, quê và nơi ở"). Nút Bắt đầu.
 2. **Từ mới:** đi theo nhóm 5 mục. Mỗi mục một thẻ giới thiệu (tiếng Đức, mạo từ tô màu, số nhiều, nghĩa, câu ví dụ có dịch, tự đọc to một lần). Hết nhóm là **lượt gợi nhớ ngay**: hiện nghĩa tiếng Việt, gõ tiếng Đức (danh từ kèm mạo từ), chấm bằng `answer-check`, thứ tự xáo trộn. Sai thì hiện đáp án và hỏi lại cuối lượt, tối đa 2 lần.
 3. **Ngữ pháp:** phần giải thích chia 1–3 đoạn, mỗi đoạn ≤ 120 từ tiếng Việt, có thể kèm một bảng và 2–4 ví dụ có dịch và nút nghe; đối chiếu tiếng Việt khi hữu ích. **Sau mỗi đoạn là 2–4 bài tập về đúng đoạn đó**; cuối bước là 4–6 bài tập trộn cả bài. Tổng 8–14 bài tập.
-4. **Hội thoại / đoạn đọc:** 6–12 dòng tự soạn, chỉ dùng từ đã học đến bài này (từ ngoài danh sách có chú nghĩa `gloss`), dùng điểm ngữ pháp của bài. (a) Nghe cả bài khi chưa hiện chữ, trả lời 3–5 câu hỏi hiểu. (b) Hiện chữ; chạm một dòng để nghe lại và xem dịch. (c) Chép chính tả 2 dòng của bài.
+4. **Hội thoại / đoạn đọc:** 6–12 dòng tự soạn, chỉ dùng từ đã học đến bài này (từ ngoài danh sách có chú nghĩa `gloss`), dùng điểm ngữ pháp của bài. (a) Nghe cả bài khi chưa hiện chữ, trả lời 3–5 câu hỏi hiểu. (b) Hiện chữ; chạm một dòng để nghe lại và xem dịch. (c) Chép chính tả 2 dòng của bài. (d) Nói theo có ghi âm, bỏ qua được (F15, thêm 2026-10-25).
 5. **Vận dụng:** viết 3–5 câu theo đề của bài, dùng lại luồng F5 ngay trong bài (tự sửa, kiểm lại, xem đáp án; đề và cấp điền sẵn). Bỏ qua được.
 6. **Tổng kết:** điểm (số bài tập đúng ngay lần đầu / tổng), lỗi mới đã vào sổ lỗi, số thẻ đã vào hàng ôn, gợi ý làm lại nếu điểm < 70%, nút "Bài tiếp".
 
