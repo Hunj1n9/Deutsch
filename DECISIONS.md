@@ -34,3 +34,6 @@
 - 2026-10-24 · Thẻ sửa lỗi điền sẵn câu sai vào ô trả lời để sửa tại chỗ, đỡ phải gõ lại cả câu trên điện thoại.
 - 2026-10-24 · "Tạo thẻ từ câu này" mở form Thêm với câu điền sẵn (loại cụm từ) thay vì lưu thẳng, vì mục cần nghĩa tiếng Việt (dùng "Điền giúp").
 - 2026-10-24 · Biểu đồ "lỗi đang mở theo tuần" tính theo `first_seen` và `resolved_at` hiện tại; lỗi đóng rồi mở lại không có lịch sử chuyển trạng thái nên được tính theo trạng thái hiện tại.
+- 2026-10-24 · Gia sư stream qua route `POST /api/tutor` (trả chữ thuần, mã luồng ở header `x-thread-id`), vì server action không stream được. Thay "nhiệt độ 0.7" bằng `effort: medium` (API không nhận temperature). Gửi lại tối đa 20 lượt gần nhất làm lịch sử.
+- 2026-10-24 · Câu ví dụ tiếng Đức trong câu trả lời của gia sư được dặn viết trên dòng riêng `DE: …` kèm `VI: …`, để app nhận ra và gắn nút "Lưu thành thẻ" (mở form Thêm điền sẵn).
+- 2026-10-24 · "Lưu lỗi này" ở tin nhắn người học: chạy P2 trên tin nhắn đó (chỉ kiểm phần tiếng Đức) rồi ghi lỗi nguồn `tutor`, để khóa lỗi nhất quán với lỗi từ bài viết. Nút hiện ở tin nhắn có dấu hiệu tiếng Đức.

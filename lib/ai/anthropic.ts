@@ -20,3 +20,9 @@ export function getAiClient(): AiClient | null {
   const sdk = client;
   return { model, create: (body) => sdk.beta.messages.create(body) };
 }
+
+/** SDK thô cho lời gọi stream (gia sư). Null nếu thiếu cấu hình. */
+export function getAiSdk(): { sdk: Anthropic; model: string } | null {
+  const ai = getAiClient();
+  return ai && client ? { sdk: client, model: ai.model } : null;
+}
