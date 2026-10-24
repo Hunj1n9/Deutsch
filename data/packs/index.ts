@@ -36,6 +36,19 @@ import p_b1_10 from './b1-10';
 import p_b1_11 from './b1-11';
 import p_b1_12 from './b1-12';
 import p_b1_13 from './b1-13';
+import p_b2_01 from './b2-01';
+import p_b2_02 from './b2-02';
+import p_b2_03 from './b2-03';
+import p_b2_04 from './b2-04';
+import p_b2_05 from './b2-05';
+import p_b2_06 from './b2-06';
+import p_b2_07 from './b2-07';
+import p_b2_08 from './b2-08';
+import p_b2_09 from './b2-09';
+import p_b2_10 from './b2-10';
+import p_b2_11 from './b2-11';
+import p_b2_12 from './b2-12';
+import p_b2_13 from './b2-13';
 
 /** Mã chặng → nội dung gói (F10). */
 export const PACKS: Record<string, string> = {
@@ -76,4 +89,17 @@ export const PACKS: Record<string, string> = {
   'b1-11': p_b1_11,
   'b1-12': p_b1_12,
   'b1-13': p_b1_13,
+  'b2-01': p_b2_01,
+  'b2-02': p_b2_02,
+  'b2-03': p_b2_03,
+  'b2-04': p_b2_04,
+  'b2-05': p_b2_05,
+  'b2-06': p_b2_06,
+  'b2-07': p_b2_07,
+  'b2-08': p_b2_08,
+  'b2-09': p_b2_09,
+  'b2-10': p_b2_10,
+  'b2-11': p_b2_11,
+  'b2-12': p_b2_12,
+  'b2-13': p_b2_13,
 };

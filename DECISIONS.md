@@ -47,3 +47,5 @@
 - 2026-10-24 · Gói từ lưu dạng văn bản 8 cột ngăn bằng `|` trong `data/packs/<mã chặng>.ts` (gọn, dễ sửa tay); `data/packs/index.ts` sinh bằng `node scripts/gen-packs-index.mjs`. Mỗi câu ví dụ đánh dấu đúng một chỗ trống `{…}`; động từ tách chỉ đánh dấu phần chia.
 - 2026-10-24 · Mở chặng gắn tag `pack:<mã>` cho mục; mục đã có thì chỉ gắn tag (hàm SQL `add_item_tag`). Tiến độ chặng tính bằng hàm SQL `roadmap_progress` từ thẻ có tag; chặng coi là thuộc khi 80% thẻ đã lên trạng thái Review. Không thêm bảng.
 - 2026-10-24 · Mục của gói thuộc nguồn "Lộ trình <cấp>" (tạo tự động) để lọc được ở `/items`.
+- 2026-10-24 · Gói từ M8–M10 do Claude tự soạn theo chủ đề CEFR, kiểm tự động (định dạng, mạo từ, số nhiều, chỗ trống, trùng lặp, đủ thẻ) nhưng không có người bản xứ duyệt; người học sửa được mọi mục ở `/items`. Dạng quá khứ bất quy tắc thường gặp (wurde, ging, kam…) có mục riêng ở B1-01 để luyện Präteritum.
+- 2026-10-24 · Cụm tính từ + danh từ (soziale Netzwerke, fairer Handel) lưu là cụm từ chứ không phải danh từ, vì mạo từ + tính từ phải đổi đuôi (die sozialen Netzwerke), không ghép cứng được với một mạo từ.

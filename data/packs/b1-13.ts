@@ -69,7 +69,7 @@ g|zwar … aber|||tuy … nhưng|Das Handy ist zwar teuer, {aber} sehr gut.|Đi�
 g|Mẫu câu đồng ý / phản đối|||Ich stimme dir zu / Da widerspreche ich|Ich {stimme} dir zu.|Tôi đồng ý với bạn.|Phản đối lịch sự: Ich sehe das etwas anders, weil …
 g|einerseits … andererseits|||cân nhắc hai mặt|Einerseits ist es praktisch, andererseits {ist} es teuer.|Một mặt thì tiện, mặt khác thì đắt.|Mỗi trạng từ chiếm vị trí 1 → động từ ngay sau.
 n|Debatte|die|-n|cuộc tranh luận|Die {Debatte} im Parlament war hitzig.|Cuộc tranh luận ở quốc hội rất gay gắt.|
-n|Pro und Contra|das||ủng hộ và phản đối|Wir sammeln {Pro und Contra}.|Chúng tôi thu thập lý lẽ ủng hộ và phản đối.|
+p|Pro und Contra|||ủng hộ và phản đối|Wir sammeln {Pro und Contra}.|Chúng tôi thu thập lý lẽ ủng hộ và phản đối.|
 n|Behauptung|die|-en|lời khẳng định|Das ist nur eine {Behauptung}.|Đó chỉ là một lời khẳng định.|
 n|Beweis|der|-e|bằng chứng|Gibt es einen {Beweis} dafür?|Có bằng chứng cho điều đó không?|
 n|Schlussfolgerung|die|-en|kết luận|Was ist deine {Schlussfolgerung}?|Kết luận của bạn là gì?|

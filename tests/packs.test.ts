@@ -70,6 +70,7 @@ describe('dữ liệu lộ trình và gói từ (TCHT F10)', () => {
         if (d.pos === 'verb' && !d.grammar_note_vi) problems.push(`${tag}: động từ thiếu dạng chia`);
         if (d.type !== 'grammar' && /[()]/.test(d.german)) problems.push(`${tag}: tiếng Đức có ngoặc (khó gõ đáp án)`);
         if (/placeholder/i.test(JSON.stringify(d))) problems.push(`${tag}: còn chỗ giữ chỗ`);
+        if (d.pos === 'noun' && (!/^[A-ZÄÖÜ]/.test(d.german) || / und /.test(d.german))) problems.push(`${tag}: danh từ phải viết hoa, một danh từ`);
         if (/\p{L}\{|\}\p{L}/u.test(d.example_de)) problems.push(`${tag}: chỗ trống dính vào giữa từ`);
         const kinds = cardKindsFor(d);
         const expected = d.type === 'grammar' ? 1 : 3;
