@@ -13,6 +13,7 @@ export const BOTTOM_NAV: readonly NavItem[] = [
 
 /** Các trang còn lại, vào từ menu. */
 export const MENU_ITEMS: readonly NavItem[] = [
+  { href: '/roadmap', label: 'Lộ trình', icon: 'arrow' },
   { href: '/items', label: 'Danh sách mục', icon: 'list' },
   { href: '/errors', label: 'Sổ lỗi', icon: 'book' },
   { href: '/write/history', label: 'Lịch sử bài viết', icon: 'clock' },

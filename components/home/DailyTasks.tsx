@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { addTaskAction, copyYesterdayAction, deleteTaskAction, setTaskDoneAction } from '@/app/(app)/actions';
@@ -8,7 +9,16 @@ import { fieldClass } from '../ui';
 export type DailyTask = { id: string; title: string; minutes: number | null; done: boolean };
 
 /** Khối "Bài mới hôm nay" (SPEC F7): checklist tự thêm; tick xong thì nhập số phút đã học. */
-export function DailyTasks({ tasks, yesterdayLeft }: { tasks: DailyTask[]; yesterdayLeft: string[] }) {
+export function DailyTasks({
+  tasks,
+  yesterdayLeft,
+  roadmap,
+}: {
+  tasks: DailyTask[];
+  yesterdayLeft: string[];
+  /** Gợi ý chặng lộ trình (F10). */
+  roadmap: { label: string; href: string; action: string } | null;
+}) {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [finishing, setFinishing] = useState<string | null>(null);
@@ -32,6 +42,16 @@ export function DailyTasks({ tasks, yesterdayLeft }: { tasks: DailyTask[]; yeste
   return (
     <section className="mb-3 rounded-block bg-surface p-5">
       <p className="mb-2 text-[13px] font-semibold uppercase tracking-[.06em] text-muted">Bài mới hôm nay</p>
+
+      {roadmap && (
+        <Link href={roadmap.href} className="mb-3 flex items-center justify-between gap-3 rounded-[16px] bg-pastel-sky p-3">
+          <span className="text-[14px]">
+            <span className="block text-[12px] font-semibold opacity-70">Lộ trình</span>
+            <span className="font-semibold">{roadmap.label}</span>
+          </span>
+          <span className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-[13px] font-semibold text-on-primary">{roadmap.action}</span>
+        </Link>
+      )}
 
       {yesterdayLeft.length > 0 && (
         <div className="mb-3 rounded-[16px] bg-bg p-3 text-[14px]">

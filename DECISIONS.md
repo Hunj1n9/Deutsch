@@ -43,3 +43,7 @@
 - 2026-10-24 · Báo cáo tuần là báo cáo của tuần hiện tại (thứ Hai → Chủ nhật, gợi ý tạo vào Chủ nhật); tạo lại trong tuần thì ghi đè. Bảng `weekly_reports` chỉ có `summary_vi`, nên 3 điều chỉnh lưu trong `stats.adjustments`.
 - 2026-10-24 · Nhập dữ liệu qua hàm SQL `import_backup` (một giao dịch, giữ nguyên id, thay user_id bằng người đang đăng nhập); chỉ chạy khi tài khoản chưa có dữ liệu học. Dòng `settings` mặc định được thay bằng dòng trong file. File gửi qua route `/api/backup` (Vercel giới hạn thân request 4,5 MB).
 - 2026-10-24 · Xóa nguồn không xóa mục: khóa ngoại `on delete set null`, nếu là nguồn đang học thì bỏ chọn trong settings trước.
+- 2026-10-24 · F10 (người dùng yêu cầu, đã duyệt): lộ trình A1 → B2 và gói từ tự soạn. Chủ đề chặng theo khung CEFR, không theo cấu trúc giáo trình nào; nội dung không chép danh sách từ của Goethe hay giáo trình.
+- 2026-10-24 · Gói từ lưu dạng văn bản 8 cột ngăn bằng `|` trong `data/packs/<mã chặng>.ts` (gọn, dễ sửa tay); `data/packs/index.ts` sinh bằng `node scripts/gen-packs-index.mjs`. Mỗi câu ví dụ đánh dấu đúng một chỗ trống `{…}`; động từ tách chỉ đánh dấu phần chia.
+- 2026-10-24 · Mở chặng gắn tag `pack:<mã>` cho mục; mục đã có thì chỉ gắn tag (hàm SQL `add_item_tag`). Tiến độ chặng tính bằng hàm SQL `roadmap_progress` từ thẻ có tag; chặng coi là thuộc khi 80% thẻ đã lên trạng thái Review. Không thêm bảng.
+- 2026-10-24 · Mục của gói thuộc nguồn "Lộ trình <cấp>" (tạo tự động) để lọc được ở `/items`.

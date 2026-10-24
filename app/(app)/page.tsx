@@ -4,7 +4,11 @@ import { DailyTasks, type DailyTask } from '@/components/home/DailyTasks';
 import { Icon } from '@/components/Icon';
 import { PageHeader } from '@/components/PageHeader';
 import { dailyWritingPrompt } from '@/lib/ai/writing-prompt';
+import { PACKS } from '@/data/packs';
+import { STAGES } from '@/data/roadmap';
 import { loadProgress } from '@/lib/progress';
+import { roadmapPosition, stagePercent } from '@/lib/roadmap';
+import { loadRoadmapProgress } from '@/lib/roadmap-db';
 import { loadReviewCounts } from '@/lib/review/load';
 import { daysUntil } from '@/lib/stats';
 import { loadSettings, type UserSettings } from '@/lib/supabase/queries';
@@ -86,7 +90,18 @@ async function TasksBlock({ session }: { session: Session }) {
   const todays = rows.filter((r) => r.task_date === today);
   const titles = new Set(todays.map((r) => r.title));
   const yesterdayLeft = rows.filter((r) => r.task_date !== today && !r.done && !titles.has(r.title)).map((r) => r.title);
-  return <DailyTasks tasks={todays} yesterdayLeft={yesterdayLeft} />;
+
+  const progress = await loadRoadmapProgress(session);
+  const { current } = roadmapPosition(STAGES.filter((s) => PACKS[s.id]), progress);
+  const p = current ? progress.get(current.id) : undefined;
+  const roadmap = current
+    ? {
+        label: `${current.level} · ${current.title_vi}${p?.opened ? ` · thuộc ${Math.round(stagePercent(p) * 100)}%` : ''}`,
+        href: `/roadmap#${current.id}`,
+        action: p?.opened ? 'Xem' : 'Mở chặng',
+      }
+    : null;
+  return <DailyTasks tasks={todays} yesterdayLeft={yesterdayLeft} roadmap={roadmap} />;
 }
 
 async function WritingBlock({ session, settings }: { session: Session; settings: UserSettings }) {

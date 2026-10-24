@@ -5,7 +5,7 @@
 ## 1. Bối cảnh và mục tiêu
 
 - **Người dùng:** đúng một người (chủ dự án), người Việt, bắt đầu từ số 0, mục tiêu TestDaF đạt 4 điểm cả 4 phần (TDN 4×4, mức C1) để học thạc sĩ dạy bằng tiếng Đức. Mốc trung gian: thi Goethe B2 sau khoảng 11 tháng.
-- **Cách học:** giáo trình (Netzwerk neu A1–B1) + khóa eDeutsch / bài Deutsch.vn cho phần giảng. App này **không dạy bài mới**. App làm những việc các nguồn kia làm chưa tốt:
+- **Cách học:** giáo trình (Netzwerk neu A1–B1) + khóa eDeutsch / bài Deutsch.vn cho phần giảng. App này **không giảng bài mới** (phần giảng vẫn ở giáo trình và khóa học), nhưng có **lộ trình A1 → B2 kèm gói từ tự viết** (F10, thêm 2026-10-24 theo yêu cầu người dùng) để luôn biết học gì tiếp và có sẵn nội dung ôn. App làm những việc các nguồn kia làm chưa tốt:
   1. Gom mọi từ, mẫu câu, điểm ngữ pháp và **lỗi** từ mọi nguồn về một chỗ.
   2. Ôn bằng **gợi nhớ chủ động** (gõ ra đáp án, không lật thẻ) với **lịch giãn cách thích ứng (FSRS)**.
   3. **Sổ lỗi cá nhân:** lỗi lặp lại được gom nhóm và ôn đến khi hết mắc.
@@ -26,6 +26,7 @@
 - F7 Trang "Hôm nay"
 - F8 Nhật ký học, kế hoạch, dự báo, báo cáo tuần
 - F9 Xuất / nhập dữ liệu (sao lưu JSON)
+- F10 Lộ trình A1 → B2 và gói từ tự viết (thêm 2026-10-24)
 
 ### Ngoài phạm vi (KHÔNG làm ở giai đoạn 1)
 - Chấm phát âm đến âm vị (giai đoạn A1–A2, dùng Azure Pronunciation Assessment de-DE)
@@ -409,6 +410,18 @@ TCHT:
 
 TCHT: xuất → xóa sạch → nhập lại → số thẻ, trạng thái FSRS và sổ lỗi khớp 100%.
 
+### F10. Lộ trình và gói từ (thêm 2026-10-24)
+- Lộ trình A1 → B2 chia thành khoảng 50 chặng (A1 12, A2 12, B1 13, B2 13). Mỗi chặng: chủ đề, điểm ngữ pháp chính, số giờ mục tiêu (theo mốc giờ ở F8), một gói từ.
+- **Gói từ tự viết** (không chép danh sách từ của Goethe hay giáo trình): khoảng 650 mục mới ở A1, 650 ở A2, 1.100 ở B1, 1.300 ở B2, cộng mục ngữ pháp dạng điền chỗ trống. Mỗi mục có mạo từ và số nhiều (danh từ), nghĩa tiếng Việt, câu ví dụ đúng cấp có đánh dấu chỗ trống `{…}` và bản dịch, ghi chú ngữ pháp (động từ: Präsens ngôi 3 và Perfekt).
+- **Mở chặng** = nhập gói vào kho (F2 `save_items`), gắn tag `pack:<mã chặng>`, nguồn "Lộ trình <cấp>". Mục đã có thì không thêm lại, chỉ gắn tag. Thẻ mới vẫn theo `new_cards_per_day` (F3).
+- **Màn `/roadmap`:** các chặng theo cấp, % đã thuộc mỗi chặng (thẻ ở trạng thái Review / tổng thẻ của gói), chặng hiện tại, nút mở chặng kế. Khối "Bài mới hôm nay" (F7) gợi ý chặng kế.
+- Không đổi bảng: lộ trình và gói là dữ liệu tĩnh trong code; tiến độ tính từ thẻ có tag gói.
+
+TCHT:
+- Test tự động trên toàn bộ gói: 100% mục qua `validateDraft`; không trùng trong và giữa các gói; mỗi mục từ/cụm có đủ 3 thẻ (vi_de, audio_de, cloze); động từ có ghi chú dạng chia.
+- Mở một chặng dưới 5 giây; mở lại không sinh mục hay thẻ trùng.
+- `/roadmap` hiện đúng chặng hiện tại và % đã thuộc ở 375px.
+
 ## 6. AI: prompt và schema
 
 Quy định chung:
@@ -479,6 +492,7 @@ Chỉ tính đúng khi `correct` và `fixes_target_error` đều là `true`.
 | `/tutor` | Gia sư (F6) |
 | `/progress` | Tiến độ, dự báo, báo cáo tuần (F8) |
 | `/settings` | Cài đặt, nguồn, sao lưu (F8, F9) |
+| `/roadmap` | Lộ trình A1 → B2, mở chặng, tiến độ chặng (F10) |
 
 Điều hướng: thanh dưới trên điện thoại gồm 5 mục: Hôm nay · Ôn · Thêm · Viết · Gia sư. Các trang còn lại vào từ menu.
 
@@ -507,6 +521,10 @@ Làm tuần tự, mỗi mốc kết thúc bằng: test xanh, chạy thử trên 
 | M4 | F5 + F4 (gom lỗi, thẻ error_fix, P4, quy tắc đóng lỗi + test) | 4–5 ngày |
 | M5 | F6 gia sư (stream, ngữ cảnh, lưu thẻ, lưu lỗi) | 2 ngày |
 | M6 | F7 hoàn chỉnh + F8 (heartbeat, tiến độ, dự báo + test, báo cáo tuần) + F9 | 3–4 ngày |
+| M7 | F10 khung lộ trình (dữ liệu, mở chặng, `/roadmap`, gợi ý ở Hôm nay) + gói A1 | thêm 2026-10-24 |
+| M8 | Gói A2 | |
+| M9 | Gói B1 | |
+| M10 | Gói B2 | |
 
 **Điểm dừng để bắt đầu học thật:** sau M3 là đủ để dùng hằng ngày. Từ đó, việc build làm song song nhưng không quá 20% thời gian học mỗi tuần.
 
