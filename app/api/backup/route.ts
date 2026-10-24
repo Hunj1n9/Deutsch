@@ -20,6 +20,7 @@ const BACKUP_TABLES = [
   'lesson_progress',
   'stage_tests',
   'content_reports',
+  'level_tests',
 ] as const;
 
 /** Khóa sắp xếp ổn định để phân trang không sót dòng. */
@@ -40,6 +41,7 @@ const ORDER: Record<(typeof BACKUP_TABLES)[number], string> = {
   lesson_progress: 'lesson_id',
   stage_tests: 'id',
   content_reports: 'id',
+  level_tests: 'id',
 };
 
 /** "Xuất dữ liệu" (SPEC F9): một file JSON chứa toàn bộ bảng của người dùng (RLS chỉ trả dòng của họ). */

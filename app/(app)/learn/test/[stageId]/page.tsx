@@ -7,7 +7,7 @@ import { Icon } from '@/components/Icon';
 import { StageTest } from '@/components/learn/StageTest';
 import { LESSONS_BY_STAGE, STAGE_LESSONS } from '@/data/lessons';
 import { roadmapStage, vocabEntries } from '@/lib/course/catalog';
-import { drawStageTest, randomSeed, testView } from '@/lib/course/stage-test';
+import { drawStageTest, PASS_RATIO, randomSeed, testView } from '@/lib/course/stage-test';
 import { getPageSession } from '@/lib/supabase/session';
 
 export const metadata: Metadata = { title: 'Kiểm tra chặng' };
@@ -49,9 +49,13 @@ async function TestContent({ params }: { params: PageProps<'/learn/test/[stageId
       </header>
       <StageTest
         key={seed}
-        stageId={stageId}
+        mode={{ kind: 'stage', stageId }}
+        title="Kiểm tra chặng"
+        passRatio={PASS_RATIO}
         questions={questions}
-        reading={{ title_de: stage.test.reading.title_de, text_de: stage.test.reading.text_de, gloss: stage.test.reading.gloss }}
+        readings={{
+          [stageId]: { title_de: stage.test.reading.title_de, text_de: stage.test.reading.text_de, gloss: stage.test.reading.gloss },
+        }}
         points={stage.points.map((p) => ({
           key: p.key,
           title_vi: p.title_vi,
