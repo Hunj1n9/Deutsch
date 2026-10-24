@@ -32,7 +32,7 @@ export default defineStage({
       goal_vi: 'Mô tả và đánh giá một tác phẩm nghệ thuật; dùng danh từ hóa động từ và tính từ.',
       items: [
         'Kunst', 'Künstler', 'Gemälde', 'Maler', 'Skulptur', 'Galerie', 'Kunstwerk', 'Fotografie', 'Kritik', 'Geschmackssache',
-        'ausstellen', 'darstellen', 'beschreiben', 'zeichnen', 'bewerten', 'künstlerisch', 'abstrakt', 'originell', 'lebendig',
+        'ausstellen', 'darstellen', 'zeichnen', 'bewerten', 'künstlerisch', 'abstrakt', 'originell', 'lebendig',
         'sehenswert', 'Geschmäcker sind verschieden', 'einen Blick werfen', 'Danh từ hóa: tính từ thành danh từ',
         'Câu so sánh: je … umso',
       ],

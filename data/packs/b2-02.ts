@@ -29,7 +29,6 @@ v|delegieren|||giao việc|Eine gute Chefin {delegiert} Aufgaben.|Một bà sế
 v|sich spezialisieren|||chuyên sâu|Er hat {sich} auf Steuerrecht spezialisiert.|Anh ấy chuyên sâu về luật thuế.|er spezialisiert sich, hat sich spezialisiert; auf + Akk
 v|bewältigen|||vượt qua, xử lý xong|Wie {bewältigst} du den Stress?|Bạn vượt qua căng thẳng thế nào?|er bewältigt, hat bewältigt
 v|einhalten|||tuân thủ|Wir müssen die Frist {einhalten}.|Chúng ta phải tuân thủ thời hạn.|Động từ tách: du hältst ein, er hält ein, hielt ein, hat eingehalten
-v|verschieben|||dời lại|Die Besprechung wird {verschoben}.|Cuộc họp bị dời lại.|er verschiebt, verschob, hat verschoben
 v|absprechen|||thỏa thuận trước|Das müssen wir mit dem Team {absprechen}.|Việc này phải thỏa thuận với nhóm.|Động từ tách: du sprichst ab, er spricht ab, hat abgesprochen
 v|leisten|||thực hiện, làm được|Sie {leistet} hervorragende Arbeit.|Cô ấy làm việc xuất sắc.|er leistet, hat geleistet
 v|ausbilden|||đào tạo|Die Firma {bildet} jedes Jahr zehn Lehrlinge aus.|Công ty đào tạo mười học viên mỗi năm.|Động từ tách: er bildet aus, hat ausgebildet
@@ -80,7 +79,6 @@ v|umsetzen|||thực hiện, triển khai|Die Ideen werden schnell {umgesetzt}.|C
 v|sich bewähren|||chứng tỏ năng lực|Er hat sich in der Probezeit {bewährt}.|Anh ấy đã chứng tỏ mình trong thời gian thử việc.|er bewährt sich, hat sich bewährt
 v|einarbeiten|||hướng dẫn người mới|Eine Kollegin {arbeitet} mich ein.|Một đồng nghiệp hướng dẫn tôi làm quen công việc.|Động từ tách: er arbeitet ein, hat eingearbeitet
 v|abmahnen|||cảnh cáo (lao động)|Der Mitarbeiter wurde {abgemahnt}.|Nhân viên bị cảnh cáo.|Động từ tách: er mahnt ab, hat abgemahnt
-v|vereinbaren|||thỏa thuận|Wir haben ein Gehalt {vereinbart}.|Chúng tôi đã thỏa thuận mức lương.|er vereinbart, hat vereinbart
 v|überstehen|||vượt qua|Die Firma hat die Krise gut {überstanden}.|Công ty đã vượt qua khủng hoảng tốt.|er übersteht, überstand, hat überstanden
 v|sich abgrenzen|||giữ ranh giới|Man muss sich von der Arbeit {abgrenzen}.|Phải biết giữ ranh giới với công việc.|Động từ tách: er grenzt sich ab, hat sich abgegrenzt
 v|vorankommen|||tiến triển|Mit dem Projekt {kommen} wir gut voran.|Dự án của chúng tôi tiến triển tốt.|Động từ tách: er kommt voran, kam voran, ist vorangekommen

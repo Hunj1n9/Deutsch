@@ -53,5 +53,13 @@ p|am Wochenende|||vào cuối tuần|{Am Wochenende} schlafe ich aus.|Cuối tu�
 g|Động từ tách: tiền tố về cuối câu|||động từ tách trong câu|Ich {stehe} um sieben auf.|Tôi dậy lúc bảy giờ.|Phần chia ở vị trí 2, tiền tố (auf, an, ein…) đứng cuối câu.
 g|Khung câu (Satzklammer)|||động từ chia ở vị trí 2, phần còn lại cuối câu|Ich rufe dich morgen {an}.|Ngày mai tôi gọi cho bạn.|Áp dụng cho động từ tách, động từ khuyết thiếu, Perfekt.
 g|Đảo ngữ: trạng từ đứng đầu|||động từ vẫn ở vị trí 2|Am Morgen {trinke} ich Kaffee.|Buổi sáng tôi uống cà phê.|Thành phần nào đứng đầu, động từ vẫn đứng thứ hai, chủ ngữ ra sau động từ.
+v|baden|||tắm (bồn)|Am Abend {bade} ich gern.|Buổi tối tôi thích tắm bồn.|er badet, hat gebadet
+n|Telefon|das|-e|điện thoại|Das {Telefon} klingelt.|Điện thoại reo.|
+n|Kugelschreiber|der|-|bút bi|Hast du einen {Kugelschreiber}?|Bạn có bút bi không?|
+n|Bleistift|der|-e|bút chì|Ich schreibe mit dem {Bleistift}.|Tôi viết bằng bút chì.|
+v|holen|||đi lấy, đón|Ich {hole} schnell einen Kaffee.|Tôi đi lấy nhanh một ly cà phê.|er holt, hat geholt
+v|bringen|||mang đến|Kannst du mir das Buch {bringen}?|Bạn mang quyển sách đến cho tôi được không?|er bringt, hat gebracht
+n|Vorwahl|die|-en|mã vùng (điện thoại)|Die {Vorwahl} von Deutschland ist 0049.|Mã vùng của Đức là 0049.|
+p|auf Wiederhören|||chào (khi kết thúc cuộc gọi)|Danke, {auf Wiederhören}!|Cảm ơn, chào anh/chị!|Chỉ dùng khi nói điện thoại.
 `;
 export default pack;

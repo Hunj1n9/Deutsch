@@ -117,6 +117,7 @@ export default defineStage({
         'Tisch', 'Stuhl', 'Bett', 'Schrank', 'Sofa', 'Lampe', 'Regal', 'Teppich', 'Bild', 'Kühlschrank', 'Herd',
         'Waschmaschine', 'Dusche', 'Möbel', 'kaputt', 'bequem', 'brauchen', 'es gibt',
         'ein / eine: mạo từ không xác định', 'kein / keine: phủ định danh từ',
+        'stehen', 'sitzen', 'breit',
       ],
       grammar: {
         point: 'ein-kein',
@@ -197,6 +198,7 @@ export default defineStage({
       items: [
         'Miete', 'Quadratmeter', 'Nachbar', 'teuer', 'billig', 'günstig', 'frei', 'suchen', 'finden', 'kosten', 'mieten',
         'Số nhiều danh từ',
+        'vermieten', 'Licht', 'leise', 'in Ordnung',
       ],
       grammar: {
         point: 'plural',

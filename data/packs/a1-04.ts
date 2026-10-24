@@ -55,5 +55,12 @@ g|der, die, das: mạo từ xác định|||ba giống của danh từ|{Das} Zimm
 g|ein / eine: mạo từ không xác định|||một (cái gì đó)|Das ist {eine} Lampe.|Đây là một cái đèn.|der/das → ein; die → eine; số nhiều không có mạo từ không xác định.
 g|kein / keine: phủ định danh từ|||không có, không phải|Das ist {kein} Stuhl, das ist ein Sofa.|Đây không phải ghế, đây là sô-pha.|Phủ định danh từ đi với ein hoặc không mạo từ: kein/keine.
 g|Số nhiều danh từ|||các đuôi số nhiều thường gặp|Die {Zimmer} sind hell.|Các căn phòng sáng sủa.|Đuôi: -e, ¨-e, -er, ¨-er, -n, -en, -s, hoặc không đổi. Học kèm mỗi danh từ.
+v|stehen|||đứng; được đặt (đứng)|Die Lampe {steht} neben dem Bett.|Cây đèn đặt cạnh giường.|er steht, hat gestanden; wo? + Dativ
+v|sitzen|||ngồi|Wir {sitzen} im Garten.|Chúng tôi ngồi trong vườn.|er sitzt, hat gesessen
+adj|breit|||rộng|Das Bett ist zwei Meter {breit}.|Cái giường rộng hai mét.|
+v|vermieten|||cho thuê|Wir {vermieten} eine Wohnung.|Chúng tôi cho thuê một căn hộ.|er vermietet, hat vermietet
+n|Licht|das|-er|ánh sáng, đèn|Mach bitte das {Licht} an.|Làm ơn bật đèn lên.|
+adj|leise|||khẽ, nhỏ tiếng|Bitte sei {leise}, das Baby schläft.|Làm ơn nhỏ tiếng, em bé đang ngủ.|
+p|in Ordnung|||ổn, được|Die Wohnung ist {in Ordnung}.|Căn hộ ổn.|
 `;
 export default pack;

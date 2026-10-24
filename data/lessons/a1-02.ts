@@ -34,6 +34,7 @@ export default defineStage({
         'Familie', 'Mutter', 'Vater', 'Eltern', 'Kind', 'Sohn', 'Tochter', 'Bruder', 'Schwester', 'Geschwister',
         'Großmutter', 'Großvater', 'Großeltern', 'Baby', 'mein', 'dein', 'unser', 'und',
         'mein / meine', 'sein / ihr: sở hữu ngôi thứ ba',
+        'Oma', 'Opa', 'Ehemann', 'Mädchen', 'tot',
       ],
       grammar: {
         point: 'possessiv',
@@ -119,6 +120,7 @@ export default defineStage({
         'haben', 'Mann', 'Ehefrau', 'Partner', 'Freund', 'Freundin', 'Onkel', 'Tante', 'Cousin', 'Hund', 'Katze', 'Foto',
         'verheiratet', 'ledig', 'geschieden', 'sehr', 'nett',
         'haben: ich habe, du hast, er hat',
+        'Mensch', 'die Leute',
       ],
       grammar: {
         point: 'haben',
@@ -204,6 +206,7 @@ export default defineStage({
       items: [
         'leben', 'arbeiten', 'studieren', 'besuchen', 'lieben', 'heiraten', 'Jahr', 'Alter', 'Beruf',
         'alt', 'jung', 'groß', 'klein', 'zusammen', 'Wie alt ...?',
+        'Familienstand', 'Geburtsjahr', 'unterschreiben', 'Unterschrift',
       ],
       grammar: {
         point: 'verb-endung',

@@ -31,8 +31,8 @@ export default defineStage({
       title_vi: 'Ở cơ quan hành chính',
       goal_vi: 'Làm thủ tục ở cơ quan nhà nước; nói hối tiếc và giả định quá khứ bằng Konjunktiv II.',
       items: [
-        'Behörde', 'Amt', 'Antrag', 'Formular', 'Aufenthaltserlaubnis', 'Staatsangehörigkeit', 'Einbürgerung', 'Bürokratie',
-        'Integration', 'Sozialhilfe', 'Kindergeld', 'Gemeinde', 'Bürger', 'Grundrecht', 'Gleichberechtigung', 'ausfüllen',
+        'Behörde', 'Amt', 'Antrag', 'Aufenthaltserlaubnis', 'Staatsangehörigkeit', 'Einbürgerung', 'Bürokratie',
+        'Integration', 'Sozialhilfe', 'Kindergeld', 'Gemeinde', 'Bürger', 'Grundrecht', 'Gleichberechtigung',
         'verlängern', 'gelten', 'staatlich', 'gleichberechtigt', 'bürokratisch', 'einen Antrag stellen', 'in Kraft treten',
         'Konjunktiv II quá khứ: hätte/wäre + Partizip II',
       ],
@@ -190,8 +190,8 @@ export default defineStage({
       title_vi: 'Công bằng xã hội',
       goal_vi: 'Thảo luận vấn đề xã hội, đình công, việc tình nguyện; dùng entweder … oder.',
       items: [
-        'Armut', 'Reichtum', 'Ehrenamt', 'Meinung', 'Streik', 'Gewerkschaft', 'Frieden', 'Krieg', 'Demonstration', 'fordern',
-        'streiken', 'diskutieren', 'sich einsetzen', 'protestieren', 'einführen', 'abschaffen', 'sich beteiligen', 'erhöhen',
+        'Armut', 'Reichtum', 'Ehrenamt', 'Streik', 'Gewerkschaft', 'Frieden', 'Krieg', 'Demonstration', 'fordern',
+        'streiken', 'sich einsetzen', 'protestieren', 'einführen', 'abschaffen', 'sich beteiligen', 'erhöhen',
         'senken', 'gerecht', 'ungerecht', 'sozial', 'umstritten', 'ehrenamtlich', 'friedlich', 'entweder … oder',
         'Liên từ hai vế: entweder … oder',
       ],

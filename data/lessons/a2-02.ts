@@ -114,7 +114,7 @@ export default defineStage({
       goal_vi: 'Nói đặt đồ đạc ở đâu và đồ đạc đang ở đâu (legen/liegen, stellen/stehen).',
       items: [
         'Karton', 'Kissen', 'Pflanze', 'Steckdose', 'Spiegel', 'Vorhang', 'einziehen', 'ausziehen', 'legen', 'stellen',
-        'stehen', 'mitnehmen', 'überall', 'praktisch', 'legen / liegen, stellen / stehen',
+        'mitnehmen', 'überall', 'praktisch', 'legen / liegen, stellen / stehen',
       ],
       grammar: {
         point: 'legen-liegen',
@@ -189,8 +189,9 @@ export default defineStage({
       title_vi: 'Nội quy và hàng xóm',
       goal_vi: 'Hiểu nội quy tòa nhà, nói đồ treo/ngồi ở đâu (hängen, setzen/sitzen) và phàn nàn lịch sự.',
       items: [
-        'Hausordnung', 'Müll', 'Mülltonne', 'Hof', 'Schlüssel', 'hängen', 'setzen', 'sitzen', 'stecken', 'reparieren',
+        'Hausordnung', 'Müll', 'Mülltonne', 'Hof', 'Schlüssel', 'hängen', 'setzen', 'stecken', 'reparieren',
         'streichen', 'klingeln', 'sich beschweren', 'sauber', 'schmutzig', 'den Müll trennen',
+        'Ruhe', 'stören', 'erlauben', 'verboten', 'Paket', 'Bescheid sagen',
       ],
       grammar: {
         point: 'haengen',

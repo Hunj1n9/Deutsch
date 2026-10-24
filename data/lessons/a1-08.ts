@@ -34,6 +34,7 @@ export default defineStage({
         'in', 'an', 'auf', 'neben', 'vor', 'hinter', 'zwischen', 'Platz', 'Ecke', 'Bank', 'Post', 'Apotheke', 'Kirche',
         'Café', 'Restaurant', 'Hotel', 'Geschäft', 'Schule', 'Bibliothek', 'liegen',
         'Giới từ nơi chốn + Dativ (wo?)', 'in dem = im, an dem = am',
+        'Eingang', 'Ausgang', 'Toilette', 'Mitte', 'schließen',
       ],
       grammar: {
         point: 'dativ-ort',
@@ -116,6 +117,7 @@ export default defineStage({
       items: [
         'links', 'rechts', 'geradeaus', 'Straße', 'Kreuzung', 'Ampel', 'Brücke', 'Polizei', 'abbiegen', 'zeigen', 'fragen',
         'Entschuldigen Sie', 'Mệnh lệnh cách với Sie', 'Mệnh lệnh cách với du',
+        'drücken', 'Schild', 'Vorsicht', 'Norden', 'Süden', 'Osten', 'Westen',
       ],
       grammar: {
         point: 'imperativ',
@@ -204,6 +206,7 @@ export default defineStage({
       items: [
         'zu', 'bis', 'Bahnhof', 'Haltestelle', 'Krankenhaus', 'Rathaus', 'Zentrum', 'Weg', 'Stadtplan', 'Nähe', 'weit',
         'gegenüber', 'dort', 'da', 'öffnen', 'offen', 'geschlossen', 'nah', 'Wie komme ich zu', 'in der Nähe',
+        'Auskunft', 'Information', 'Brief', 'Briefmarke', 'Absender', 'Empfänger', 'Postleitzahl',
       ],
       grammar: {
         point: 'weg',

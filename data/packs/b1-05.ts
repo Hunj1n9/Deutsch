@@ -1,6 +1,5 @@
 // B1 · 05 Tiền bạc và tiêu dùng. Tự soạn. Định dạng: lib/packs/format.ts
 const pack = String.raw`
-n|Konto|das|Konten|tài khoản (ngân hàng)|Ich möchte ein {Konto} eröffnen.|Tôi muốn mở một tài khoản.|
 n|Girokonto|das|-konten|tài khoản thanh toán|Für das Gehalt brauchen Sie ein {Girokonto}.|Để nhận lương ông/bà cần tài khoản thanh toán.|
 n|Überweisung|die|-en|chuyển khoản|Die {Überweisung} dauert einen Tag.|Chuyển khoản mất một ngày.|
 n|Geldautomat|der|-en|máy rút tiền|Wo ist der nächste {Geldautomat}?|Máy rút tiền gần nhất ở đâu?|n-Deklination.
@@ -41,7 +40,6 @@ v|erstatten|||hoàn trả|Wir {erstatten} Ihnen den Kaufpreis.|Chúng tôi hoàn
 v|versichern|||bảo hiểm; cam đoan|Ist das Auto {versichert}?|Xe có bảo hiểm không?|er versichert, hat versichert
 v|verschwenden|||lãng phí|Wir {verschwenden} zu viel Geld.|Chúng ta lãng phí quá nhiều tiền.|er verschwendet, hat verschwendet
 v|beeinflussen|||ảnh hưởng|Werbung {beeinflusst} Kinder stark.|Quảng cáo ảnh hưởng mạnh đến trẻ em.|er beeinflusst, hat beeinflusst
-v|wählen|||chọn; bầu|Sie können zwischen drei Farben {wählen}.|Ông/bà có thể chọn giữa ba màu.|er wählt, hat gewählt
 v|sich lohnen|||đáng|Es {lohnt} sich, Preise zu vergleichen.|So sánh giá thì đáng.|es lohnt sich, hat sich gelohnt
 v|festlegen|||ấn định|Wir müssen ein Budget {festlegen}.|Chúng ta phải đặt ra ngân sách.|Động từ tách: er legt fest, hat festgelegt
 adj|bar|||bằng tiền mặt|Zahlen Sie {bar} oder mit Karte?|Ông/bà trả tiền mặt hay thẻ?|

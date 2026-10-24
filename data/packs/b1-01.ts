@@ -56,7 +56,6 @@ adj|dankbar|||biết ơn|Ich bin meinen Lehrern sehr {dankbar}.|Tôi rất biế
 adj|erfolgreich|||thành công|Sie ist eine {erfolgreiche} Unternehmerin.|Bà ấy là một nữ doanh nhân thành công.|
 adj|bekannt|||được biết đến, quen biết|Der Autor ist in Vietnam sehr {bekannt}.|Tác giả rất nổi tiếng ở Việt Nam.|
 adv|inzwischen|||trong khi đó; giờ đây|{Inzwischen} lebe ich in München.|Giờ đây tôi sống ở München.|
-adv|später|||sau này|{Später} wollte er Lehrer werden.|Sau này anh ấy muốn làm giáo viên.|
 adv|zunächst|||trước hết, ban đầu|{Zunächst} arbeitete sie als Kellnerin.|Ban đầu cô ấy làm bồi bàn.|
 adv|schließlich|||cuối cùng|{Schließlich} fand er eine Wohnung.|Cuối cùng anh ấy tìm được căn hộ.|
 adv|bereits|||đã (trang trọng)|Sie war {bereits} verheiratet.|Cô ấy đã kết hôn rồi.|

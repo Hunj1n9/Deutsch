@@ -55,5 +55,6 @@ n|Kantine|die|-n|căng tin|Mittags essen wir in der {Kantine}.|Buổi trưa chú
 v|pendeln|||đi làm xa (đi về hằng ngày)|Ich {pendle} jeden Tag nach Köln.|Ngày nào tôi cũng đi làm ở Köln.|er pendelt, ist gependelt
 adj|befristet|||có thời hạn|Der Vertrag ist {befristet}.|Hợp đồng có thời hạn.|
 p|Überstunden machen|||làm thêm giờ|Diese Woche muss ich {Überstunden machen}.|Tuần này tôi phải làm thêm giờ.|
+n|Vertrag|der|¨-e|hợp đồng|Ich unterschreibe den {Vertrag}.|Tôi ký hợp đồng.|
 `;
 export default pack;

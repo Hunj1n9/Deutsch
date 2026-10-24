@@ -31,7 +31,7 @@ export default defineStage({
       title_vi: 'Ở ngân hàng',
       goal_vi: 'Mở tài khoản, chuyển khoản, rút tiền; mô tả quy trình bằng câu bị động.',
       items: [
-        'Konto', 'Girokonto', 'Überweisung', 'Geldautomat', 'Geheimzahl', 'Gebühr', 'Zins', 'Kredit', 'Schulden', 'Kontoauszug',
+        'Girokonto', 'Überweisung', 'Geldautomat', 'Geheimzahl', 'Gebühr', 'Zins', 'Kredit', 'Schulden', 'Kontoauszug',
         'Lastschrift', 'Dauerauftrag', 'Steuer', 'Versicherung', 'Münze', 'Schein', 'überweisen', 'abheben', 'einzahlen',
         'abbuchen', 'versichern', 'festlegen', 'monatlich', 'kostenpflichtig', 'bar', 'Bị động Präsens: werden + Partizip II',
         'man thay cho bị động',
@@ -112,7 +112,7 @@ export default defineStage({
       items: [
         'Konsum', 'Verbraucher', 'Ware', 'Lieferung', 'Bestellung', 'Reklamation', 'Garantie', 'Quittung', 'Kassenzettel',
         'Umtausch', 'Verbraucherzentrale', 'Händler', 'Online-Shop', 'Werbeprospekt', 'Schnäppchen', 'Kaufentscheidung',
-        'liefern', 'reklamieren', 'erstatten', 'wählen', 'feilschen', 'beeinflussen', 'insgesamt', 'im Sonderangebot',
+        'liefern', 'reklamieren', 'erstatten', 'feilschen', 'beeinflussen', 'insgesamt', 'im Sonderangebot',
         'Bị động với động từ khuyết thiếu',
       ],
       grammar: {

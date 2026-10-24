@@ -56,5 +56,24 @@ g|Giới từ nơi chốn + Dativ (wo?)|||vị trí: in, an, auf, neben, vor, hi
 g|in dem = im, an dem = am|||viết rút gọn|Wir treffen uns {im} Café.|Chúng ta gặp nhau ở quán cà phê.|in + dem = im; an + dem = am; zu + dem = zum; zu + der = zur.
 g|Mệnh lệnh cách với Sie|||chỉ dẫn lịch sự|{Gehen} Sie geradeaus.|Ông/bà đi thẳng.|Động từ nguyên mẫu đứng đầu + Sie.
 g|Mệnh lệnh cách với du|||yêu cầu thân mật|{Komm} bitte mit!|Đi cùng nhé!|du kommst → Komm!; động từ tách: Ruf mich an!
+n|Eingang|der|¨-e|lối vào|Wo ist der {Eingang}?|Lối vào ở đâu?|
+n|Ausgang|der|¨-e|lối ra|Der {Ausgang} ist links.|Lối ra ở bên trái.|
+n|Toilette|die|-n|nhà vệ sinh|Entschuldigung, wo ist die {Toilette}?|Xin lỗi, nhà vệ sinh ở đâu?|
+n|Mitte|die||chính giữa|Der Tisch steht in der {Mitte}.|Cái bàn đặt ở giữa.|
+v|schließen|||đóng (cửa)|Die Apotheke {schließt} um 18 Uhr.|Hiệu thuốc đóng cửa lúc 18 giờ.|er schließt, hat geschlossen
+v|drücken|||ấn, đẩy|Hier müssen Sie {drücken}, nicht ziehen.|Ở đây phải đẩy, không phải kéo.|er drückt, hat gedrückt
+n|Schild|das|-er|biển báo|Was steht auf dem {Schild}?|Trên biển báo ghi gì?|
+n|Vorsicht|die||sự cẩn thận|{Vorsicht}, die Straße ist nass!|Cẩn thận, đường ướt!|
+n|Norden|der||phía bắc|Hamburg liegt im {Norden}.|Hamburg nằm ở phía bắc.|
+n|Süden|der||phía nam|München liegt im {Süden}.|München nằm ở phía nam.|
+n|Osten|der||phía đông|Dresden liegt im {Osten}.|Dresden nằm ở phía đông.|
+n|Westen|der||phía tây|Köln liegt im {Westen}.|Köln nằm ở phía tây.|
+n|Auskunft|die|¨-e|quầy hỏi đáp, thông tin|Fragen Sie bitte an der {Auskunft}.|Xin hỏi ở quầy thông tin.|
+n|Information|die|-en|thông tin|Wo bekomme ich {Informationen} über die Stadt?|Tôi lấy thông tin về thành phố ở đâu?|
+n|Brief|der|-e|lá thư|Ich schreibe einen {Brief}.|Tôi viết một lá thư.|
+n|Briefmarke|die|-n|tem thư|Ich brauche eine {Briefmarke}.|Tôi cần một con tem.|
+n|Absender|der|-|người gửi|Der {Absender} steht oben links.|Người gửi ghi ở góc trên bên trái.|
+n|Empfänger|der|-|người nhận|Wer ist der {Empfänger}?|Người nhận là ai?|
+n|Postleitzahl|die|-en|mã bưu chính|Die {Postleitzahl} von Berlin-Mitte ist 10115.|Mã bưu chính của Berlin-Mitte là 10115.|
 `;
 export default pack;

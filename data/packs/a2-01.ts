@@ -23,12 +23,9 @@ v|umziehen|||chuyển nhà|Wir sind 2015 nach Hanoi {umgezogen}.|Năm 2015 chún
 v|sterben|||chết, qua đời|Mein Opa ist letztes Jahr {gestorben}.|Ông tôi mất năm ngoái.|du stirbst, er stirbt, ist gestorben
 v|geboren werden|||được sinh ra|Ich bin 2001 {geboren}.|Tôi sinh năm 2001.|Ich bin … geboren (thường dùng sein + geboren).
 v|verlieren|||đánh mất; thua|Ich habe mein Handy {verloren}.|Tôi đánh mất điện thoại.|er verliert, hat verloren
-v|bekommen|||nhận được|Ich habe ein Geschenk {bekommen}.|Tôi đã nhận được một món quà.|er bekommt, hat bekommen (không phải "trở thành")
-v|bringen|||mang đến|Er hat Blumen {gebracht}.|Anh ấy mang hoa đến.|er bringt, hat gebracht
 v|denken|||nghĩ|Ich {denke} oft an meine Kindheit.|Tôi hay nghĩ về thời thơ ấu.|er denkt, hat gedacht; denken an + Akk
 v|laufen|||chạy; đi bộ|Das Kind ist schnell {gelaufen}.|Đứa trẻ chạy nhanh.|du läufst, er läuft, ist gelaufen
 v|fallen|||ngã, rơi|Ich bin vom Fahrrad {gefallen}.|Tôi bị ngã xe đạp.|du fällst, er fällt, ist gefallen
-v|sehen|||nhìn thấy|Hast du den Film {gesehen}?|Bạn đã xem bộ phim chưa?|du siehst, er sieht, hat gesehen
 v|rennen|||chạy (nhanh)|Wir sind zum Bus {gerannt}.|Chúng tôi chạy ra xe buýt.|er rennt, ist gerannt
 v|feiern|||ăn mừng, tổ chức|Wir haben bis Mitternacht {gefeiert}.|Chúng tôi tiệc tùng đến nửa đêm.|er feiert, hat gefeiert
 v|kennenlernen|||làm quen|Wo habt ihr euch {kennengelernt}?|Các bạn quen nhau ở đâu?|Động từ tách: er lernt kennen, hat kennengelernt

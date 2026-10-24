@@ -14,7 +14,6 @@ n|Muttersprache|die|-n|tiếng mẹ đẻ|Meine {Muttersprache} ist Vietnamesisc
 n|Zweisprachigkeit|die||song ngữ|{Zweisprachigkeit} ist ein Vorteil.|Biết hai thứ tiếng là một lợi thế.|
 n|Vielfalt|die||sự đa dạng|Die kulturelle {Vielfalt} bereichert die Stadt.|Sự đa dạng văn hóa làm phong phú thành phố.|
 n|Gemeinsamkeit|die|-en|điểm chung|Wir haben viele {Gemeinsamkeiten}.|Chúng tôi có nhiều điểm chung.|
-n|Unterschied|der|-e|sự khác biệt|Der {Unterschied} ist kaum zu sehen.|Sự khác biệt hầu như không thấy được.|
 n|Diskriminierung|die|-en|sự phân biệt đối xử|{Diskriminierung} ist verboten.|Phân biệt đối xử bị cấm.|
 n|Rassismus|der||chủ nghĩa phân biệt chủng tộc|Wir müssen gegen {Rassismus} kämpfen.|Chúng ta phải chống phân biệt chủng tộc.|
 n|Chancengleichheit|die||bình đẳng cơ hội|{Chancengleichheit} ist ein wichtiges Ziel.|Bình đẳng cơ hội là mục tiêu quan trọng.|

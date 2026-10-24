@@ -124,6 +124,7 @@ export default defineStage({
         'Arzt', 'Praxis', 'Medikament', 'Tablette', 'Fieber', 'Erkältung', 'Husten', 'Schnupfen', 'Rezept',
         'Versichertenkarte', 'Krankmeldung', 'müssen', 'dürfen', 'sollen', 'rauchen', 'täglich', 'seit', 'Was fehlt Ihnen?',
         'müssen / dürfen / sollen', 'nicht dürfen = không được phép',
+        'Hilfe',
       ],
       grammar: {
         point: 'modal-pflicht',

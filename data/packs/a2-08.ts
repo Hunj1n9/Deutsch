@@ -57,5 +57,6 @@ n|Altstadt|die|¨-e|phố cổ|Die {Altstadt} von Hoi An ist bekannt.|Phố cổ
 n|Wanderung|die|-en|chuyến đi bộ đường dài|Die {Wanderung} dauert vier Stunden.|Chuyến đi bộ kéo dài bốn tiếng.|
 adj|preisgünstig|||giá rẻ|Wir suchen ein {preisgünstiges} Hotel.|Chúng tôi tìm khách sạn giá rẻ.|
 p|eine Reise machen|||đi du lịch|Nächstes Jahr {machen} wir eine Reise nach Europa.|Năm sau chúng tôi đi du lịch châu Âu.|
+adj|sicher|||an toàn; chắc chắn|Ist das Land {sicher}?|Nước đó có an toàn không?|
 `;
 export default pack;

@@ -6,7 +6,6 @@ n|Zusammenleben|das||cuộc sống chung|Das {Zusammenleben} braucht Regeln.|S�
 n|Regel|die|-n|quy tắc|In unserer WG gibt es klare {Regeln}.|Trong căn hộ chung của chúng tôi có quy tắc rõ ràng.|
 n|Putzplan|der|¨-e|lịch dọn dẹp|Laut {Putzplan} bist du diese Woche dran.|Theo lịch dọn dẹp tuần này đến lượt bạn.|
 n|Lärm|der||tiếng ồn|Der {Lärm} von der Baustelle stört mich.|Tiếng ồn từ công trường làm phiền tôi.|
-n|Ruhe|die||sự yên tĩnh|Ab 22 Uhr ist {Ruhe}.|Từ 22 giờ phải giữ yên tĩnh.|
 n|Rücksicht|die||sự quan tâm, ý tứ|Bitte nehmen Sie {Rücksicht} auf die Nachbarn.|Xin hãy ý tứ với hàng xóm.|Rücksicht nehmen auf + Akk.
 n|Konflikt|der|-e|xung đột|Wir lösen den {Konflikt} durch ein Gespräch.|Chúng tôi giải quyết xung đột bằng một cuộc nói chuyện.|
 n|Kompromiss|der|-e|sự thỏa hiệp|Wir haben einen {Kompromiss} gefunden.|Chúng tôi đã tìm ra một thỏa hiệp.|
@@ -33,7 +32,6 @@ v|ausmachen|||thỏa thuận; làm phiền; tắt|{Macht} es dir etwas aus, wenn
 v|sich gewöhnen|||quen với|Ich habe {mich} an den Lärm gewöhnt.|Tôi đã quen với tiếng ồn.|er gewöhnt sich, hat sich gewöhnt; an + Akk
 v|akzeptieren|||chấp nhận|Ich {akzeptiere} deine Meinung.|Tôi chấp nhận ý kiến của bạn.|er akzeptiert, hat akzeptiert
 v|respektieren|||tôn trọng|Wir {respektieren} uns gegenseitig.|Chúng tôi tôn trọng lẫn nhau.|er respektiert, hat respektiert
-v|erlauben|||cho phép|Der Vermieter {erlaubt} keine Haustiere.|Chủ nhà không cho nuôi thú cưng.|er erlaubt, hat erlaubt
 v|verbieten|||cấm|Rauchen ist hier {verboten}.|Ở đây cấm hút thuốc.|er verbietet, verbot, hat verboten
 v|ärgern|||chọc tức|Mein Bruder {ärgert} mich immer.|Anh tôi lúc nào cũng chọc tức tôi.|er ärgert, hat geärgert
 v|sich aufregen|||nổi nóng, bực bội|Reg {dich} nicht so auf!|Đừng nổi nóng như vậy!|Động từ tách: er regt sich auf, hat sich aufgeregt; über + Akk
@@ -51,8 +49,6 @@ adj|hilfsbereit|||sẵn lòng giúp đỡ|Die Nachbarin ist sehr {hilfsbereit}.|
 adj|gegenseitig|||lẫn nhau|Wir brauchen {gegenseitiges} Vertrauen.|Chúng ta cần tin tưởng lẫn nhau.|
 adj|gemeinsam|||chung, cùng nhau|Wir kochen oft {gemeinsam}.|Chúng tôi thường nấu ăn cùng nhau.|
 adj|erlaubt|||được phép|Grillen ist im Hof nicht {erlaubt}.|Không được nướng thịt ở sân.|
-adj|verboten|||bị cấm|Parken ist hier {verboten}.|Đỗ xe ở đây bị cấm.|
-adj|leise|||khẽ, nhỏ tiếng|Bitte sei {leise}, das Baby schläft.|Làm ơn nhỏ tiếng, em bé đang ngủ.|
 adj|egoistisch|||ích kỷ|Das finde ich sehr {egoistisch}.|Tôi thấy như vậy rất ích kỷ.|
 adj|unterschiedlich|||khác nhau|Wir haben {unterschiedliche} Gewohnheiten.|Chúng tôi có những thói quen khác nhau.|
 adv|abwechselnd|||lần lượt, luân phiên|Wir putzen {abwechselnd}.|Chúng tôi dọn dẹp luân phiên.|
@@ -61,19 +57,16 @@ adv|leider|||tiếc là|Ich kann {leider} nicht kommen.|Tiếc là tôi không �
 p|an der Reihe sein|||đến lượt|Wer ist heute mit Putzen {an der Reihe}?|Hôm nay đến lượt ai dọn dẹp?|Văn nói: Wer ist dran?
 p|Rücksicht nehmen auf|||ý tứ với|Wir {nehmen} Rücksicht auf die Nachbarn.|Chúng tôi ý tứ với hàng xóm.|
 p|einen Streit schlichten|||hòa giải cuộc cãi vã|Der Hausmeister versucht, {einen Streit zu schlichten}.|Người quản lý tòa nhà cố hòa giải cuộc cãi vã.|
-p|Bescheid sagen|||báo cho biết|Sag mir bitte {Bescheid}, wenn du später kommst.|Báo cho tôi biết nếu bạn đến muộn.|jemandem Bescheid sagen/geben.
 p|im Großen und Ganzen|||nhìn chung|{Im Großen und Ganzen} verstehen wir uns gut.|Nhìn chung chúng tôi hợp nhau.|
 g|Mệnh đề quan hệ Nominativ: der, die, das|||đại từ quan hệ làm chủ ngữ|Das ist der Nachbar, {der} immer laut ist.|Đây là người hàng xóm lúc nào cũng ồn.|Đại từ quan hệ theo giống, số của danh từ; cách theo vai trò trong mệnh đề.
 g|Mệnh đề quan hệ Akkusativ: den|||đại từ quan hệ làm tân ngữ|Das ist der Mitbewohner, {den} ich gestern kennengelernt habe.|Đây là bạn cùng nhà mà hôm qua tôi mới quen.|Chỉ giống đực khác Nominativ: der → den.
 g|Mệnh đề quan hệ Dativ: dem, der, denen|||đại từ quan hệ ở Dativ|Die Frau, {der} ich geholfen habe, wohnt oben.|Người phụ nữ mà tôi đã giúp sống ở tầng trên.|Số nhiều: denen. Ví dụ: die Leute, denen ich vertraue.
 g|Mệnh đề quan hệ với giới từ|||giới từ đứng trước đại từ quan hệ|Das ist die WG, in {der} ich wohne.|Đây là căn hộ chung mà tôi đang ở.|Giới từ + đại từ quan hệ theo cách giới từ yêu cầu.
 g|Mệnh đề quan hệ với wo|||thay cho in dem/in der khi nói về nơi chốn|Das ist die Stadt, {wo} ich aufgewachsen bin.|Đây là thành phố nơi tôi lớn lên.|wo dùng với địa điểm; trang trọng hơn: in der.
-v|stören|||làm phiền|{Stört} es dich, wenn ich Musik höre?|Tôi nghe nhạc có làm phiền bạn không?|er stört, hat gestört
 n|Lärmbelästigung|die|-en|sự quấy rầy bằng tiếng ồn|Die Nachbarn beschwerten sich über {Lärmbelästigung}.|Hàng xóm phàn nàn về tiếng ồn.|
 n|Gemeinschaftsküche|die|-n|bếp chung|Die {Gemeinschaftsküche} ist oft unordentlich.|Bếp chung thường bừa bộn.|
 n|Treppenhaus|das|¨-er|cầu thang chung|Im {Treppenhaus} darf man keine Fahrräder abstellen.|Không được để xe đạp ở cầu thang chung.|
 n|Briefkasten|der|¨|hộp thư|Dein Paket liegt im {Briefkasten}.|Bưu kiện của bạn ở trong hộp thư.|
-n|Paket|das|-e|bưu kiện|Kannst du mein {Paket} annehmen?|Bạn nhận giúp bưu kiện của tôi được không?|
 n|Zusammenhalt|der||sự gắn kết|Der {Zusammenhalt} in der Familie ist stark.|Gia đình rất gắn kết.|
 n|Gewohnheitsmensch|der|-en|người sống theo thói quen|Mein Vater ist ein {Gewohnheitsmensch}.|Bố tôi là người sống theo thói quen.|
 v|annehmen|||nhận; giả định|Ich habe dein Paket {angenommen}.|Tôi đã nhận bưu kiện giúp bạn.|Động từ tách: er nimmt an, nahm an, hat angenommen

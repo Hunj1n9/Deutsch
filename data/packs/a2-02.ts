@@ -27,10 +27,8 @@ v|einziehen|||dọn vào ở|Wir {ziehen} nächste Woche ein.|Tuần sau chúng 
 v|ausziehen|||dọn ra; cởi (đồ)|Wann {ziehst} du aus?|Khi nào bạn dọn đi?|Động từ tách: er zieht aus, ist/hat ausgezogen
 v|legen|||đặt (nằm)|Ich {lege} das Buch auf den Tisch.|Tôi đặt cuốn sách lên bàn.|er legt, hat gelegt; wohin? + Akk
 v|stellen|||đặt (đứng)|Wir {stellen} das Sofa an die Wand.|Chúng tôi kê sô-pha sát tường.|er stellt, hat gestellt; wohin? + Akk
-v|stehen|||đứng; được đặt (đứng)|Die Lampe {steht} neben dem Bett.|Cây đèn đặt cạnh giường.|er steht, hat gestanden; wo? + Dativ
 v|hängen|||treo|Ich {hänge} das Bild an die Wand.|Tôi treo bức tranh lên tường.|hängen (treo cái gì) + Akk; hängen (đang treo) + Dativ: hing, gehangen
 v|setzen|||đặt ngồi|Sie {setzt} das Kind auf den Stuhl.|Cô ấy đặt đứa trẻ lên ghế.|er setzt, hat gesetzt; sich setzen = ngồi xuống
-v|sitzen|||ngồi|Wir {sitzen} im Garten.|Chúng tôi ngồi trong vườn.|er sitzt, hat gesessen
 v|stecken|||cắm, nhét|Der Schlüssel {steckt} in der Tür.|Chìa khóa cắm ở cửa.|er steckt, hat gesteckt
 v|reparieren|||sửa chữa|Der Hausmeister {repariert} die Heizung.|Người quản lý tòa nhà sửa lò sưởi.|er repariert, hat repariert
 v|streichen|||sơn|Wir {streichen} die Wände weiß.|Chúng tôi sơn tường màu trắng.|er streicht, hat gestrichen
@@ -52,5 +50,11 @@ g|Giới từ hai cách: wo? → Dativ|||vị trí (đứng yên)|Das Bild häng
 g|Giới từ hai cách: wohin? → Akkusativ|||hướng chuyển động|Ich hänge das Bild an {die} Wand.|Tôi treo bức tranh lên tường.|Cùng giới từ, trả lời wohin? thì dùng Akkusativ.
 g|legen / liegen, stellen / stehen|||động từ chuyển động và vị trí|Ich lege das Handy auf den Tisch. Jetzt {liegt} es auf dem Tisch.|Tôi đặt điện thoại lên bàn. Giờ nó nằm trên bàn.|legen, stellen, setzen, hängen (+ Akk) → liegen, stehen, sitzen, hängen (+ Dativ).
 g|in das = ins, an das = ans|||viết rút gọn ở Akkusativ|Wir gehen {ins} Wohnzimmer.|Chúng tôi vào phòng khách.|in + das = ins; an + das = ans; auf + das = aufs (văn nói).
+n|Ruhe|die||sự yên tĩnh|Ab 22 Uhr ist {Ruhe}.|Từ 22 giờ phải giữ yên tĩnh.|
+v|stören|||làm phiền|{Stört} es dich, wenn ich Musik höre?|Tôi nghe nhạc có làm phiền bạn không?|er stört, hat gestört
+v|erlauben|||cho phép|Der Vermieter {erlaubt} keine Haustiere.|Chủ nhà không cho nuôi thú cưng.|er erlaubt, hat erlaubt
+adj|verboten|||bị cấm|Parken ist hier {verboten}.|Đỗ xe ở đây bị cấm.|
+n|Paket|das|-e|bưu kiện|Kannst du mein {Paket} annehmen?|Bạn nhận giúp bưu kiện của tôi được không?|
+p|Bescheid sagen|||báo cho biết|Sag mir bitte {Bescheid}, wenn du später kommst.|Báo cho tôi biết nếu bạn đến muộn.|jemandem Bescheid sagen/geben.
 `;
 export default pack;

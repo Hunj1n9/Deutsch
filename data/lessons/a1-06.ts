@@ -34,6 +34,7 @@ export default defineStage({
         'aufstehen', 'frühstücken', 'duschen', 'anziehen', 'einkaufen', 'anrufen', 'fernsehen', 'aufräumen', 'anfangen',
         'aufhören', 'abholen', 'mitkommen', 'zurückkommen', 'Wecker', 'Zahn', 'putzen',
         'Động từ tách: tiền tố về cuối câu',
+        'baden',
       ],
       grammar: {
         point: 'trennbar',
@@ -117,6 +118,7 @@ export default defineStage({
         'schlafen', 'gehen', 'machen', 'warten', 'Arbeit', 'Pause', 'Feierabend', 'Hausaufgabe', 'früh', 'spät', 'zuerst',
         'dann', 'danach', 'müde', 'wach', 'fertig', 'pünktlich', 'stressig',
         'Khung câu (Satzklammer)', 'Đảo ngữ: trạng từ đứng đầu',
+        'Telefon', 'Kugelschreiber', 'Bleistift', 'holen', 'bringen', 'Vorwahl', 'auf Wiederhören',
       ],
       grammar: {
         point: 'satzklammer',

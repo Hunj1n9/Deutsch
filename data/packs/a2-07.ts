@@ -51,5 +51,13 @@ g|Câu với wenn|||điều kiện, thời điểm lặp lại|Wenn du Fragen {h
 g|Câu hỏi gián tiếp với ob|||chuyển câu hỏi có/không|Weißt du, ob der Kurs morgen {stattfindet}?|Bạn có biết khóa học ngày mai có diễn ra không?|ob + … + động từ cuối.
 g|Câu hỏi gián tiếp với từ để hỏi|||wann, wo, wie … trong câu phụ|Können Sie mir sagen, wann der Kurs {beginnt}?|Ông/bà cho tôi biết khi nào khóa học bắt đầu?|Từ để hỏi giữ nguyên, động từ chuyển ra cuối.
 g|Động từ tách trong câu phụ|||viết liền ở cuối câu|Ich weiß nicht, wann der Zug {ankommt}.|Tôi không biết khi nào tàu đến.|Trong câu phụ, động từ tách viết liền: ankommt, aufsteht.
+v|beschreiben|||miêu tả|{Beschreiben} Sie das Bild.|Hãy miêu tả bức tranh.|er beschreibt, hat beschrieben
+v|diskutieren|||thảo luận|Wir {diskutieren} im Kurs über das Thema.|Chúng tôi thảo luận chủ đề này trong lớp.|er diskutiert, hat diskutiert
+n|Meinung|die|-en|ý kiến|Was ist deine {Meinung}?|Ý kiến của bạn là gì?|
+v|meinen|||cho rằng; ý muốn nói|Was {meinst} du dazu?|Bạn nghĩ sao về điều đó?|er meint, hat gemeint
+n|Vorschlag|der|¨-e|đề xuất|Hast du einen besseren {Vorschlag}?|Bạn có đề xuất nào tốt hơn không?|
+v|einverstanden sein|||đồng ý|Ich {bin} damit einverstanden.|Tôi đồng ý với điều đó.|einverstanden mit + Dativ
+n|Unterschied|der|-e|sự khác biệt|Was ist der {Unterschied} zwischen „der“ und „den“?|"der" và "den" khác nhau thế nào?|
+adj|deutlich|||rõ ràng|Sprechen Sie bitte {deutlich}!|Xin hãy nói rõ ràng!|
 `;
 export default pack;

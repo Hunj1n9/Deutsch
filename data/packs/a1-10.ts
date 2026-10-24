@@ -52,5 +52,6 @@ g|müssen / dürfen / sollen|||động từ khuyết thiếu chỉ nghĩa vụ v
 g|nicht dürfen = không được phép|||cấm|Hier {darf} man nicht parken.|Ở đây không được đỗ xe.|nicht müssen = không cần phải (khác với không được phép).
 g|Mệnh lệnh cách số nhiều ihr|||yêu cầu nhiều người thân quen|{Bleibt} bitte ruhig!|Các con giữ trật tự nhé!|ihr bleibt → Bleibt!
 g|Mir tut … weh|||nói chỗ đau|Mir {tut} der Rücken weh.|Tôi đau lưng.|Số nhiều: Mir tun die Füße weh.
+n|Hilfe|die|-n|sự giúp đỡ|Ich brauche {Hilfe}.|Tôi cần giúp đỡ.|
 `;
 export default pack;

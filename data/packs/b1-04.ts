@@ -12,7 +12,6 @@ n|Stärke|die|-n|điểm mạnh|Was sind Ihre {Stärken}?|Điểm mạnh của �
 n|Schwäche|die|-n|điểm yếu|Ungeduld ist meine größte {Schwäche}.|Thiếu kiên nhẫn là điểm yếu lớn nhất của tôi.|
 n|Berufserfahrung|die|-en|kinh nghiệm làm việc|Ich habe drei Jahre {Berufserfahrung}.|Tôi có ba năm kinh nghiệm làm việc.|
 n|Probezeit|die|-en|thời gian thử việc|Die {Probezeit} dauert sechs Monate.|Thời gian thử việc kéo dài sáu tháng.|
-n|Vertrag|der|¨-e|hợp đồng|Ich unterschreibe den {Vertrag}.|Tôi ký hợp đồng.|
 n|Kündigung|die|-en|thư thôi việc; sự sa thải|Er hat die {Kündigung} bekommen.|Anh ấy bị sa thải.|
 n|Arbeitsplatz|der|¨-e|chỗ làm|Mein {Arbeitsplatz} ist modern.|Chỗ làm của tôi hiện đại.|
 n|Arbeitslosigkeit|die||tình trạng thất nghiệp|Die {Arbeitslosigkeit} ist gesunken.|Tỷ lệ thất nghiệp đã giảm.|
@@ -27,7 +26,6 @@ n|Voraussetzung|die|-en|điều kiện tiên quyết|Gute Deutschkenntnisse sind
 n|Zusage|die|-n|thư nhận (việc), sự đồng ý|Ich habe eine {Zusage} bekommen!|Tôi đã nhận được thư mời làm việc!|
 n|Absage|die|-n|thư từ chối|Leider habe ich eine {Absage} bekommen.|Tiếc là tôi bị từ chối.|
 n|Selbstständigkeit|die||sự tự lập; tự kinh doanh|Der Schritt in die {Selbstständigkeit} war schwer.|Bước ra tự kinh doanh rất khó khăn.|
-v|unterschreiben|||ký tên|Bitte {unterschreiben} Sie hier.|Xin ký tên ở đây.|er unterschreibt, unterschrieb, hat unterschrieben
 v|einreichen|||nộp (hồ sơ)|Ich habe meine Bewerbung online {eingereicht}.|Tôi đã nộp đơn trực tuyến.|Động từ tách: er reicht ein, hat eingereicht
 v|überzeugen|||thuyết phục|Ihre Bewerbung hat uns {überzeugt}.|Hồ sơ của ông/bà đã thuyết phục chúng tôi.|er überzeugt, hat überzeugt
 v|verhandeln|||đàm phán|Wir {verhandeln} über das Gehalt.|Chúng tôi đàm phán về lương.|er verhandelt, hat verhandelt
@@ -45,7 +43,6 @@ adj|teamfähig|||biết làm việc nhóm|Wir suchen {teamfähige} Mitarbeiter.|
 adj|belastbar|||chịu được áp lực|Sie sind {belastbar} und flexibel.|Bạn chịu được áp lực và linh hoạt.|
 adj|qualifiziert|||đủ trình độ|Er ist für die Stelle gut {qualifiziert}.|Anh ấy đủ trình độ cho vị trí này.|
 adj|unbefristet|||không thời hạn|Ich habe einen {unbefristeten} Vertrag.|Tôi có hợp đồng không thời hạn.|
-adj|sicher|||an toàn; chắc chắn|Der Job ist {sicher}.|Công việc ổn định.|
 adj|selbstbewusst|||tự tin|Sie trat sehr {selbstbewusst} auf.|Cô ấy tỏ ra rất tự tin.|
 adj|engagiert|||tận tâm|Wir suchen {engagierte} Leute.|Chúng tôi tìm người tận tâm.|
 adj|zuständig|||có trách nhiệm, phụ trách|Frau Lang ist für Bewerbungen {zuständig}.|Bà Lang phụ trách hồ sơ ứng tuyển.|

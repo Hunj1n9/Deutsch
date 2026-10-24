@@ -127,6 +127,7 @@ export default defineStage({
       items: [
         'Uhr', 'Stunde', 'Minute', 'Viertel', 'halb', 'Zeit', 'jetzt', 'wann', 'dauern', 'beginnen', 'um', 'Termin',
         'Morgen', 'Mittag', 'Nachmittag', 'Abend', 'Nacht', 'Hỏi giờ: Wie spät ist es?',
+        'Sekunde', 'Vormittag', 'gegen',
       ],
       grammar: {
         point: 'uhrzeit',
@@ -223,6 +224,8 @@ export default defineStage({
       items: [
         'Tag', 'Woche', 'Monat', 'Wochenende', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag',
         'Januar', 'Februar', 'Mai', 'Juli', 'Dezember', 'Geburtstag', 'Datum', 'heute', 'morgen', 'gestern', 'am / um / im',
+        'Wochentag', 'März', 'April', 'Juni', 'August', 'September', 'Oktober', 'November', 'Ende', 'zurzeit', 'später',
+        'enden',
       ],
       grammar: {
         point: 'zeit-praep',

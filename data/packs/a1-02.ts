@@ -53,5 +53,16 @@ conj|und|||và|Ich habe einen Bruder {und} eine Schwester.|Tôi có một anh tr
 g|haben: ich habe, du hast, er hat|||chia động từ haben|Er {hat} zwei Kinder.|Anh ấy có hai con.|ich habe, du hast, er/sie/es hat, wir haben, ihr habt, sie/Sie haben.
 g|mein / meine|||mạo từ sở hữu theo giống|Das ist {meine} Schwester.|Đây là chị gái tôi.|der/das → mein; die và số nhiều → meine (ở Nominativ).
 g|Wie alt ...?|||hỏi tuổi|Wie {alt} ist dein Vater?|Bố bạn bao nhiêu tuổi?|Trả lời: Er ist 50 (Jahre alt).
+n|Oma|die|-s|bà (cách gọi thân mật)|Meine {Oma} wohnt in Da Nang.|Bà tôi sống ở Đà Nẵng.|
+n|Opa|der|-s|ông (cách gọi thân mật)|Mein {Opa} ist 80 Jahre alt.|Ông tôi 80 tuổi.|
+n|Ehemann|der|¨-er|chồng|Das ist mein {Ehemann} Minh.|Đây là chồng tôi, Minh.|
+n|Mädchen|das|-|cô bé, bé gái|Das {Mädchen} heißt Lan.|Cô bé tên là Lan.|
+adj|tot|||đã mất, chết|Mein Großvater ist leider schon {tot}.|Tiếc là ông tôi đã mất.|
+n|Mensch|der|-en|con người|Wie viele {Menschen} wohnen in Hanoi?|Có bao nhiêu người sống ở Hà Nội?|Danh từ giống đực (der), số nhiều: -en. n-Deklination: den Menschen.
+p|die Leute|||mọi người, người ta|Die {Leute} hier sind sehr nett.|Mọi người ở đây rất dễ mến.|Chỉ dùng số nhiều.
+n|Familienstand|der||tình trạng hôn nhân|Mein {Familienstand}: ledig.|Tình trạng hôn nhân của tôi: độc thân.|
+n|Geburtsjahr|das|-e|năm sinh|Mein {Geburtsjahr} ist 1995.|Năm sinh của tôi là 1995.|
+v|unterschreiben|||ký tên|Bitte {unterschreiben} Sie hier.|Xin ký tên ở đây.|er unterschreibt, hat unterschrieben
+n|Unterschrift|die|-en|chữ ký|Hier fehlt noch Ihre {Unterschrift}.|Ở đây còn thiếu chữ ký của ông/bà.|
 `;
 export default pack;

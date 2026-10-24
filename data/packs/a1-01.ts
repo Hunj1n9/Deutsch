@@ -59,5 +59,15 @@ g|sein: ich bin, du bist, er ist|||chia động từ sein ở hiện tại|Du {b
 g|Câu hỏi W: động từ đứng thứ hai|||câu hỏi bắt đầu bằng từ để hỏi|Woher {kommst} du?|Bạn đến từ đâu?|Từ để hỏi ở vị trí 1, động từ chia ở vị trí 2, rồi đến chủ ngữ.
 g|Câu hỏi có/không: động từ đứng đầu|||câu hỏi trả lời ja/nein|{Sprichst} du Deutsch?|Bạn có nói tiếng Đức không?|Động từ chia đứng đầu câu, chủ ngữ đứng sau.
 g|Đuôi động từ ở thì hiện tại|||chia động từ có quy tắc: -e, -st, -t, -en, -t, -en|Wir {wohnen} in Hanoi.|Chúng tôi sống ở Hà Nội.|ich wohn-e, du wohn-st, er wohn-t, wir wohn-en, ihr wohn-t, sie wohn-en.
+n|Familienname|der|-n|họ (tên họ)|Mein {Familienname} ist Nguyen.|Họ của tôi là Nguyễn.|
+n|Buchstabe|der|-n|chữ cái|Wie viele {Buchstaben} hat das Wort?|Từ này có bao nhiêu chữ cái?|Danh từ giống đực (der), số nhiều: -n. n-Deklination: den Buchstaben.
+n|Formular|das|-e|mẫu đơn|Bitte füllen Sie das {Formular} aus.|Xin điền vào mẫu đơn.|
+v|ausfüllen|||điền (đơn)|{Füllen} Sie das Formular bitte aus.|Xin điền vào mẫu đơn.|Động từ tách: er füllt aus, hat ausgefüllt
+n|Anrede|die|-n|cách xưng hô|Was ist die richtige {Anrede}: Herr oder Frau?|Xưng hô thế nào cho đúng: ông hay bà?|
+n|Gruß|der|¨-e|lời chào|Viele {Grüße} aus Hanoi!|Gửi nhiều lời chào từ Hà Nội!|
+n|Geburtsort|der|-e|nơi sinh|Mein {Geburtsort} ist Hue.|Nơi sinh của tôi là Huế.|
+adj|männlich|||(giới tính) nam|Bitte kreuzen Sie an: {männlich} oder weiblich.|Xin đánh dấu: nam hay nữ.|
+adj|weiblich|||(giới tính) nữ|Im Formular steht: Geschlecht {weiblich}.|Trong mẫu đơn ghi: giới tính nữ.|
+v|danken|||cảm ơn|Ich {danke} Ihnen für die Hilfe.|Tôi cảm ơn ông/bà đã giúp đỡ.|er dankt, hat gedankt; + Dativ
 `;
 export default pack;

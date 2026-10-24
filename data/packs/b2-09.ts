@@ -35,7 +35,6 @@ v|veranschaulichen|||minh họa|Die Grafik {veranschaulicht} die Daten.|Biểu �
 adj|bahnbrechend|||mang tính đột phá|Die Erfindung war {bahnbrechend}.|Phát minh mang tính đột phá.|
 adj|messbar|||đo được|Der Erfolg ist {messbar}.|Thành công có thể đo được.|
 adj|nachweisbar|||chứng minh được|Der Effekt ist nicht {nachweisbar}.|Hiệu ứng không chứng minh được.|
-adj|deutlich|||rõ rệt|Die Zahlen sind {deutlich} gestiegen.|Các con số đã tăng rõ rệt.|
 adj|erheblich|||đáng kể|Die Kosten sind {erheblich} höher.|Chi phí cao hơn đáng kể.|
 adj|geringfügig|||không đáng kể|Die Preise sind nur {geringfügig} gestiegen.|Giá chỉ tăng không đáng kể.|
 adj|kontinuierlich|||liên tục|Die Zahl steigt {kontinuierlich}.|Con số tăng liên tục.|

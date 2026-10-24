@@ -34,6 +34,7 @@ export default defineStage({
         'Stelle', 'Bewerbung', 'Lebenslauf', 'Vorstellungsgespräch', 'Erfahrung', 'Praktikum', 'sich bewerben',
         'sich vorstellen', 'einstellen', 'zuverlässig', 'flexibel', 'freundlich', 'kreativ', 'dass',
         'Ich interessiere mich für', 'Spaß machen', 'Câu với dass',
+        'Vertrag',
       ],
       grammar: {
         point: 'dass',

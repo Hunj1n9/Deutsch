@@ -54,5 +54,10 @@ p|Leider nicht|||tiếc là không|Kannst du morgen? – {Leider nicht}.|Mai b�
 g|gern – lieber – am liebsten|||mức độ yêu thích|Ich trinke gern Kaffee, aber {lieber} Tee.|Tôi thích cà phê, nhưng thích trà hơn.|gern đứng sau động từ chia.
 g|Động từ khuyết thiếu + động từ nguyên mẫu cuối câu|||können, wollen + Infinitiv|Ich kann gut {schwimmen}.|Tôi bơi giỏi.|Động từ khuyết thiếu chia ở vị trí 2, động từ chính để nguyên mẫu ở cuối câu.
 g|nicht: vị trí trong câu|||phủ định động từ, tính từ|Ich tanze {nicht} gern.|Tôi không thích nhảy.|nicht đứng trước thành phần bị phủ định; phủ định cả câu thì nicht gần cuối câu.
+v|sehen|||nhìn thấy, xem|Wollen wir einen Film {sehen}?|Mình xem phim nhé?|du siehst, er sieht, hat gesehen
+adv|vielleicht|||có lẽ|{Vielleicht} komme ich mit.|Có lẽ tôi đi cùng.|
+v|glauben|||tin, nghĩ rằng|Ich {glaube}, das Konzert ist gut.|Tôi nghĩ buổi hòa nhạc hay.|er glaubt, hat geglaubt
+n|Eintritt|der|-e|vé vào cửa|Der {Eintritt} kostet zehn Euro.|Vé vào cửa giá mười euro.|
+prep|ohne|||không có, không cùng|Wir gehen {ohne} Peter ins Kino.|Chúng tôi đi xem phim không có Peter.|ohne + Akkusativ
 `;
 export default pack;

@@ -61,5 +61,17 @@ p|Das macht|||tổng cộng là|{Das macht} zwölf Euro, bitte.|Tổng cộng m�
 g|Akkusativ: den / einen|||tân ngữ trực tiếp giống đực|Ich kaufe {einen} Apfel.|Tôi mua một quả táo.|Chỉ giống đực đổi ở Akkusativ: der → den, ein → einen, kein → keinen.
 g|möchten + Akkusativ|||diễn đạt mong muốn lịch sự|Ich möchte {einen} Kaffee.|Tôi muốn một ly cà phê.|Đồ uống, món ăn giống đực đổi thành einen.
 g|nicht hay kein?|||phủ định|Ich trinke {keinen} Alkohol.|Tôi không uống rượu bia.|Danh từ không mạo từ/với ein → kein; còn lại (động từ, tính từ, danh từ xác định) → nicht.
+n|Hunger|der||cơn đói|Ich habe {Hunger}.|Tôi đói.|
+n|Durst|der||cơn khát|Hast du {Durst}?|Bạn có khát không?|
+n|Schinken|der|-|giăm bông|Ich esse ein Brot mit {Schinken}.|Tôi ăn bánh mì với giăm bông.|
+n|Birne|die|-n|quả lê|Die {Birne} ist süß.|Quả lê ngọt.|
+v|geben|||đưa, cho|{Geben} Sie mir bitte ein Kilo Äpfel.|Cho tôi một ký táo.|du gibst, er gibt, hat gegeben
+v|bekommen|||nhận được; (ở quầy) dùng|Was {bekommen} Sie? – Zwei Brötchen, bitte.|Ông/bà dùng gì ạ? – Hai bánh mì nhỏ.|er bekommt, hat bekommen (không phải "trở thành")
+n|Kiosk|der|-e|ki-ốt, quầy báo|Am {Kiosk} kaufe ich eine Zeitung.|Tôi mua báo ở ki-ốt.|
+n|Zigarette|die|-n|điếu thuốc lá|Er raucht zehn {Zigaretten} am Tag.|Anh ấy hút mười điếu thuốc mỗi ngày.|
+v|zahlen|||trả tiền|Wir möchten {zahlen}, bitte.|Chúng tôi muốn thanh toán.|er zahlt, hat gezahlt
+n|Pommes|die||khoai tây chiên|Ich möchte {Pommes} mit Ketchup.|Tôi muốn khoai tây chiên với tương cà.|Danh từ chỉ dùng số nhiều (die Pommes).
+v|riechen|||ngửi; có mùi|Die Suppe {riecht} gut!|Món súp thơm quá!|er riecht, hat gerochen
+v|bestellen|||gọi món, đặt hàng|Wir möchten {bestellen}.|Chúng tôi muốn gọi món.|er bestellt, hat bestellt
 `;
 export default pack;

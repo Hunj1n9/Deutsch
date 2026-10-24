@@ -184,6 +184,7 @@ export default defineStage({
         'Grammatik', 'Aussprache', 'Wortschatz', 'Text', 'Übung', 'unterrichten', 'korrigieren', 'ankreuzen', 'übersetzen',
         'nachschlagen', 'fehlen', 'merken', 'schlau', 'intelligent', 'geduldig', 'dumm',
         'Câu hỏi gián tiếp với từ để hỏi', 'Động từ tách trong câu phụ',
+        'beschreiben', 'diskutieren', 'Meinung', 'meinen', 'Vorschlag', 'einverstanden sein', 'Unterschied', 'deutlich',
       ],
       grammar: {
         point: 'w-indirekt',

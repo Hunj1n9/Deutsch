@@ -52,5 +52,17 @@ p|Gute Reise|||chúc thượng lộ bình an|{Gute Reise} und bis bald!|Chúc đ
 g|mit + Dativ|||mit luôn đi với Dativ|Ich fahre mit {dem} Zug.|Tôi đi bằng tàu hỏa.|der/das → dem, die → der, số nhiều → den (+n).
 g|Perfekt với haben|||thì quá khứ hoàn thành trong văn nói|Ich habe ein Hotel {gebucht}.|Tôi đã đặt khách sạn.|haben (vị trí 2) + Partizip II (cuối câu): ge- … -t.
 g|Perfekt với sein|||động từ chỉ chuyển động, thay đổi trạng thái|Wir sind nach Berlin {gefahren}.|Chúng tôi đã đi Berlin.|fahren, gehen, kommen, fliegen, bleiben… dùng sein.
+n|S-Bahn|die|-en|tàu điện ngoại ô|Ich fahre mit der {S-Bahn}.|Tôi đi bằng tàu S-Bahn.|
+n|Autobahn|die|-en|đường cao tốc|Auf der {Autobahn} fährt man schnell.|Trên đường cao tốc người ta chạy nhanh.|
+adj|eilig|||vội|Ich habe es {eilig}.|Tôi đang vội.|
+n|Bahnsteig|der|-e|sân ga|Wir warten auf dem {Bahnsteig}.|Chúng tôi đợi trên sân ga.|
+n|Schalter|der|-|quầy (bán vé)|Die Fahrkarten gibt es am {Schalter}.|Vé bán ở quầy.|
+n|Ansage|die|-n|thông báo (qua loa)|Hören Sie die {Ansage}!|Hãy nghe thông báo!|
+n|Durchsage|die|-n|thông báo trên loa|Die {Durchsage} war leider zu leise.|Tiếc là thông báo trên loa quá nhỏ.|
+n|Anschluss|der|¨-e|chuyến nối tiếp|In Köln haben Sie {Anschluss} nach Bonn.|Ở Köln ông/bà có chuyến nối tiếp đi Bonn.|
+adj|besetzt|||có người (chỗ), bận (máy)|Ist der Platz frei? – Nein, er ist {besetzt}.|Chỗ này còn trống không? – Không, có người rồi.|
+n|Abflug|der|¨-e|giờ cất cánh, chuyến bay đi|Der {Abflug} ist um 14 Uhr.|Máy bay cất cánh lúc 14 giờ.|
+v|abfliegen|||cất cánh, bay đi|Wann {fliegt} das Flugzeug ab?|Khi nào máy bay cất cánh?|Động từ tách: er fliegt ab, ist abgeflogen
+n|Ausweis|der|-e|thẻ căn cước, thẻ|Haben Sie Ihren {Ausweis} dabei?|Ông/bà có mang theo thẻ căn cước không?|
 `;
 export default pack;

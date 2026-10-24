@@ -33,6 +33,7 @@ export default defineStage({
       items: [
         'Nachricht', 'Zeitung', 'Zeitschrift', 'Sendung', 'Radio', 'Fernseher', 'Werbung', 'Medien', 'warten auf',
         'sich interessieren', 'sich ärgern', 'erreichen', 'aktuell', 'Ich melde mich', 'Động từ đi với giới từ',
+        'Kontakt', 'verschieben', 'vereinbaren',
       ],
       grammar: {
         point: 'verb-praep',
@@ -110,6 +111,7 @@ export default defineStage({
         'Handy', 'Internet', 'Webseite', 'Video', 'App', 'Kamera', 'Netz', 'Akku', 'Ladegerät', 'chatten', 'surfen',
         'schicken', 'aufladen', 'online', 'süchtig', 'schnell', 'langsam', 'Hỏi về vật: wo(r) + giới từ',
         'Thay vật bằng da(r) + giới từ',
+        'berichten',
       ],
       grammar: {
         point: 'wo-da',

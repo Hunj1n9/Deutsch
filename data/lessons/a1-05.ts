@@ -33,6 +33,7 @@ export default defineStage({
       items: [
         'Brot', 'Brötchen', 'Butter', 'Käse', 'Wurst', 'Ei', 'Obst', 'Apfel', 'Banane', 'Kaffee', 'Tee', 'Milch', 'Saft',
         'Wasser', 'Zucker', 'Frühstück', 'essen', 'trinken', 'gern', 'Akkusativ: den / einen',
+        'Hunger', 'Durst', 'Schinken', 'Birne',
       ],
       grammar: {
         point: 'akkusativ',
@@ -120,6 +121,7 @@ export default defineStage({
         'Reis', 'Nudel', 'Gemüse', 'Tomate', 'Kartoffel', 'Supermarkt', 'Markt', 'Bäckerei', 'Kilo', 'Gramm', 'Liter',
         'Flasche', 'Packung', 'Euro', 'Preis', 'Einkaufsliste', 'kaufen', 'möchten', 'nehmen', 'bezahlen',
         'Was darf es sein?', 'Das macht', 'möchten + Akkusativ',
+        'geben', 'bekommen', 'Kiosk', 'Zigarette', 'zahlen',
       ],
       grammar: {
         point: 'moechten',
@@ -202,6 +204,7 @@ export default defineStage({
       items: [
         'Salat', 'Suppe', 'Kuchen', 'Salz', 'Bier', 'Mittagessen', 'Abendessen', 'Fleisch', 'Fisch', 'Hähnchen', 'kochen',
         'schmecken', 'lecker', 'frisch', 'süß', 'scharf', 'viel', 'nicht hay kein?',
+        'Pommes', 'riechen', 'bestellen',
       ],
       grammar: {
         point: 'ja-nein-doch',

@@ -32,7 +32,7 @@ export default defineStage({
       goal_vi: 'Kể về tuổi thơ: sinh ra và lớn lên ở đâu, đã làm gì, nhớ gì.',
       items: [
         'Kindheit', 'Jugend', 'Ferien', 'Dorf', 'Spielzeug', 'Erinnerung', 'Geschichte', 'erzählen', 'sich erinnern',
-        'aufwachsen', 'denken', 'bringen', 'sehen', 'geboren werden', 'Als Kind', 'Weißt du noch?',
+        'aufwachsen', 'denken', 'geboren werden', 'Als Kind', 'Weißt du noch?',
         'Perfekt: Partizip II của động từ bất quy tắc', 'Perfekt của động từ hỗn hợp',
       ],
       grammar: {
@@ -115,7 +115,7 @@ export default defineStage({
       title_vi: 'Chuyện gì đã xảy ra?',
       goal_vi: 'Kể một chuyện bất ngờ hay rủi ro; dùng đúng Perfekt của động từ tách và không tách.',
       items: [
-        'Unfall', 'Überraschung', 'Moment', 'Umzug', 'Lehre', 'passieren', 'vergessen', 'verlieren', 'bekommen', 'laufen',
+        'Unfall', 'Überraschung', 'Moment', 'Umzug', 'Lehre', 'passieren', 'vergessen', 'verlieren', 'laufen',
         'fallen', 'rennen', 'umziehen', 'kennenlernen', 'sterben', 'Perfekt của động từ tách',
         'Perfekt với sein: chuyển động và thay đổi',
       ],

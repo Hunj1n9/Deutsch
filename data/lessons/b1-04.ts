@@ -33,7 +33,7 @@ export default defineStage({
       items: [
         'Stellenanzeige', 'Stellenangebot', 'Arbeitgeber', 'Arbeitnehmer', 'Arbeitsmarkt', 'Fachkraft', 'Branche', 'Unternehmen',
         'Voraussetzung', 'Qualifikation', 'Berufserfahrung', 'Tätigkeit', 'Arbeitsbedingung', 'Überstunde', 'Personalabteilung',
-        'Vertrag', 'Arbeitslosigkeit', 'zuständig sein', 'zuständig', 'erwarten', 'anbieten', 'qualifiziert', 'geeignet',
+        'Arbeitslosigkeit', 'zuständig sein', 'zuständig', 'erwarten', 'anbieten', 'qualifiziert', 'geeignet',
         'unbefristet', 'abwechslungsreich', 'in Frage kommen', 'Konjunktiv II lịch sự: würden Sie, könnten Sie',
       ],
       grammar: {
@@ -195,8 +195,8 @@ export default defineStage({
       goal_vi: 'Nói về hợp đồng, thử việc, thăng tiến; nêu mục đích bằng um … zu và damit.',
       items: [
         'Probezeit', 'Kündigung', 'Arbeitsplatz', 'Karriere', 'Beförderung', 'Gehaltserhöhung', 'Team', 'Selbstständigkeit',
-        'Einarbeitung', 'unterschreiben', 'verhandeln', 'sich weiterbilden', 'zusammenarbeiten', 'präsentieren', 'planen',
-        'entlassen', 'sich einarbeiten', 'befördern', 'vertreten', 'sich auskennen', 'motivieren', 'sicher', 'damit',
+        'Einarbeitung', 'verhandeln', 'sich weiterbilden', 'zusammenarbeiten', 'präsentieren', 'planen',
+        'entlassen', 'sich einarbeiten', 'befördern', 'vertreten', 'sich auskennen', 'motivieren', 'damit',
         'Erfahrung sammeln', 'sich selbstständig machen', 'um … zu: mục đích, cùng chủ ngữ', 'damit: mục đích, khác chủ ngữ',
       ],
       grammar: {

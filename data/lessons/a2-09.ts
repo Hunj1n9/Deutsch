@@ -31,7 +31,7 @@ export default defineStage({
       title_vi: 'Chúc mừng sinh nhật!',
       goal_vi: 'Chúc mừng, cảm ơn và nhận quà; dùng động từ đi với Dativ.',
       items: [
-        'Glückwunsch', 'Torte', 'Kerze', 'Luftballon', 'Gutschein', 'gratulieren', 'danken', 'gehören', 'passen zu',
+        'Glückwunsch', 'Torte', 'Kerze', 'Luftballon', 'Gutschein', 'gratulieren', 'gehören', 'passen zu',
         'sich freuen', 'überrascht', 'Alles Gute', 'Viel Glück', 'Vielen Dank für', 'Das ist aber nett',
         'Động từ đi với Dativ',
       ],
@@ -108,7 +108,7 @@ export default defineStage({
       title_vi: 'Tặng quà',
       goal_vi: 'Nói tặng ai cái gì (Dativ trước Akkusativ); nhận lời hoặc từ chối lời mời.',
       items: [
-        'Geschenk', 'Blume', 'Einladung', 'Gastgeber', 'Gästeliste', 'schenken', 'geben', 'verpacken', 'überraschen',
+        'Geschenk', 'Blume', 'Einladung', 'Gastgeber', 'Gästeliste', 'schenken', 'verpacken', 'überraschen',
         'zusagen', 'absagen', 'persönlich', 'herzlich', 'Herzlich willkommen', 'Hai tân ngữ: Dativ trước Akkusativ',
         'Mạo từ ở Dativ',
       ],

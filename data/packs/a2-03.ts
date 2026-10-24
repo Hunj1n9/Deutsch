@@ -26,12 +26,10 @@ n|Vegetarier|der|-|người ăn chay (nam)|Ich bin {Vegetarier}.|Tôi ăn chay.|
 n|Portion|die|-en|suất, phần|Die {Portion} ist sehr groß.|Suất ăn rất lớn.|
 n|Geschmack|der|¨-e|vị; gu|Das ist nicht mein {Geschmack}.|Cái đó không hợp khẩu vị tôi.|
 n|Imbiss|der|-e|quầy ăn nhanh|Am {Imbiss} kaufe ich eine Wurst.|Ở quầy ăn nhanh tôi mua xúc xích.|
-v|bestellen|||gọi món, đặt hàng|Wir möchten {bestellen}.|Chúng tôi muốn gọi món.|er bestellt, hat bestellt
 v|empfehlen|||giới thiệu, gợi ý|Was können Sie {empfehlen}?|Ông/bà gợi ý món gì?|du empfiehlst, er empfiehlt, hat empfohlen
 v|reservieren|||đặt trước|Ich möchte einen Tisch {reservieren}.|Tôi muốn đặt một bàn.|er reserviert, hat reserviert
 v|probieren|||nếm thử|{Probier} mal die Suppe!|Nếm thử món súp đi!|er probiert, hat probiert
 v|aussuchen|||chọn|Wir {suchen} uns einen Tisch am Fenster aus.|Chúng tôi chọn một bàn cạnh cửa sổ.|Động từ tách: er sucht aus, hat ausgesucht
-v|zahlen|||trả tiền|Wir möchten {zahlen}, bitte.|Chúng tôi muốn thanh toán.|er zahlt, hat gezahlt
 v|braten|||rán, chiên|Der Koch {brät} das Fleisch.|Đầu bếp rán thịt.|du brätst, er brät, hat gebraten
 v|schneiden|||cắt|Ich {schneide} das Gemüse.|Tôi cắt rau.|er schneidet, hat geschnitten
 v|sich beeilen|||nhanh lên, vội|Wir müssen {uns} beeilen.|Chúng ta phải nhanh lên.|er beeilt sich, hat sich beeilt
@@ -55,5 +53,7 @@ g|Đuôi tính từ sau der/die/das (Nominativ)|||-e ở Nominativ số ít|Der 
 g|Đuôi tính từ sau mạo từ xác định (Akk, Dativ)|||-en ở hầu hết vị trí khác|Ich nehme den {grünen} Salat.|Tôi lấy món xa lát xanh.|Akk giống đực: den grünen; Dativ: dem/der grünen; số nhiều luôn -en.
 g|Câu với weil: động từ cuối câu|||nêu lý do|Ich bestelle Wasser, weil ich Durst {habe}.|Tôi gọi nước vì tôi khát.|Câu phụ: động từ chia đứng cuối; trước weil có dấu phẩy.
 g|Câu phụ đứng trước: động từ chính đứng ngay sau|||đảo vị trí|Weil ich Hunger habe, {bestelle} ich Pizza.|Vì đói nên tôi gọi pizza.|Câu phụ chiếm vị trí 1, động từ câu chính ở vị trí 2.
+v|wählen|||chọn; bầu|Sie können zwischen drei Desserts {wählen}.|Ông/bà có thể chọn giữa ba món tráng miệng.|er wählt, hat gewählt
+v|prüfen|||kiểm tra|Bitte {prüfen} Sie die Rechnung.|Xin kiểm tra hóa đơn.|er prüft, hat geprüft
 `;
 export default pack;

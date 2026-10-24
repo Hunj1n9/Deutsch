@@ -54,5 +54,6 @@ g|Präteritum: war, hatte|||quá khứ của sein và haben|Gestern {war} ich kr
 g|Liên từ und, aber, oder, denn: vị trí 0|||nối hai câu chính|Ich bin müde, aber ich {muss} arbeiten.|Tôi mệt nhưng tôi phải làm việc.|Sau và/nhưng/hoặc/vì (denn) câu giữ trật tự bình thường, động từ vẫn ở vị trí 2.
 g|Partizip II bất quy tắc: -en|||động từ mạnh tạo Partizip với -en|Ich habe einen Brief {geschrieben}.|Tôi đã viết một lá thư.|schreiben → geschrieben, lesen → gelesen, sprechen → gesprochen.
 g|Partizip II không có ge-|||động từ đuôi -ieren và có tiền tố không tách|Er hat Medizin {studiert}.|Anh ấy đã học y.|studieren → studiert; besuchen → besucht; verstehen → verstanden.
+n|Konto|das|Konten|tài khoản (ngân hàng)|Ich habe ein {Konto} bei der Bank.|Tôi có một tài khoản ở ngân hàng.|
 `;
 export default pack;

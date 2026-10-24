@@ -33,7 +33,7 @@ export default defineStage({
       items: [
         'Wohngemeinschaft', 'Mitbewohner', 'Zusammenleben', 'Regel', 'Putzplan', 'Pflicht', 'Absprache', 'Gemeinschaftsküche',
         'Gemeinschaftsraum', 'Gewohnheitsmensch', 'teilen', 'sich einigen', 'ausmachen', 'leihen', 'zurückbringen', 'abstellen',
-        'ordentlich', 'unordentlich', 'gemeinsam', 'chaotisch', 'abwechselnd', 'an der Reihe sein', 'Bescheid sagen',
+        'ordentlich', 'unordentlich', 'gemeinsam', 'chaotisch', 'abwechselnd', 'an der Reihe sein',
         'sich an die Regeln halten', 'unter einem Dach leben', 'Mệnh đề quan hệ Nominativ: der, die, das',
         'Mệnh đề quan hệ Akkusativ: den',
       ],
@@ -111,9 +111,9 @@ export default defineStage({
       title_vi: 'Hàng xóm láng giềng',
       goal_vi: 'Nói chuyện với hàng xóm về tiếng ồn, giúp đỡ; dùng mệnh đề quan hệ Dativ.',
       items: [
-        'Nachbarschaft', 'Haustier', 'Hausmeister', 'Mehrfamilienhaus', 'Treppenhaus', 'Briefkasten', 'Paket', 'Lärmbelästigung',
-        'Lärm', 'Ruhe', 'Rücksicht', 'Gemeinschaft', 'Zusammenhalt', 'stören', 'sich kümmern', 'unterstützen', 'erlauben',
-        'verbieten', 'annehmen', 'erlaubt', 'verboten', 'leise', 'hilfsbereit', 'rücksichtsvoll', 'anonym', 'Rücksicht nehmen auf',
+        'Nachbarschaft', 'Haustier', 'Hausmeister', 'Mehrfamilienhaus', 'Treppenhaus', 'Briefkasten', 'Lärmbelästigung',
+        'Lärm', 'Rücksicht', 'Gemeinschaft', 'Zusammenhalt', 'sich kümmern', 'unterstützen',
+        'verbieten', 'annehmen', 'erlaubt', 'hilfsbereit', 'rücksichtsvoll', 'anonym', 'Rücksicht nehmen auf',
         'Mệnh đề quan hệ Dativ: dem, der, denen',
       ],
       grammar: {

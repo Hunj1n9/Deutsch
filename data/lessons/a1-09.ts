@@ -33,6 +33,7 @@ export default defineStage({
       items: [
         'Bus', 'Zug', 'U-Bahn', 'Straßenbahn', 'Auto', 'Taxi', 'Flugzeug', 'Fahrer', 'mit', 'nach', 'von', 'zu Fuß',
         'fahren', 'fliegen', 'voll', 'leer', 'direkt', 'gleich', 'mit + Dativ',
+        'S-Bahn', 'Autobahn', 'eilig',
       ],
       grammar: {
         point: 'mit-dativ',
@@ -113,6 +114,7 @@ export default defineStage({
         'Flughafen', 'Gleis', 'Fahrkarte', 'Ticket', 'Abfahrt', 'Ankunft', 'Verspätung', 'Koffer', 'Gepäck', 'Pass', 'packen',
         'buchen', 'einsteigen', 'aussteigen', 'umsteigen', 'schwer', 'leicht', 'weg', 'einfach oder hin und zurück',
         'Perfekt với haben',
+        'Bahnsteig', 'Schalter', 'Ansage', 'Durchsage', 'Anschluss', 'besetzt',
       ],
       grammar: {
         point: 'perfekt-haben',
@@ -195,6 +197,7 @@ export default defineStage({
       items: [
         'Reise', 'Urlaub', 'Meer', 'Berg', 'Strand', 'Ausland', 'ankommen', 'abfahren', 'bleiben', 'reisen', 'landen',
         'Gute Reise', 'Perfekt với sein',
+        'Abflug', 'abfliegen', 'Ausweis',
       ],
       grammar: {
         point: 'perfekt-sein',

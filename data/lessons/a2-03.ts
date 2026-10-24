@@ -32,8 +32,9 @@ export default defineStage({
       goal_vi: 'Đặt bàn, gọi món, hỏi gợi ý; dùng đuôi tính từ sau der/die/das.',
       items: [
         'Speisekarte', 'Getränk', 'Vorspeise', 'Hauptgericht', 'Nachtisch', 'Gericht', 'Kellner', 'Gast', 'Reservierung',
-        'reservieren', 'bestellen', 'empfehlen', 'Ist hier noch frei?', 'Ich hätte gern', 'typisch', 'vegetarisch',
+        'reservieren', 'empfehlen', 'Ist hier noch frei?', 'Ich hätte gern', 'typisch', 'vegetarisch',
         'Đuôi tính từ sau der/die/das (Nominativ)', 'Đuôi tính từ sau mạo từ xác định (Akk, Dativ)',
+        'wählen',
       ],
       grammar: {
         point: 'adj-def',
@@ -194,8 +195,9 @@ export default defineStage({
       goal_vi: 'Gọi thanh toán, trả chung hay riêng, cho tiền boa; nói lý do với câu phụ đứng trước.',
       items: [
         'Rechnung', 'Trinkgeld', 'Teller', 'Glas', 'Tasse', 'Gabel', 'Messer', 'Löffel', 'Stäbchen', 'Imbiss', 'probieren',
-        'aussuchen', 'zahlen', 'braten', 'schneiden', 'sich beeilen', 'zufrieden', 'Zum Wohl', 'Stimmt so',
+        'aussuchen', 'braten', 'schneiden', 'sich beeilen', 'zufrieden', 'Zum Wohl', 'Stimmt so',
         'Câu phụ đứng trước: động từ chính đứng ngay sau',
+        'prüfen',
       ],
       grammar: {
         point: 'nebensatz-vorn',

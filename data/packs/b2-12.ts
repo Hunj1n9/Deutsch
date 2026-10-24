@@ -19,7 +19,6 @@ n|Bescheid|der|-e|quyết định (hành chính)|Ich habe einen {Bescheid} vom A
 n|Widerspruch|der|¨-e|khiếu nại, sự phản đối|Ich lege {Widerspruch} gegen den Bescheid ein.|Tôi khiếu nại quyết định đó.|Widerspruch einlegen gegen + Akk.
 n|Vorschrift|die|-en|quy định|Das ist gegen die {Vorschriften}.|Điều đó trái quy định.|
 n|Datenschutzerklärung|die|-en|chính sách bảo mật dữ liệu|Bitte lesen Sie die {Datenschutzerklärung}.|Vui lòng đọc chính sách bảo mật.|
-n|Unterschrift|die|-en|chữ ký|Ohne {Unterschrift} ist der Vertrag ungültig.|Không có chữ ký thì hợp đồng vô hiệu.|
 n|Verbraucherrecht|das|-e|quyền người tiêu dùng|Kennen Sie Ihre {Verbraucherrechte}?|Ông/bà biết quyền người tiêu dùng của mình không?|
 n|Menschenrecht|das|-e|nhân quyền|Bildung ist ein {Menschenrecht}.|Giáo dục là một quyền con người.|
 v|verklagen|||kiện|Er hat seinen Arbeitgeber {verklagt}.|Anh ấy kiện người chủ.|er verklagt, hat verklagt

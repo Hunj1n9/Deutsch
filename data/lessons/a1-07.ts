@@ -195,6 +195,7 @@ export default defineStage({
         'Film', 'Kino', 'Konzert', 'Museum', 'Party', 'Spiel', 'Spaß', 'Lust', 'treffen', 'einladen', 'langweilig',
         'interessant', 'spannend', 'toll', 'lustig', 'Keine Zeit', 'Wie wäre es mit', 'Gute Idee', 'Leider nicht',
         'nicht: vị trí trong câu',
+        'sehen', 'vielleicht', 'glauben', 'Eintritt', 'ohne',
       ],
       grammar: {
         point: 'nicht',

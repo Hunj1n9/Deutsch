@@ -16,14 +16,12 @@ n|Gemeinde|die|-n|xã, cộng đồng địa phương|Die {Gemeinde} baut einen 
 n|Behörde|die|-n|cơ quan công quyền|Für den Antrag muss ich zur {Behörde}.|Để nộp đơn tôi phải đến cơ quan nhà nước.|
 n|Amt|das|¨-er|cơ quan, sở|Ich muss aufs {Amt}.|Tôi phải lên sở.|
 n|Antrag|der|¨-e|đơn đề nghị|Ich stelle einen {Antrag} auf Kindergeld.|Tôi làm đơn xin trợ cấp con cái.|einen Antrag stellen
-n|Formular|das|-e|mẫu đơn|Bitte füllen Sie das {Formular} aus.|Xin điền vào mẫu đơn.|
 n|Aufenthaltserlaubnis|die|-se|giấy phép cư trú|Meine {Aufenthaltserlaubnis} läuft bald ab.|Giấy phép cư trú của tôi sắp hết hạn.|
 n|Staatsangehörigkeit|die|-en|quốc tịch|Welche {Staatsangehörigkeit} haben Sie?|Ông/bà mang quốc tịch nào?|
 n|Gleichberechtigung|die||bình đẳng|Die {Gleichberechtigung} von Mann und Frau ist wichtig.|Bình đẳng nam nữ là điều quan trọng.|
 n|Armut|die||sự nghèo đói|Die {Armut} in der Welt ist gesunken.|Nghèo đói trên thế giới đã giảm.|
 n|Reichtum|der|¨-er|sự giàu có|Der {Reichtum} ist ungleich verteilt.|Sự giàu có phân bổ không đều.|
 n|Ehrenamt|das|¨-er|công việc tình nguyện|Sie arbeitet im {Ehrenamt} für Flüchtlinge.|Cô ấy làm tình nguyện cho người tị nạn.|
-n|Meinung|die|-en|ý kiến|Was ist deine {Meinung}?|Ý kiến của bạn là gì?|
 n|Mehrheit|die|-en|đa số|Die {Mehrheit} ist dafür.|Đa số ủng hộ.|
 n|Minderheit|die|-en|thiểu số|Die {Minderheit} hat auch Rechte.|Thiểu số cũng có quyền.|
 n|Streik|der|-s|cuộc đình công|Wegen des {Streiks} fahren keine Züge.|Vì đình công nên tàu không chạy.|
@@ -34,10 +32,8 @@ v|abstimmen|||biểu quyết|Wir {stimmen} morgen über das Projekt ab.|Ngày ma
 v|beschließen|||quyết định, thông qua|Das Parlament hat das Gesetz {beschlossen}.|Quốc hội đã thông qua luật.|er beschließt, beschloss, hat beschlossen
 v|fordern|||đòi hỏi|Die Bürger {fordern} mehr Sicherheit.|Người dân đòi hỏi an ninh hơn.|er fordert, hat gefordert
 v|regieren|||cai trị, điều hành|Die Partei {regiert} seit vier Jahren.|Đảng này cầm quyền bốn năm nay.|er regiert, hat regiert
-v|ausfüllen|||điền (đơn)|{Füllen} Sie das Formular bitte aus.|Xin điền vào mẫu đơn.|Động từ tách: er füllt aus, hat ausgefüllt
 v|verlängern|||gia hạn|Ich muss mein Visum {verlängern}.|Tôi phải gia hạn visa.|er verlängert, hat verlängert
 v|streiken|||đình công|Die Piloten {streiken} heute.|Hôm nay phi công đình công.|er streikt, hat gestreikt
-v|diskutieren|||thảo luận|Wir {diskutieren} über die Zukunft.|Chúng tôi thảo luận về tương lai.|er diskutiert, hat diskutiert
 v|sich einsetzen|||đấu tranh vì, vận động cho|Sie {setzt} sich für Kinderrechte ein.|Cô ấy đấu tranh vì quyền trẻ em.|Động từ tách: er setzt sich ein, hat sich eingesetzt; für + Akk
 v|versprechen|||hứa|Der Politiker {verspricht} niedrigere Steuern.|Chính trị gia hứa giảm thuế.|du versprichst, er verspricht, versprach, hat versprochen
 v|gelten|||có hiệu lực; được coi là|Die Regel {gilt} für alle.|Quy định áp dụng cho tất cả.|es gilt, galt, hat gegolten

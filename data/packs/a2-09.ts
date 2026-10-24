@@ -23,9 +23,7 @@ n|Gutschein|der|-e|phiếu quà tặng|Ich schenke ihm einen {Gutschein}.|Tôi t
 v|schenken|||tặng|Was {schenkst} du deiner Mutter?|Bạn tặng mẹ cái gì?|er schenkt, hat geschenkt; schenken + Dativ (người) + Akk (vật)
 v|gratulieren|||chúc mừng|Ich {gratuliere} dir zum Geburtstag!|Chúc mừng sinh nhật bạn!|er gratuliert, hat gratuliert; + Dativ
 v|wünschen|||chúc; mong muốn|Ich {wünsche} dir viel Glück.|Chúc bạn nhiều may mắn.|er wünscht, hat gewünscht
-v|danken|||cảm ơn|Ich {danke} Ihnen für die Hilfe.|Tôi cảm ơn ông/bà đã giúp đỡ.|er dankt, hat gedankt; + Dativ
 v|gehören|||thuộc về|Das Buch {gehört} mir.|Cuốn sách là của tôi.|es gehört, hat gehört; + Dativ
-v|geben|||đưa, cho|Kannst du mir das Salz {geben}?|Bạn đưa giúp tôi lọ muối được không?|du gibst, er gibt, hat gegeben
 v|verpacken|||gói (quà)|Ich {verpacke} das Geschenk.|Tôi gói món quà.|er verpackt, hat verpackt
 v|sich freuen|||vui mừng|Ich {freue} mich über das Geschenk.|Tôi vui vì món quà.|er freut sich, hat sich gefreut; über (đã có) / auf (sắp tới) + Akk
 v|schmücken|||trang trí|Wir {schmücken} den Weihnachtsbaum.|Chúng tôi trang trí cây thông Noel.|er schmückt, hat geschmückt

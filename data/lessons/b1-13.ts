@@ -32,8 +32,8 @@ export default defineStage({
       goal_vi: 'Trình bày quan điểm có lý do và ví dụ; đặt động từ đúng sau các mẫu câu nêu ý kiến.',
       items: [
         'Diskussion', 'Argument', 'Standpunkt', 'Ansicht', 'Beispiel', 'Grund', 'These', 'Thema', 'Gesichtspunkt', 'Tatsache',
-        'Überzeugung', 'Erfahrungsbericht', 'Behauptung', 'Beweis', 'meinen', 'glauben', 'betonen', 'äußern', 'erwähnen',
-        'überzeugt', 'grundsätzlich', 'wahrscheinlich', 'vielleicht', 'tatsächlich', 'meiner Meinung nach',
+        'Überzeugung', 'Erfahrungsbericht', 'Behauptung', 'Beweis', 'betonen', 'äußern', 'erwähnen',
+        'überzeugt', 'grundsätzlich', 'wahrscheinlich', 'tatsächlich', 'meiner Meinung nach',
         'ich bin der Meinung, dass', 'Was halten Sie davon?', 'meiner Meinung nach: động từ ngay sau',
       ],
       grammar: {
@@ -109,8 +109,8 @@ export default defineStage({
       title_vi: 'Đồng ý và phản đối',
       goal_vi: 'Đồng ý, phản đối lịch sự và bổ sung ý trong thảo luận.',
       items: [
-        'Zustimmung', 'Ablehnung', 'Vorschlag', 'Einwand', 'Zweifel', 'Kritikpunkt', 'Gegenargument', 'Gesprächspartner',
-        'Reaktion', 'zustimmen', 'widersprechen', 'ablehnen', 'recht haben', 'sich irren', 'einverstanden sein', 'unterbrechen',
+        'Zustimmung', 'Ablehnung', 'Einwand', 'Zweifel', 'Kritikpunkt', 'Gegenargument', 'Gesprächspartner',
+        'Reaktion', 'zustimmen', 'widersprechen', 'ablehnen', 'recht haben', 'sich irren', 'unterbrechen',
         'ergänzen', 'zuhören', 'nachgeben', 'berechtigt', 'übertrieben', 'einseitig', 'fraglich', 'im Gegenteil',
         'Da bin ich anderer Meinung', 'Das sehe ich genauso', 'Das stimmt nicht ganz', 'Ich gebe dir recht', 'Ich bin dafür',
         'Ich bin dagegen', 'Mẫu câu đồng ý / phản đối',

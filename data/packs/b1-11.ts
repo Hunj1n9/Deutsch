@@ -34,7 +34,6 @@ v|aufführen|||trình diễn|Das Stück wird zum ersten Mal {aufgeführt}.|Vở 
 v|applaudieren|||vỗ tay|Das Publikum {applaudiert}.|Khán giả vỗ tay.|er applaudiert, hat applaudiert
 v|komponieren|||sáng tác (nhạc)|Mozart hat viele Opern {komponiert}.|Mozart đã sáng tác nhiều vở opera.|er komponiert, hat komponiert
 v|darstellen|||miêu tả, thể hiện|Das Bild {stellt} eine Landschaft dar.|Bức tranh miêu tả một phong cảnh.|Động từ tách: er stellt dar, hat dargestellt
-v|beschreiben|||miêu tả|{Beschreiben} Sie das Bild.|Hãy miêu tả bức tranh.|er beschreibt, beschrieb, hat beschrieben
 v|bewerten|||đánh giá|Wie {bewertest} du den Film?|Bạn đánh giá bộ phim thế nào?|er bewertet, hat bewertet
 v|sich amüsieren|||vui chơi|Wir haben uns gut {amüsiert}.|Chúng tôi đã vui chơi thỏa thích.|er amüsiert sich, hat sich amüsiert
 v|sich langweilen|||thấy chán|Im Film habe ich {mich} gelangweilt.|Tôi thấy chán khi xem phim.|er langweilt sich, hat sich gelangweilt

@@ -59,5 +59,20 @@ prep|um|||lúc (giờ)|Ich komme {um} sieben.|Tôi đến lúc bảy giờ.|um +
 g|am / um / im|||giới từ thời gian|Wir treffen uns {am} Freitag.|Chúng ta gặp nhau vào thứ Sáu.|am + thứ, buổi (am Abend); um + giờ; im + tháng, mùa (im Mai, im Winter).
 g|Hỏi giờ: Wie spät ist es?|||hỏi bây giờ là mấy giờ|Wie spät {ist} es? – Es ist zehn Uhr.|Mấy giờ rồi? – Mười giờ.|Cách khác: Wie viel Uhr ist es?
 g|Số 21–99: đơn vị trước, chục sau|||đọc số hai chữ số|Mein Vater ist {dreiundfünfzig}.|Bố tôi năm mươi ba tuổi.|53 = drei-und-fünfzig; viết liền thành một từ.
+n|Sekunde|die|-n|giây|Eine Minute hat 60 {Sekunden}.|Một phút có 60 giây.|
+n|Vormittag|der|-e|buổi sáng (trước trưa)|Am {Vormittag} arbeite ich.|Buổi sáng tôi làm việc.|
+prep|gegen|||khoảng (giờ); chống lại|Ich komme {gegen} acht Uhr.|Tôi đến khoảng tám giờ.|gegen + Akkusativ
+n|Wochentag|der|-e|ngày trong tuần|Montag ist der erste {Wochentag}.|Thứ Hai là ngày đầu tuần.|
+n|März|der|-e|tháng Ba|Im {März} wird es warm.|Tháng Ba trời ấm lên.|Các tháng đều giống đực; im + tháng.
+n|April|der|-e|tháng Tư|Mein Geburtstag ist im {April}.|Sinh nhật tôi vào tháng Tư.|Các tháng đều giống đực; im + tháng.
+n|Juni|der|-s|tháng Sáu|Im {Juni} sind Ferien.|Tháng Sáu là kỳ nghỉ.|Các tháng đều giống đực; im + tháng.
+n|August|der|-e|tháng Tám|Im {August} ist es heiß.|Tháng Tám trời nóng.|Các tháng đều giống đực; im + tháng.
+n|September|der|-|tháng Chín|Die Schule beginnt im {September}.|Trường học bắt đầu vào tháng Chín.|Các tháng đều giống đực; im + tháng.
+n|Oktober|der|-|tháng Mười|Im {Oktober} fahre ich nach Hause.|Tháng Mười tôi về nhà.|Các tháng đều giống đực; im + tháng.
+n|November|der|-|tháng Mười một|Im {November} regnet es viel.|Tháng Mười một mưa nhiều.|Các tháng đều giống đực; im + tháng.
+n|Ende|das|-n|cuối, kết thúc|Am {Ende} der Woche habe ich Zeit.|Cuối tuần tôi có thời gian.|
+adv|zurzeit|||hiện tại, dạo này|{Zurzeit} lerne ich Deutsch.|Dạo này tôi học tiếng Đức.|
+adv|später|||lát nữa, sau|Ich rufe dich {später} an.|Tôi gọi lại cho bạn sau.|
+v|enden|||kết thúc|Der Kurs {endet} im Juli.|Khóa học kết thúc vào tháng Bảy.|er endet, hat geendet
 `;
 export default pack;

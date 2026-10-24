@@ -114,6 +114,7 @@ export default defineStage({
         'Grenze', 'Visum', 'Reisebüro', 'Rucksack', 'Reiseführer', 'Hafen', 'Schiff', 'Tourist', 'Stadtführung', 'ins Ausland',
         'losfahren', 'tanken', 'verpassen', 'sich verlaufen', 'fremd', 'abenteuerlich', 'eine Reise machen',
         'Wir haben Glück gehabt', 'nach / in / zu: đi đâu',
+        'sicher',
       ],
       grammar: {
         point: 'richtung',

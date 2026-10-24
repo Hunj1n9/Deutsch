@@ -206,7 +206,7 @@ export default defineStage({
       items: [
         'Lebensgeschichte', 'Ruhestand', 'Neuanfang', 'gründen', 'sich verändern', 'erinnern an', 'aufgeben', 'verbringen',
         'sich entwickeln', 'erben', 'bereuen', 'sich verabschieden', 'ehemalig', 'unvergesslich', 'erfolgreich', 'bekannt',
-        'prägend', 'inzwischen', 'später', 'zunächst', 'schließlich', 'bereits', 'nachdem', 'seitdem', 'im Laufe der Zeit',
+        'prägend', 'inzwischen', 'zunächst', 'schließlich', 'bereits', 'nachdem', 'seitdem', 'im Laufe der Zeit',
         'eine Familie gründen', 'Abschied nehmen', 'aus eigener Erfahrung', 'Plusquamperfekt: hatte/war + Partizip II',
       ],
       grammar: {

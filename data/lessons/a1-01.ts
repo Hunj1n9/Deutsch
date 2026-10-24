@@ -128,6 +128,7 @@ export default defineStage({
         'Wie geht\'s?', 'Wie geht es Ihnen?', 'Mir geht es gut', 'Ich komme aus', 'Ich wohne in',
         'sein', 'kommen', 'wohnen', 'auch', 'hier', 'neu', 'Vorname', 'Nachname', 'Land', 'Stadt',
         'sein: ich bin, du bist, er ist',
+        'Familienname', 'Buchstabe', 'Formular', 'ausfüllen',
       ],
       grammar: {
         point: 'sein',
@@ -217,6 +218,7 @@ export default defineStage({
         'Wie heißt du?', 'Woher kommst du?', 'Wie heißen Sie?', 'sprechen', 'lernen', 'buchstabieren', 'verstehen',
         'wer', 'wie', 'woher', 'wo', 'Sprache', 'Deutsch', 'Kurs', 'Adresse', 'Telefonnummer',
         'Câu hỏi W: động từ đứng thứ hai', 'Câu hỏi có/không: động từ đứng đầu',
+        'Anrede', 'Gruß', 'Geburtsort', 'männlich', 'weiblich', 'danken',
       ],
       grammar: {
         point: 'w-fragen',

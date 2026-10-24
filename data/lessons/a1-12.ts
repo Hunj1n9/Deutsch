@@ -110,6 +110,7 @@ export default defineStage({
       items: [
         'Firma', 'Büro', 'Chef', 'Kollege', 'Computer', 'E-Mail', 'Gespräch', 'Kunde', 'schreiben', 'sagen', 'erklären',
         'wiederholen', 'antworten', 'üben', 'telefonieren', 'Partizip II bất quy tắc: -en', 'Partizip II không có ge-',
+        'Konto',
       ],
       grammar: {
         point: 'perfekt-wdh',

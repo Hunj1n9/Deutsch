@@ -9,7 +9,6 @@ n|Grund|der|¨-e|lý do|Aus welchem {Grund} bist du dagegen?|Vì lý do gì bạ
 n|These|die|-n|luận điểm|Die {These} ist interessant, aber falsch.|Luận điểm thú vị nhưng sai.|
 n|Zustimmung|die||sự đồng ý|Der Vorschlag fand breite {Zustimmung}.|Đề xuất được đông đảo đồng tình.|
 n|Ablehnung|die|-en|sự phản đối|Die {Ablehnung} war deutlich.|Sự phản đối rất rõ ràng.|
-n|Vorschlag|der|¨-e|đề xuất|Hast du einen besseren {Vorschlag}?|Bạn có đề xuất nào tốt hơn không?|
 n|Einwand|der|¨-e|ý kiến phản bác|Gibt es {Einwände}?|Có ai phản đối không?|
 n|Zweifel|der|-|sự nghi ngờ|Ich habe {Zweifel} an dieser Lösung.|Tôi nghi ngờ giải pháp này.|
 n|Überzeugung|die|-en|niềm tin, sự tin chắc|Das ist meine feste {Überzeugung}.|Đó là niềm tin chắc chắn của tôi.|
@@ -22,8 +21,6 @@ n|Erfahrungsbericht|der|-e|bài chia sẻ kinh nghiệm|Ich habe einen {Erfahrun
 n|Zusammenfassung|die|-en|bản tóm tắt|Hier ist eine kurze {Zusammenfassung}.|Đây là bản tóm tắt ngắn.|
 n|Schluss|der|¨-e|phần kết, kết luận|Zum {Schluss} möchte ich noch etwas sagen.|Cuối cùng tôi muốn nói thêm một điều.|
 n|Kompromisslösung|die|-en|giải pháp thỏa hiệp|Wir brauchen eine {Kompromisslösung}.|Chúng ta cần một giải pháp thỏa hiệp.|
-v|meinen|||cho rằng; ý muốn nói|Was {meinst} du dazu?|Bạn nghĩ sao về điều đó?|er meint, hat gemeint
-v|glauben|||tin, nghĩ rằng|Ich {glaube}, du hast recht.|Tôi nghĩ bạn đúng.|er glaubt, hat geglaubt
 v|zustimmen|||đồng ý|Ich {stimme} dir völlig zu.|Tôi hoàn toàn đồng ý với bạn.|Động từ tách: er stimmt zu, hat zugestimmt; + Dativ
 v|widersprechen|||phản đối, cãi lại|Da muss ich dir {widersprechen}.|Điểm này tôi phải phản đối bạn.|du widersprichst, er widerspricht, hat widersprochen; + Dativ
 v|ablehnen|||từ chối, bác bỏ|Ich {lehne} diesen Vorschlag ab.|Tôi bác bỏ đề xuất này.|Động từ tách: er lehnt ab, hat abgelehnt
@@ -32,7 +29,6 @@ v|betonen|||nhấn mạnh|Ich möchte {betonen}, dass das wichtig ist.|Tôi mu�
 v|zweifeln|||nghi ngờ|Ich {zweifle} daran.|Tôi nghi ngờ điều đó.|er zweifelt, hat gezweifelt; an + Dativ
 v|recht haben|||đúng, có lý|Du {hast} recht.|Bạn đúng.|du hast recht, er hat recht, hat recht gehabt
 v|sich irren|||nhầm lẫn|Da {irrst} du dich.|Chỗ đó bạn nhầm rồi.|er irrt sich, hat sich geirrt
-v|einverstanden sein|||đồng ý|Ich {bin} damit einverstanden.|Tôi đồng ý với điều đó.|einverstanden mit + Dativ
 v|unterbrechen|||ngắt lời|Darf ich kurz {unterbrechen}?|Tôi có thể ngắt lời một chút không?|du unterbrichst, er unterbricht, hat unterbrochen
 v|ergänzen|||bổ sung|Ich möchte noch etwas {ergänzen}.|Tôi muốn bổ sung một điều.|er ergänzt, hat ergänzt
 v|überlegen|||cân nhắc|Ich muss mir das noch {überlegen}.|Tôi phải cân nhắc thêm.|er überlegt, hat überlegt; sich etwas überlegen
@@ -54,7 +50,6 @@ adv|außerdem|||ngoài ra|{Außerdem} ist es zu teuer.|Ngoài ra nó còn quá �
 adv|allerdings|||tuy nhiên|Das ist richtig, {allerdings} gibt es Ausnahmen.|Điều đó đúng, tuy nhiên có ngoại lệ.|
 adv|tatsächlich|||thực sự|Das stimmt {tatsächlich}.|Điều đó thực sự đúng.|
 adv|wahrscheinlich|||có lẽ|Er hat {wahrscheinlich} recht.|Có lẽ anh ấy đúng.|
-adv|vielleicht|||có thể, có lẽ|{Vielleicht} hast du recht.|Có thể bạn đúng.|
 adv|zwar|||tuy rằng|Das ist {zwar} teuer, aber gut.|Tuy đắt nhưng tốt.|zwar … aber
 p|meiner Meinung nach|||theo ý kiến tôi|{Meiner Meinung nach} ist das falsch.|Theo tôi thì điều đó sai.|
 p|ich bin der Meinung, dass|||tôi cho rằng|{Ich bin der Meinung, dass} wir mehr tun müssen.|Tôi cho rằng chúng ta phải làm nhiều hơn.|

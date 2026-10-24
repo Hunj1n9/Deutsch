@@ -51,5 +51,9 @@ g|Động từ đi với giới từ|||warten auf, denken an, sich interessieren
 g|Hỏi về vật: wo(r) + giới từ|||worauf, woran, wofür|{Worauf} wartest du?|Bạn đang chờ gì?|Hỏi về người: Auf wen wartest du?; về vật: Worauf? (thêm r trước nguyên âm).
 g|Thay vật bằng da(r) + giới từ|||darauf, daran, dafür|Ich warte {darauf}.|Tôi đang chờ điều đó.|Chỉ dùng cho vật, sự việc; với người dùng giới từ + đại từ: auf ihn.
 g|zu + Infinitiv|||sau một số động từ, cụm từ|Es ist wichtig, die Datei zu {speichern}.|Lưu tệp là quan trọng.|Sau: vergessen, versuchen, anfangen, Lust haben, es ist wichtig … dùng zu + Infinitiv.
+n|Kontakt|der|-e|liên lạc, liên hệ|Wir bleiben in {Kontakt}!|Chúng ta giữ liên lạc nhé!|
+v|verschieben|||dời lại|Können wir den Termin {verschieben}?|Chúng ta dời cuộc hẹn được không?|er verschiebt, hat verschoben
+v|vereinbaren|||hẹn, thỏa thuận|Ich möchte einen Termin {vereinbaren}.|Tôi muốn đặt một cuộc hẹn.|er vereinbart, hat vereinbart
+v|berichten|||đưa tin, kể lại|Die Zeitung {berichtet} über das Fest.|Tờ báo đưa tin về lễ hội.|er berichtet, hat berichtet; über + Akk
 `;
 export default pack;

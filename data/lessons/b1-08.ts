@@ -112,7 +112,7 @@ export default defineStage({
       items: [
         'Presse', 'Bericht', 'Artikel', 'Schlagzeile', 'Überschrift', 'Journalist', 'Redaktion', 'Nachrichtenagentur', 'Auflage',
         'Leser', 'Leserbrief', 'Kommentar', 'Reportage', 'Regierung', 'Minister', 'Gesetz', 'Meinungsfreiheit', 'veröffentlichen',
-        'erscheinen', 'berichten', 'politisch', 'wirtschaftlich', 'international', 'regional', 'unabhängig', 'Stellung nehmen',
+        'erscheinen', 'politisch', 'wirtschaftlich', 'international', 'regional', 'unabhängig', 'Stellung nehmen',
         'in die Schlagzeilen geraten', 'Schlagzeilen machen', 'Genitiv của danh từ',
       ],
       grammar: {
@@ -192,7 +192,7 @@ export default defineStage({
       title_vi: 'Tin thật hay tin giả?',
       goal_vi: 'Đánh giá nguồn tin, thống kê; dùng câu hỏi gián tiếp với ob và từ hỏi.',
       items: [
-        'Interview', 'Quelle', 'Information', 'Meldung', 'Umfrage', 'Statistik', 'Prozent', 'Nachrichtensendung', 'Falschmeldung',
+        'Interview', 'Quelle', 'Meldung', 'Umfrage', 'Statistik', 'Prozent', 'Nachrichtensendung', 'Falschmeldung',
         'melden', 'befragen', 'informieren', 'sich informieren', 'bestätigen', 'behaupten', 'vermuten', 'verbreiten', 'objektiv',
         'seriös', 'glaubwürdig', 'reißerisch', 'zahlreich', 'laut: theo (nguồn tin)', 'angeblich', 'offenbar',
       ],

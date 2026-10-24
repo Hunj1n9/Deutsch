@@ -7,7 +7,6 @@ n|Schlagzeile|die|-n|tiêu đề báo|Die {Schlagzeile} ist sehr reißerisch.|Ti
 n|Journalist|der|-en|nhà báo (nam)|Der {Journalist} interviewt den Minister.|Nhà báo phỏng vấn bộ trưởng.|n-Deklination. Nữ: die Journalistin.
 n|Interview|das|-s|cuộc phỏng vấn|Das {Interview} erscheint morgen.|Bài phỏng vấn sẽ đăng ngày mai.|
 n|Quelle|die|-n|nguồn (tin)|Die {Quelle} ist zuverlässig.|Nguồn tin đáng tin cậy.|
-n|Information|die|-en|thông tin|Wo bekomme ich weitere {Informationen}?|Tôi lấy thêm thông tin ở đâu?|
 n|Meldung|die|-en|tin ngắn, thông báo|Laut einer {Meldung} gab es ein Erdbeben.|Theo một bản tin đã có động đất.|
 n|Zeuge|der|-n|nhân chứng (nam)|Der {Zeuge} hat alles gesehen.|Nhân chứng đã thấy mọi chuyện.|n-Deklination. Nữ: die Zeugin.
 n|Polizeibericht|der|-e|báo cáo của cảnh sát|Im {Polizeibericht} steht nichts davon.|Báo cáo của cảnh sát không ghi điều đó.|
@@ -29,7 +28,6 @@ n|Leser|der|-|độc giả|Die {Leser} schreiben viele Briefe.|Độc giả vi�
 n|Nachrichtensendung|die|-en|chương trình thời sự|Um 20 Uhr kommt die {Nachrichtensendung}.|20 giờ có chương trình thời sự.|
 n|Falschmeldung|die|-en|tin giả|Im Internet gibt es viele {Falschmeldungen}.|Trên mạng có nhiều tin giả.|Cũng nói: Fake News.
 n|Meinungsfreiheit|die||tự do ngôn luận|{Meinungsfreiheit} ist ein Grundrecht.|Tự do ngôn luận là quyền cơ bản.|
-v|berichten|||đưa tin, tường thuật|Die Zeitung {berichtet} über den Streik.|Tờ báo đưa tin về cuộc đình công.|er berichtet, hat berichtet; über + Akk
 v|veröffentlichen|||công bố, xuất bản|Die Studie wurde gestern {veröffentlicht}.|Nghiên cứu được công bố hôm qua.|er veröffentlicht, hat veröffentlicht
 v|erscheinen|||xuất hiện; được phát hành|Die Zeitschrift {erscheint} monatlich.|Tạp chí ra hằng tháng.|er erscheint, erschien, ist erschienen
 v|melden|||báo, thông báo|Die Polizei {meldete} einen Unfall.|Cảnh sát thông báo một vụ tai nạn.|er meldet, hat gemeldet
