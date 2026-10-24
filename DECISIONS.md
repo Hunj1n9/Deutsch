@@ -12,3 +12,12 @@
 - 2026-10-24 · Next 16 bật sẵn `cacheComponents`; giữ nguyên. Trang đọc request (cookie, searchParams) đặt trong `<Suspense>`.
 - 2026-10-24 · Gửi mail đăng nhập qua SMTP Gmail của chính người dùng (mật khẩu ứng dụng, chỉ nhập trên dashboard Supabase, không khai trong `config.toml`). Nhờ có SMTP riêng, mẫu email có cả link `token_hash` và mã 6 số đã bật.
 - 2026-10-24 · Vercel chạy hàm ở `syd1` (Sydney), cùng vùng với Supabase `ap-southeast-2`: proxy gọi Supabase mỗi lần chuyển trang (khóa legacy nên getClaims phải hỏi máy chủ), đặt xa sẽ chậm.
+- 2026-10-25 · Loại từ (danh từ, động từ…) lưu trong `items.tags` dạng `pos:noun`, không thêm cột. Chưa biết loại thì coi một từ đơn viết hoa chữ đầu là danh từ (tiếng Đức viết hoa mọi danh từ); người dùng đổi được ở ô "Loại từ".
+- 2026-10-25 · Chỗ trống của thẻ cloze đánh dấu bằng `{…}` ngay trong `example_de` (vd `Ich fahre mit {dem} Bus.`); hiển thị và đọc to thì bỏ ngoặc. Không đánh dấu thì tự tìm từ cần học (trọn từ, không phân biệt hoa thường). P1 được dặn luôn đánh dấu từ cần học, kể cả dạng chia (`Er {fährt}…`).
+- 2026-10-25 · Tạo nguồn ngay trong form Thêm (SPEC để quản lý nguồn ở M6 nhưng M2 đã cần chọn nguồn). Nguồn vừa dùng ghi vào `settings.current_source_id` để lần sau chọn sẵn.
+- 2026-10-25 · "Gộp" khi trùng: ô nào của mục mới có nội dung thì ghi đè lên mục cũ, ô trống giữ cũ; giữ loại, nguồn, cấp độ, thẻ và lịch ôn cũ; thêm loại thẻ còn thiếu (vd câu mới có chỗ trống → thêm cloze).
+- 2026-10-25 · Mặc định khi trùng: trùng mục đã lưu → Gộp (không mất gì); trùng dòng phía trên trong cùng lô → Bỏ dòng. Người dùng đổi được từng dòng.
+- 2026-10-25 · Nhập hàng loạt chỉ gửi AI các dòng thiếu nghĩa hoặc danh từ thiếu mạo từ; AI chỉ điền ô trống, không ghi đè chữ người dùng gõ. Có dòng tiêu đề TSV vẫn nhận dòng dạng chữ xen giữa để dán hỗn hợp được.
+- 2026-10-25 · `der/die/das` đầu dòng chỉ được tách làm mạo từ khi theo sau là một danh từ viết hoa, để cụm như `das heißt` giữ nguyên.
+- 2026-10-25 · Gọi AI: model đời mới không nhận `tool_choice` any/tool và không nhận `temperature` (lỗi 400), nên dùng `tool_choice: auto` + tool `strict` + dặn trong prompt, `effort: low` thay cho nhiệt độ thấp; bật dự phòng phía máy chủ (`fallbacks: "default"`) khi model chính từ chối. SDK tự thử lại 2 lần có giãn cách, timeout 30 giây mỗi lần.
+- 2026-10-25 · Thêm hàm SQL `save_items` (lưu mục + thẻ trong một giao dịch) và `find_item_duplicates` (tìm trùng không phân biệt hoa thường); cả hai `security invoker` nên RLS vẫn áp dụng. Không sửa bảng.

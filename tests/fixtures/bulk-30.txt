@@ -1,0 +1,31 @@
+german	article	plural	vietnamese	example_de	example_vi
+Fenster	das	-	cửa sổ	Das Fenster ist offen.	Cửa sổ đang mở.
+Stuhl	der	¨-e	cái ghế	Der Stuhl ist neu.	Cái ghế còn mới.
+Lampe	die	-n	cái đèn		
+wohnen			sống, ở	Ich wohne in Hanoi.	Tôi sống ở Hà Nội.
+schnell			nhanh	Der Zug ist schnell.	Tàu chạy nhanh.
+Guten Morgen			chào buổi sáng	Guten Morgen, Frau Weber!	Chào buổi sáng, cô Weber!
+Zimmer	das	-	căn phòng	Mein Zimmer ist klein.	Phòng của tôi nhỏ.
+Brot	das	-e	bánh mì		
+kaufen			mua	Wir kaufen heute Brot.	Hôm nay chúng tôi mua bánh mì.
+Straße	die	-n	con đường	Die Straße ist lang.	Con đường dài.
+der Tisch, -e = cái bàn
+die Tür, -en = cánh cửa
+das Buch, ¨-er = quyển sách
+der Apfel, ¨ = quả táo
+die Stadt, ¨-e = thành phố
+das Auto, -s = ô tô
+der Lehrer, - = thầy giáo
+die Woche, -n = tuần
+das Kind, -er = đứa trẻ
+der Bahnhof, ¨-e = nhà ga
+Schlüssel
+Küche
+Geld
+lernen
+fahren
+müde
+zum Beispiel
+Wie spät ist es?
+Freund, -e
+heute = hôm nay
