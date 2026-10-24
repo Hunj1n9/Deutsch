@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { ActivityTracker } from '@/components/ActivityTracker';
 import { PageHeader } from '@/components/PageHeader';
 import { TutorChat, type ChatMessage, type ThreadOption } from '@/components/tutor/TutorChat';
 import { uuidSchema } from '@/lib/items/input';
@@ -11,6 +12,7 @@ export default function Page({ searchParams }: PageProps<'/tutor'>) {
   return (
     <>
       <PageHeader title="Gia sư" />
+      <ActivityTracker activity="tutor" />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <Chat searchParams={searchParams} />
       </Suspense>

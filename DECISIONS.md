@@ -37,3 +37,9 @@
 - 2026-10-24 · Gia sư stream qua route `POST /api/tutor` (trả chữ thuần, mã luồng ở header `x-thread-id`), vì server action không stream được. Thay "nhiệt độ 0.7" bằng `effort: medium` (API không nhận temperature). Gửi lại tối đa 20 lượt gần nhất làm lịch sử.
 - 2026-10-24 · Câu ví dụ tiếng Đức trong câu trả lời của gia sư được dặn viết trên dòng riêng `DE: …` kèm `VI: …`, để app nhận ra và gắn nút "Lưu thành thẻ" (mở form Thêm điền sẵn).
 - 2026-10-24 · "Lưu lỗi này" ở tin nhắn người học: chạy P2 trên tin nhắn đó (chỉ kiểm phần tiếng Đức) rồi ghi lỗi nguồn `tutor`, để khóa lỗi nhất quán với lỗi từ bài viết. Nút hiện ở tin nhắn có dấu hiệu tiếng Đức.
+- 2026-10-24 · Đo giờ học: nhịp đầu tiên gửi ngay khi bắt đầu thao tác (mở phiên, 0 giây), mỗi nhịp sau cộng khoảng cách tới nhịp trước, tối đa 30 giây; cách quá 45 giây thì mở phiên mới. Nhờ vậy treo máy chỉ được cộng tối đa 120 giây (thời gian client còn gửi nhịp).
+- 2026-10-24 · Tốc độ dự báo lấy trung bình 4 tuần trọn gần nhất, không tính tuần đang dở (tuần dở kéo tốc độ xuống thấp giả). Một ngày tính là "đã học" khi có ít nhất 1 phút.
+- 2026-10-24 · Đề "Viết 5 câu" do AI sinh, cache theo ngày bằng `'use cache'` (bộ nhớ của server, có thể sinh lại khi server khởi động lại); AI lỗi thì dùng đề mặc định.
+- 2026-10-24 · Báo cáo tuần là báo cáo của tuần hiện tại (thứ Hai → Chủ nhật, gợi ý tạo vào Chủ nhật); tạo lại trong tuần thì ghi đè. Bảng `weekly_reports` chỉ có `summary_vi`, nên 3 điều chỉnh lưu trong `stats.adjustments`.
+- 2026-10-24 · Nhập dữ liệu qua hàm SQL `import_backup` (một giao dịch, giữ nguyên id, thay user_id bằng người đang đăng nhập); chỉ chạy khi tài khoản chưa có dữ liệu học. Dòng `settings` mặc định được thay bằng dòng trong file. File gửi qua route `/api/backup` (Vercel giới hạn thân request 4,5 MB).
+- 2026-10-24 · Xóa nguồn không xóa mục: khóa ngoại `on delete set null`, nếu là nguồn đang học thì bỏ chọn trong settings trước.

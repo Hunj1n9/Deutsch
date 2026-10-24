@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { ActivityTracker } from '@/components/ActivityTracker';
 import { Icon } from '@/components/Icon';
 import { ReviewSession } from '@/components/review/ReviewSession';
 import { loadReviewSession, REVIEW_KINDS } from '@/lib/review/load';
@@ -19,6 +20,7 @@ export default function Page() {
         </Link>
         <h1 className="text-[22px] font-bold">Ôn tập</h1>
       </header>
+      <ActivityTracker activity="review" />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang lấy thẻ…</p>}>
         <SessionContent />
       </Suspense>

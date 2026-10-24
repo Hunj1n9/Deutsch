@@ -19,8 +19,8 @@ export function WeeklyBars({
   const last = values.length - 1;
   return (
     <figure className="rounded-[20px] bg-surface p-4">
-      <figcaption className="mb-3 text-[13px] font-semibold text-muted">{title}</figcaption>
-      <div className="flex h-28 items-end gap-[2px] border-b border-line" aria-hidden>
+      <figcaption className="text-[13px] font-semibold text-muted">{title}</figcaption>
+      <div className="mt-6 flex h-28 items-end gap-[2px] border-b border-line" aria-hidden>
         {values.map((v, i) => (
           <div key={i} className="group relative flex h-full flex-1 items-end justify-center" title={`${labels[i]}: ${format(v)}${unit}`}>
             <div
@@ -28,7 +28,7 @@ export function WeeklyBars({
               style={{ height: `${(v / max) * 100}%`, minHeight: v > 0 ? 2 : 0 }}
             />
             {i === last && (
-              <span className="absolute -top-5 text-[12px] font-semibold text-ink">
+              <span className="absolute -top-5 right-0 whitespace-nowrap text-[12px] font-semibold text-ink">
                 {format(v)}
                 {unit}
               </span>

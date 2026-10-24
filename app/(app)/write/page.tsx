@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { ActivityTracker } from '@/components/ActivityTracker';
 import { PageHeader } from '@/components/PageHeader';
 import { WritingChecker } from '@/components/write/WritingChecker';
 
@@ -9,6 +10,7 @@ export default function Page({ searchParams }: PageProps<'/write'>) {
   return (
     <>
       <PageHeader title="Viết" />
+      <ActivityTracker activity="writing" />
       <Suspense fallback={null}>
         <Checker searchParams={searchParams} />
       </Suspense>
