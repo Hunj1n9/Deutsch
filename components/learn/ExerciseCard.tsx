@@ -6,7 +6,7 @@ import { judgeExerciseAction } from '@/app/(app)/learn/actions';
 import type { AnswerFlag } from '@/lib/answer-check';
 import { fullSentence, gradeExercise, hashSeed, shuffledChunks } from '@/lib/course/grade';
 import { KIND_VI, type Exercise } from '@/lib/course/types';
-import { canSpeak, speakGerman } from '../review/speech';
+import { speakGerman, useCanSpeak } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
 
@@ -24,6 +24,7 @@ export const answerInputClass =
 /** Phần đề của bài tập (dùng cả ở bài học và kiểm tra chặng; không lộ đáp án). */
 export function ExercisePrompt({ exercise }: { exercise: Exercise }) {
   const e = exercise;
+  const speakable = useCanSpeak();
   const label = <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">{KIND_VI[e.kind]}</p>;
   switch (e.kind) {
     case 'fill': {
@@ -90,7 +91,7 @@ export function ExercisePrompt({ exercise }: { exercise: Exercise }) {
           <button
             type="button"
             onClick={() => speakGerman(e.answers[0], 0.8)}
-            disabled={!canSpeak()}
+            disabled={!speakable}
             className="flex h-16 items-center justify-center gap-2 rounded-full bg-primary text-[18px] font-semibold text-on-primary"
           >
             ▶ Nghe lại
@@ -271,6 +272,7 @@ export function ExerciseCard({
     null,
   );
   const nextRef = useRef<HTMLButtonElement>(null);
+  const speakable = useCanSpeak();
 
   useEffect(() => {
     if (result) nextRef.current?.focus({ preventScroll: true });
@@ -342,7 +344,7 @@ export function ExerciseCard({
             {exercise.explain_vi && <p className="mt-2 text-[15px]">{exercise.explain_vi}</p>}
           </div>
           <div className="flex gap-2">
-            {german && canSpeak() && (
+            {german && speakable && (
               <button type="button" onClick={() => speakGerman(full)} className={`${secondaryClass} flex-1`}>
                 ▶ Nghe
               </button>

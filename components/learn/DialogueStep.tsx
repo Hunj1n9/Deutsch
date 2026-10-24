@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import type { Exercise, Lesson } from '@/lib/course/types';
-import { canSpeak, speakDialogue, speakGerman, stopSpeaking } from '../review/speech';
+import { speakDialogue, speakGerman, stopSpeaking, useCanSpeak } from '../review/speech';
 import { primaryClass, secondaryClass } from '../ui';
 import { ExerciseCard } from './ExerciseCard';
 
@@ -28,6 +28,7 @@ export function DialogueStep({
   const [index, setIndex] = useState(0);
   const [speaking, setSpeaking] = useState(-1);
   const [shown, setShown] = useState<Set<number>>(new Set());
+  const speakable = useCanSpeak();
 
   useEffect(() => stopSpeaking, []);
 
@@ -40,7 +41,7 @@ export function DialogueStep({
 
   const player = (
     <div className="flex gap-2">
-      <button type="button" onClick={playAll} disabled={!canSpeak()} className={`${primaryClass} flex-[2]`}>
+      <button type="button" onClick={playAll} disabled={!speakable} className={`${primaryClass} flex-[2]`}>
         {speaking >= 0 ? `Đang đọc dòng ${speaking + 1}/${d.lines.length}…` : '▶ Nghe hội thoại'}
       </button>
       {speaking >= 0 && (
@@ -59,7 +60,7 @@ export function DialogueStep({
           {d.title_de} · nghe, chưa xem chữ · câu hỏi {index + 1}/{d.questions.length}
         </p>
         {player}
-        {!canSpeak() && <p className="text-[14px] text-muted">Trình duyệt không đọc được tiếng Đức; hãy xem chữ ở bước sau.</p>}
+        {!speakable && <p className="text-[14px] text-muted">Trình duyệt không đọc được tiếng Đức; hãy xem chữ ở bước sau.</p>}
         <ExerciseCard
           key={q.id}
           exercise={q}

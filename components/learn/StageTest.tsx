@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { submitStageTestAction, type TestReview } from '@/app/(app)/learn/actions';
 import type { TestOutcome, TestView } from '@/lib/course/stage-test';
-import { canSpeak, speakGerman } from '../review/speech';
+import { speakGerman, useCanSpeak } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { errorBoxClass, noticeBoxClass, primaryClass, secondaryClass } from '../ui';
 import { AnswerInput, answerInputClass, ExercisePrompt } from './ExerciseCard';
@@ -227,6 +227,7 @@ function ReadingText({ reading }: { reading: Reading }) {
 function TestQuestionView({ q, initial, onAnswer }: { q: TestView; initial: string; onAnswer: (v: string) => void }) {
   const [text, setText] = useState(initial);
   const inputRef = useRef<HTMLInputElement>(null);
+  const speakable = useCanSpeak();
   useEffect(() => {
     if (q.section === 'vocab' && q.mode === 'listen') speakGerman(q.speak);
     inputRef.current?.focus({ preventScroll: true });
@@ -258,7 +259,7 @@ function TestQuestionView({ q, initial, onAnswer }: { q: TestView; initial: stri
             <button
               type="button"
               onClick={() => speakGerman(q.speak, 0.8)}
-              disabled={!canSpeak()}
+              disabled={!speakable}
               className="mt-2 flex h-16 w-full items-center justify-center rounded-full bg-primary text-[18px] font-semibold text-on-primary"
             >
               ▶ Nghe lại

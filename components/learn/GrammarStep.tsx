@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { finishGrammarAction, lessonMistakeAction } from '@/app/(app)/learn/actions';
 import type { Exercise, GrammarPoint, Lesson } from '@/lib/course/types';
-import { canSpeak, speakGerman } from '../review/speech';
+import { speakGerman, useCanSpeak } from '../review/speech';
 import { primaryClass } from '../ui';
 import { ExerciseCard, type ExerciseOutcome } from './ExerciseCard';
 import { RichText, SimpleTable } from './RichText';
@@ -42,6 +42,7 @@ export function GrammarStep({
   }, [lesson]);
   const [queue, setQueue] = useState(initial);
   const [pos, setPos] = useState(0);
+  const speakable = useCanSpeak();
   const entry = queue[pos];
   const exercisesTotal = initial.filter((e) => e.t === 'exercise').length;
   const doneCount = queue.slice(0, pos).filter((e) => e.t === 'exercise' && !e.retry).length;
@@ -94,7 +95,7 @@ export function GrammarStep({
                   <button
                     type="button"
                     onClick={() => speakGerman(de)}
-                    disabled={!canSpeak()}
+                    disabled={!speakable}
                     className="text-left text-[18px] font-semibold"
                     lang="de"
                   >

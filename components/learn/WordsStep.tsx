@@ -6,7 +6,7 @@ import { checkAnswer, type AnswerFlag, type CheckResult } from '@/lib/answer-che
 import { hashSeed, shuffled } from '@/lib/course/grade';
 import type { Article } from '@/lib/items/types';
 import { ArticleChip } from '../ArticleChip';
-import { canSpeak, speakGerman } from '../review/speech';
+import { speakGerman, useCanSpeak } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
 import { answerInputClass, FLAG_VI } from './ExerciseCard';
@@ -63,6 +63,7 @@ export function WordsStep({
   const [input, setInput] = useState('');
   const [answered, setAnswered] = useState<{ result: CheckResult; given: string } | null>(null);
   const [pending, setPending] = useState(0);
+  const speakable = useCanSpeak();
   const results = useRef(new Map<string, Result>());
   const shownAt = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -193,12 +194,12 @@ export function WordsStep({
           {introWord.note && <p className="mt-2 text-[14px] opacity-80">{introWord.note}</p>}
         </section>
         <div className="flex gap-2">
-          {canSpeak() && (
+          {speakable && (
             <button type="button" onClick={() => speakGerman(full(introWord))} className={`${secondaryClass} flex-1`}>
               ▶ Từ
             </button>
           )}
-          {canSpeak() && introWord.example && (
+          {speakable && introWord.example && (
             <button type="button" onClick={() => speakGerman(introWord.example!)} className={`${secondaryClass} flex-1`}>
               ▶ Câu
             </button>

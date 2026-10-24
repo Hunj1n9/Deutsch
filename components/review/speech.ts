@@ -1,5 +1,7 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
+
 /**
  * Đọc to tiếng Đức bằng giọng có sẵn của trình duyệt (Web Speech API), không cần lưu file âm thanh (DECISIONS.md).
  */
@@ -14,6 +16,13 @@ function germanVoice(): SpeechSynthesisVoice | null {
 
 export function canSpeak(): boolean {
   return typeof window !== 'undefined' && 'speechSynthesis' in window;
+}
+
+const noopSubscribe = () => () => {};
+
+/** Dùng khi giá trị ảnh hưởng tới markup: server và lần hydrate đầu luôn là `false`, tránh lệch hydration. */
+export function useCanSpeak(): boolean {
+  return useSyncExternalStore(noopSubscribe, canSpeak, () => false);
 }
 
 export function speakGerman(text: string, rate = 0.9): void {

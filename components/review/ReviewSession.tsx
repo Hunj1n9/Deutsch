@@ -10,7 +10,7 @@ import { formatInterval, previewIntervals, RATING_VI, type CardState, type Ratin
 import { ArticleChip } from '../ArticleChip';
 import { UmlautBar } from '../UmlautBar';
 import { errorBoxClass, primaryClass, secondaryClass } from '../ui';
-import { canSpeak, speakGerman } from './speech';
+import { speakGerman, useCanSpeak } from './speech';
 
 const FLAG_VI: Record<AnswerFlag, string> = {
   umlaut_fallback: 'Viết ae/oe/ue thay cho ä/ö/ü',
@@ -303,6 +303,7 @@ function CardFront({
   onHint: () => void;
 }) {
   const face = view.face;
+  const speakable = useCanSpeak();
   return (
     <div className="flex min-h-[132px] flex-col justify-center gap-2">
       <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
@@ -322,7 +323,7 @@ function CardFront({
         <button
           type="button"
           onClick={() => speakGerman(face.speak)}
-          disabled={!canSpeak()}
+          disabled={!speakable}
           className="flex h-16 items-center justify-center gap-2 rounded-full bg-primary text-[18px] font-semibold text-on-primary"
         >
           ▶ Nghe lại
@@ -371,6 +372,7 @@ function ResultPanel({
 }) {
   const { result, given, suggested, note } = answered;
   const isErrorFix = view.face.kind === 'error_fix';
+  const speakable = useCanSpeak();
   return (
     <div className="flex flex-col gap-3">
       <div className={`rounded-[20px] p-4 ${result.correct ? 'bg-pastel-sage' : 'bg-pastel-pink'}`} role="status">
@@ -409,7 +411,7 @@ function ResultPanel({
         {view.exampleVi && <p className="text-[14px] text-muted">{view.exampleVi}</p>}
         {card.item.grammar_note_vi && <p className="mt-2 text-[14px] text-muted">{card.item.grammar_note_vi}</p>}
         <div className="mt-3 flex gap-2">
-          {canSpeak() && (
+          {speakable && (
             <button type="button" onClick={() => speakGerman(view.speak)} className={`${secondaryClass} flex-1`}>
               ▶ Nghe
             </button>
