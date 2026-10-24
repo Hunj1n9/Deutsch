@@ -68,6 +68,9 @@ describe('dữ liệu lộ trình và gói từ (TCHT F10)', () => {
         if (!hasClozeMarker(d.example_de) || clozeMarkerError(d.example_de)) problems.push(`${tag}: câu ví dụ thiếu {…}`);
         if (!d.example_vi || /[{}]/.test(d.example_vi)) problems.push(`${tag}: thiếu bản dịch hoặc bản dịch có {}`);
         if (d.pos === 'verb' && !d.grammar_note_vi) problems.push(`${tag}: động từ thiếu dạng chia`);
+        if (d.type !== 'grammar' && /[()]/.test(d.german)) problems.push(`${tag}: tiếng Đức có ngoặc (khó gõ đáp án)`);
+        if (/placeholder/i.test(JSON.stringify(d))) problems.push(`${tag}: còn chỗ giữ chỗ`);
+        if (/\p{L}\{|\}\p{L}/u.test(d.example_de)) problems.push(`${tag}: chỗ trống dính vào giữa từ`);
         const kinds = cardKindsFor(d);
         const expected = d.type === 'grammar' ? 1 : 3;
         if (kinds.length !== expected) problems.push(`${tag}: ${kinds.length} thẻ`);

@@ -11,6 +11,18 @@ import p_a1_09 from './a1-09';
 import p_a1_10 from './a1-10';
 import p_a1_11 from './a1-11';
 import p_a1_12 from './a1-12';
+import p_a2_01 from './a2-01';
+import p_a2_02 from './a2-02';
+import p_a2_03 from './a2-03';
+import p_a2_04 from './a2-04';
+import p_a2_05 from './a2-05';
+import p_a2_06 from './a2-06';
+import p_a2_07 from './a2-07';
+import p_a2_08 from './a2-08';
+import p_a2_09 from './a2-09';
+import p_a2_10 from './a2-10';
+import p_a2_11 from './a2-11';
+import p_a2_12 from './a2-12';
 
 /** Mã chặng → nội dung gói (F10). */
 export const PACKS: Record<string, string> = {
@@ -26,4 +38,16 @@ export const PACKS: Record<string, string> = {
   'a1-10': p_a1_10,
   'a1-11': p_a1_11,
   'a1-12': p_a1_12,
+  'a2-01': p_a2_01,
+  'a2-02': p_a2_02,
+  'a2-03': p_a2_03,
+  'a2-04': p_a2_04,
+  'a2-05': p_a2_05,
+  'a2-06': p_a2_06,
+  'a2-07': p_a2_07,
+  'a2-08': p_a2_08,
+  'a2-09': p_a2_09,
+  'a2-10': p_a2_10,
+  'a2-11': p_a2_11,
+  'a2-12': p_a2_12,
 };
