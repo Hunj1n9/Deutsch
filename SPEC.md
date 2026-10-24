@@ -29,12 +29,15 @@
 - F10 Lộ trình A1 → B2 và gói từ tự viết (thêm 2026-10-24)
 - F11 Bài học theo chặng (thêm 2026-10-24)
 - F12 Kiểm tra chặng (thêm 2026-10-24)
+- F13 Báo nội dung sai (thêm 2026-10-25)
+- F14 Thi thử cuối cấp (thêm 2026-10-25)
+- F15 Nói theo có ghi âm, không chấm (thêm 2026-10-25)
 
 ### Ngoài phạm vi (KHÔNG làm ở giai đoạn 1)
 - Chấm phát âm đến âm vị (giai đoạn A1–A2, dùng Azure Pronunciation Assessment de-DE)
-- Chấm bài viết dài theo thang Goethe/TestDaF, thi thử, mô phỏng TestDaF (giai đoạn B1–C1). Kiểm tra chặng (F12) không phải thi thử: chỉ kiểm nội dung của một chặng.
+- Chấm bài viết dài theo thang Goethe/TestDaF, đề thi thử theo đúng định dạng Goethe/TestDaF, mô phỏng TestDaF (giai đoạn B1–C1). Kiểm tra chặng (F12) chỉ kiểm nội dung của một chặng; thi thử cuối cấp (F14) chỉ trộn câu từ kho của các chặng trong cấp, không theo định dạng đề thi thật.
 - Bài học C1 (lộ trình F10 dừng ở B2)
-- Luyện nói có chấm (ghi âm, chấm phát âm); bài học chỉ có nghe bằng giọng đọc của trình duyệt
+- Luyện nói có chấm (chấm phát âm, chấm câu nói). Bài học chỉ có nghe bằng giọng đọc của trình duyệt và nói theo có ghi âm để tự nghe lại (F15); bản ghi không lưu, không gửi đi, không chấm
 - Chạy offline, app di động gốc, nhiều người dùng, thanh toán, mạng xã hội, xếp hạng, huy hiệu, trò chơi
 
 ## 3. Công nghệ
@@ -267,6 +270,30 @@ create table stage_tests (
   taken_at timestamptz not null default now()
 );
 create index on stage_tests (user_id, stage_id, taken_at desc);
+
+-- Báo nội dung sai (F13; thêm ở M16)
+create table content_reports (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  target text not null,                   -- chỗ bị báo, vd 'exercise:a1-01-1.g0.2', 'word:a1-01:Tisch'
+  excerpt text not null,                  -- nội dung lúc báo (đọc được cả khi dữ liệu đã sửa)
+  note text,                              -- người học ghi sai ở đâu (không bắt buộc)
+  created_at timestamptz not null default now(),
+  resolved_at timestamptz                 -- null = đang mở
+);
+
+-- Thi thử cuối cấp (F14; thêm ở M18)
+create table level_tests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  level cefr_level not null,
+  score smallint not null,
+  total smallint not null,
+  passed boolean not null,
+  answers jsonb not null,                 -- như stage_tests.answers
+  taken_at timestamptz not null default now()
+);
+create index on level_tests (user_id, level, taken_at desc);
 ```
 
 ## 5. Tính năng
@@ -549,6 +576,44 @@ TCHT:
 - Đạt kiểm tra A1-02 trước khi học: các bài A1-02 thành `skipped`, mục được nhập, A1-03 thành chặng hiện tại.
 - Làm kiểm tra ở 375px trọn luồng, không lộ đáp án trước khi nộp.
 
+### F13. Báo nội dung sai (thêm 2026-10-25)
+Nội dung gói từ và bài học do AI soạn, chưa có người bản xứ duyệt. Người học cần ghi lại ngay chỗ nghi sai để sửa dữ liệu sau, không phải nhớ hay chụp màn hình.
+- **Nút "Báo sai"** (chữ nhỏ, không chiếm chỗ) ở: thẻ giới thiệu từ (bước Từ mới), mỗi đoạn giải thích ngữ pháp, mỗi bài tập sau khi đã trả lời (cả câu hỏi hiểu và chép chính tả), mỗi dòng hội thoại khi đã hiện chữ, mỗi câu sai trong kết quả kiểm tra chặng (F12) và thi thử (F14).
+- Bấm thì mở ô ghi chú (không bắt buộc, ≤ 500 ký tự) và nút Gửi. Lưu một dòng `content_reports`: `target` là mã chỗ báo (`word:<chặng>:<khóa mục>`, `grammar:<bài>:<đoạn>`, `exercise:<mã bài tập>`, `dialogue:<bài>:<dòng>`, `test:<mã câu>`), `excerpt` là nội dung đang hiện lúc báo.
+- Báo lại một chỗ đang mở thì cập nhật ghi chú và nội dung của dòng cũ, không thêm dòng.
+- **`/settings`, khối "Nội dung đã báo":** danh sách đang mở, mới nhất trước; mỗi dòng có "Đã sửa" (đặt `resolved_at`) và "Xóa". Nút "Sao chép danh sách" chép văn bản thuần (mỗi chỗ một dòng: mã · nội dung · ghi chú) để dán cho người sửa dữ liệu. Có số lượng đã sửa để tham khảo.
+- Có trong sao lưu (F9).
+
+TCHT:
+- Unit test: tạo và đọc mã chỗ báo, định dạng văn bản sao chép.
+- Báo một bài tập ở 375px thì dòng đó hiện ở `/settings`; báo lại cùng chỗ không thêm dòng; "Đã sửa" thì dòng rời danh sách đang mở.
+- Xuất rồi nhập sao lưu giữ nguyên các dòng báo.
+
+### F14. Thi thử cuối cấp (thêm 2026-10-25)
+Một đề dài hơn kiểm tra chặng để biết đã vững cả cấp chưa trước khi lên cấp sau. Không phải đề theo định dạng Goethe.
+- Có cho mỗi cấp mà mọi chặng đã có bài và kiểm tra (F11, F12). **Đề 40 câu**, rút ngẫu nhiên mỗi lần làm từ dữ liệu sẵn có của các chặng trong cấp:
+  - 12 câu từ vựng (9 Việt→Đức, 3 nghe chép) rút từ mục từ của các gói trong cấp.
+  - 22 câu ngữ pháp rút từ kho câu kiểm tra chặng: chọn ngẫu nhiên 22 điểm ngữ pháp khác nhau của cấp, mỗi điểm một câu.
+  - 6 câu đọc hiểu: 2 bài đọc của 2 chặng khác nhau, mỗi bài 3 câu.
+- Như F12: không gợi ý, không hiện đáp án trước khi nộp, server chấm lại theo mã câu. Có đồng hồ thời gian đã làm (không giới hạn giờ).
+- **Đạt khi đúng ≥ 60% (24/40)**, như ngưỡng đạt của Goethe. Kết quả: điểm từng phần (từ vựng, ngữ pháp, đọc), các câu sai kèm đáp án, các điểm ngữ pháp sai kèm link bài tương ứng.
+- Mỗi lần làm lưu vào `level_tests`. Câu ngữ pháp sai ghi sổ lỗi như F12. Thi thử không đổi trạng thái bài hay chặng.
+- `/learn`: cuối mỗi cấp có thẻ "Thi thử <cấp>" (chưa làm / điểm cao nhất / đã đạt). Gợi ý làm khi đã qua mọi chặng của cấp nhưng không khóa.
+
+TCHT:
+- Unit test rút đề (đủ 40 câu, đúng tỉ lệ, không trùng, 22 điểm khác nhau, 2 bài đọc khác chặng), chấm, ngưỡng 24/40, điểm từng phần.
+- Làm trọn thi thử A1 ở 375px, không lộ đáp án trước khi nộp; lần làm có trong `level_tests`.
+
+### F15. Nói theo có ghi âm (thêm 2026-10-25)
+Luyện miệng theo cách shadowing: nghe câu mẫu, tự đọc theo, nghe lại giọng mình cạnh giọng mẫu. Không chấm.
+- Bước Hội thoại (F11) có thêm phần **(d) Nói theo** sau chép chính tả, bỏ qua được: lần lượt từng dòng hội thoại, hiện chữ và nghĩa; nút "Nghe mẫu", "Ghi âm" (bấm lần nữa để dừng, tự dừng sau 15 giây), "Nghe lại mình", "Mẫu rồi mình" (phát giọng mẫu rồi bản ghi liền nhau); ghi lại được nhiều lần; "Dòng tiếp".
+- Ghi bằng `MediaRecorder` của trình duyệt. Bản ghi chỉ ở bộ nhớ trang: không tải lên, không lưu, rời phần này là mất.
+- Không tính điểm bài. Trình duyệt không có micro hoặc người học từ chối quyền thì báo rõ và vẫn đi tiếp được.
+
+TCHT:
+- Ghi và nghe lại một dòng ở 375px (Chrome Android, Safari iOS); từ chối quyền micro thì vẫn sang được bước Vận dụng.
+- Không có request mạng nào mang dữ liệu âm thanh.
+
 ## 6. AI: prompt và schema
 
 Quy định chung:
@@ -624,11 +689,12 @@ Chỉ tính đúng khi cả hai là `true`. AI lỗi thì tính là sai, hiện 
 | `/write` | Kiểm tra câu (F5); `/write/history` lịch sử |
 | `/tutor` | Gia sư (F6) |
 | `/progress` | Tiến độ, dự báo, báo cáo tuần (F8) |
-| `/settings` | Cài đặt, nguồn, sao lưu (F8, F9) |
+| `/settings` | Cài đặt, nguồn, sao lưu, nội dung đã báo sai (F8, F9, F13) |
 | `/roadmap` | Lộ trình A1 → B2 (F10); từ M11 chuyển hướng về `/learn` |
 | `/learn` | Học: bài kế tiếp, các chặng, bài và kiểm tra chặng (F11, F12) |
 | `/learn/[lessonId]` | Làm một bài (F11) |
 | `/learn/test/[stageId]` | Kiểm tra chặng (F12) |
+| `/learn/exam/[level]` | Thi thử cuối cấp (F14) |
 
 Điều hướng: thanh dưới trên điện thoại gồm 5 mục: Hôm nay · Học · Ôn · Viết · Gia sư (từ M11; trước đó "Thêm" thay cho "Học"). "Thêm" và các trang còn lại vào từ menu.
 
@@ -666,6 +732,12 @@ Làm tuần tự, mỗi mốc kết thúc bằng: test xanh, chạy thử trên 
 | M13 | Bài + kiểm tra A2 (12 chặng) | |
 | M14 | Bài + kiểm tra B1 (13 chặng) | |
 | M15 | Bài + kiểm tra B2 (13 chặng) | |
+| M16 | F13 báo nội dung sai: migration, nút ở bài học và kết quả kiểm tra, khối ở `/settings`, sao lưu | thêm 2026-10-25 |
+| M17 | Bổ sung từ đời sống A2 (phát hiện 3 ở `docs/doi-chieu-goethe.md`), gán vào bài | thêm 2026-10-25 |
+| M18 | F14 thi thử cuối cấp: migration, rút đề + test, `/learn/exam/[level]`, thẻ ở `/learn`, sao lưu | thêm 2026-10-25 |
+| M19 | F15 nói theo trong bước Hội thoại | thêm 2026-10-25 |
+
+Thứ tự làm từ 2026-10-25 (người dùng duyệt): M16 → M15 → M17 → M18 → M19.
 
 **Điểm dừng để bắt đầu học thật:** sau M3 là đủ để dùng hằng ngày. Từ đó, việc build làm song song nhưng không quá 20% thời gian học mỗi tuần.
 

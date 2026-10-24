@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Exercise, Lesson } from '@/lib/course/types';
 import { canSpeak, speakDialogue, speakGerman, stopSpeaking } from '../review/speech';
 import { primaryClass, secondaryClass } from '../ui';
+import { reportTarget } from '@/lib/course/report';
+import { ContentReport } from './ContentReport';
 import { ExerciseCard } from './ExerciseCard';
 
 /**
@@ -95,6 +97,7 @@ export function DialogueStep({
                 </span>
                 {shown.has(i) && <span className="block text-[14px] text-muted">{l.vi}</span>}
               </button>
+              {shown.has(i) && <ContentReport target={reportTarget('dialogue', lesson.id, i)} excerpt={`${l.speaker}: ${l.de} = ${l.vi}`} />}
             </li>
           ))}
         </ul>

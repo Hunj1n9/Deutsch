@@ -59,3 +59,20 @@ export async function deleteSourceAction(id: string): Promise<SettingsResponse> 
   const { error } = await session.supabase.from('sources').delete().eq('id', id);
   return error ? { ok: false, error: 'Không xóa được nguồn.' } : { ok: true };
 }
+
+/** Nội dung đã báo sai (F13): đánh dấu đã sửa. */
+export async function resolveReportAction(id: string): Promise<SettingsResponse> {
+  if (!z.uuid().safeParse(id).success) return { ok: false, error: 'Không hợp lệ.' };
+  const session = await getSession();
+  if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
+  const { error } = await session.supabase.from('content_reports').update({ resolved_at: new Date().toISOString() }).eq('id', id);
+  return error ? { ok: false, error: 'Không cập nhật được.' } : { ok: true };
+}
+
+export async function deleteReportAction(id: string): Promise<SettingsResponse> {
+  if (!z.uuid().safeParse(id).success) return { ok: false, error: 'Không hợp lệ.' };
+  const session = await getSession();
+  if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
+  const { error } = await session.supabase.from('content_reports').delete().eq('id', id);
+  return error ? { ok: false, error: 'Không xóa được.' } : { ok: true };
+}

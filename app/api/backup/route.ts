@@ -19,6 +19,7 @@ const BACKUP_TABLES = [
   'weekly_reports',
   'lesson_progress',
   'stage_tests',
+  'content_reports',
 ] as const;
 
 /** Khóa sắp xếp ổn định để phân trang không sót dòng. */
@@ -38,6 +39,7 @@ const ORDER: Record<(typeof BACKUP_TABLES)[number], string> = {
   weekly_reports: 'id',
   lesson_progress: 'lesson_id',
   stage_tests: 'id',
+  content_reports: 'id',
 };
 
 /** "Xuất dữ liệu" (SPEC F9): một file JSON chứa toàn bộ bảng của người dùng (RLS chỉ trả dòng của họ). */

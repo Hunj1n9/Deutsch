@@ -7,6 +7,8 @@ import type { TestOutcome, TestView } from '@/lib/course/stage-test';
 import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { errorBoxClass, noticeBoxClass, primaryClass, secondaryClass } from '../ui';
+import { reportTarget } from '@/lib/course/report';
+import { ContentReport } from './ContentReport';
 import { AnswerInput, answerInputClass, ExercisePrompt } from './ExerciseCard';
 
 type Reading = { title_de: string; text_de: string; gloss: Record<string, string> };
@@ -121,6 +123,10 @@ export function StageTest({
                   <p className="text-[18px] font-semibold" lang="de">
                     {r.expected}
                   </p>
+                  <ContentReport
+                    target={reportTarget('test', r.id)}
+                    excerpt={`${q ? `${questionText(q)} · ` : ''}Đáp án: ${r.expected} · Đã gõ: ${r.answer || '(bỏ trống)'}`}
+                  />
                 </div>
               );
             })}
@@ -187,13 +193,14 @@ export function StageTest({
   );
 }
 
-function QuestionLabel({ q }: { q: TestView }) {
-  if (q.section === 'vocab') {
-    return <p className="text-[13px] text-muted">{q.mode === 'vi_de' ? `Việt → Đức: ${q.vietnamese}` : 'Nghe và chép'}</p>;
-  }
+function questionText(q: TestView): string {
+  if (q.section === 'vocab') return q.mode === 'vi_de' ? `Việt → Đức: ${q.vietnamese}` : 'Nghe và chép';
   const e = q.exercise;
-  const text = 'text' in e ? e.text.replace('{_}', '___') : 'vi' in e ? e.vi : '';
-  return <p className="text-[13px] text-muted">{text}</p>;
+  return 'text' in e ? e.text.replace('{_}', '___') : 'vi' in e ? e.vi : '';
+}
+
+function QuestionLabel({ q }: { q: TestView }) {
+  return <p className="text-[13px] text-muted">{questionText(q)}</p>;
 }
 
 function ReadingText({ reading }: { reading: Reading }) {
