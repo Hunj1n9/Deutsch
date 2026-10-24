@@ -10,6 +10,10 @@ const bodySchema = z.object({
   threadId: z.uuid().nullable(),
   message: z.string().trim().min(1).max(4000),
   cardId: z.uuid().nullable(),
+  lesson: z
+    .object({ lessonId: z.string().regex(/^[ab][12]-d{2}-d$/), exerciseId: z.string().max(80).nullable() })
+    .nullable()
+    .optional(),
 });
 
 /** Số lượt gần nhất gửi lại cho AI làm lịch sử hội thoại. */
@@ -31,7 +35,7 @@ export async function POST(request: Request) {
   const ai = getAiSdk();
   if (!ai) return jsonError(AI_ERROR_VI.config, 503);
 
-  const { message, cardId } = parsed.data;
+  const { message, cardId, lesson } = parsed.data;
   let threadId = parsed.data.threadId;
   if (!threadId) {
     const { data, error } = await session.supabase
@@ -50,7 +54,7 @@ export async function POST(request: Request) {
       .eq('thread_id', threadId)
       .order('created_at', { ascending: false })
       .limit(HISTORY_LIMIT),
-    loadTutorContext(session, cardId),
+    loadTutorContext(session, cardId, lesson ?? null),
   ]);
 
   const { error: insertError } = await session.supabase

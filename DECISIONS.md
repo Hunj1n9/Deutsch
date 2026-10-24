@@ -49,3 +49,15 @@
 - 2026-10-24 · Mục của gói thuộc nguồn "Lộ trình <cấp>" (tạo tự động) để lọc được ở `/items`.
 - 2026-10-24 · Gói từ M8–M10 do Claude tự soạn theo chủ đề CEFR, kiểm tự động (định dạng, mạo từ, số nhiều, chỗ trống, trùng lặp, đủ thẻ) nhưng không có người bản xứ duyệt; người học sửa được mọi mục ở `/items`. Dạng quá khứ bất quy tắc thường gặp (wurde, ging, kam…) có mục riêng ở B1-01 để luyện Präteritum.
 - 2026-10-24 · Cụm tính từ + danh từ (soziale Netzwerke, fairer Handel) lưu là cụm từ chứ không phải danh từ, vì mạo từ + tính từ phải đổi đuôi (die sozialen Netzwerke), không ghép cứng được với một mạo từ.
+- 2026-10-24 · F11–F12 (người dùng yêu cầu "học được như một khóa học", đã duyệt làm và deploy): app chuyển từ "không giảng bài" sang khóa học dùng được một mình. Nội dung bài (giải thích, bài tập, hội thoại, đề kiểm tra) soạn tĩnh trong code như gói từ, không sinh bằng AI lúc chạy: ổn định, kiểm tự động được, không tốn lượt gọi AI. AI chỉ dùng để phán đáp án tự do (P6), viết (F5) và gia sư.
+- 2026-10-24 · Mỗi điểm ngữ pháp của chặng một bài (3 bài/chặng). Thứ tự bài/chặng chỉ gợi ý, không khóa cứng, vì người học vẫn có thể đi trước bằng giáo trình; có "bỏ qua chặng" bằng kiểm tra.
+- 2026-10-24 · Lần gõ đầu ở lượt gợi nhớ của bài học là lần ôn đầu của thẻ vi_de (ghi review_logs, lập lịch), để từ vừa học đến hạn lại sau khoảng 1 ngày thay vì chờ giới hạn thẻ mới. Thẻ audio_de, cloze vẫn theo new_cards_per_day.
+- 2026-10-24 · Sai ở bài tập ngay sau đoạn giải thích không ghi sổ lỗi (lần đầu gặp quy tắc); chỉ ghi khi sai ở bài tập trộn cuối bước, ở kiểm tra chặng và ở bài viết.
+- 2026-10-24 · Thanh dưới đổi "Thêm" thành "Học" (khóa học là việc chính hằng ngày); "Thêm" vào menu. `/roadmap` chuyển hướng về `/learn`; bỏ nút "Mở chặng" (mục nhập theo bài).
+- 2026-10-24 · M11: lần ôn đầu ghi từ bài học gắn cờ `lesson` trong `review_logs.flags`; phiên ôn không tính các lần này vào giới hạn thẻ mới (nếu không, 20–30 từ của một bài sẽ ăn hết 15 thẻ mới/ngày). Thẻ mới của mục có tag `lesson:*` được ưu tiên trong phiên ôn.
+- 2026-10-24 · M11: đề kiểm tra chặng chỉ dùng câu chấm chính xác được (fill, choose, order, câu hỏi đọc), không dùng câu tự do cần AI, để chấm nhanh, ổn định và chấm lại được ở server. Đề gửi xuống trình duyệt đã bỏ đáp án; server chấm lại theo id câu.
+- 2026-10-24 · M11: AI (P6) không phán được thì câu tự do tính sai tạm thời nhưng không ghi sổ lỗi, để không ghi nhầm một câu đúng là lỗi.
+- 2026-10-24 · M11: chép chính tả bỏ qua dấu câu ở giữa câu (dấu phẩy, chấm than…), chỉ chấm chữ.
+- 2026-10-24 · M11: P2 nhận thêm `rule_key` của mọi điểm ngữ pháp đang có bài (không chỉ những điểm đã học); danh sách nhỏ, đơn giản hơn truy vấn tiến độ, và khóa thừa không hại.
+- 2026-10-24 · M11: chặng chưa có bài (A1-03 → B2) vẫn hiện trên `/learn` kèm nút "Mở chặng" cũ để ôn gói từ trước, cho tới khi M12–M15 soạn xong bài.
+- 2026-10-24 · M11: dữ liệu bài học là đối tượng TypeScript soạn bằng hàm `fill/order/choose/transform/translate/listen/tf/mc` (`lib/course/define.ts`); id bài tập sinh theo vị trí. Khóa mục trong bài là `german` của mục trong gói.

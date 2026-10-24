@@ -3,7 +3,7 @@ import { PACKS } from '@/data/packs';
 import { STAGES, type Stage } from '@/data/roadmap';
 import { cardKindsFor } from './items/cards';
 import { findDuplicates, type ExistingItem } from './items/dedupe';
-import { withPosTag } from './items/types';
+import { withPosTag, type ItemDraft } from './items/types';
 import { normalizeDraft } from './items/validate';
 import { parsePack } from './packs/format';
 import { packTag, type StageProgress } from './roadmap';
@@ -31,25 +31,25 @@ async function levelSource({ supabase, userId }: Session, level: string): Promis
 export type OpenResult = { added: number; tagged: number };
 
 /**
- * Mở chặng (F10): nhập gói vào kho trong một giao dịch (`save_items`), gắn tag gói.
- * Mục đã có (cùng german + article + type) thì không thêm lại, chỉ gắn thêm tag gói.
+ * Nhập mục của gói vào kho trong một giao dịch (`save_items`), gắn các tag cho trước.
+ * Mục đã có (cùng german + article + type) thì không thêm lại, chỉ gắn thêm tag còn thiếu.
  */
-export async function openStage(session: Session, stageId: string): Promise<OpenResult> {
-  const stage = STAGES.find((s) => s.id === stageId);
-  const text = PACKS[stageId];
-  if (!stage || !text) throw new Error('unknown stage');
-  const tag = packTag(stageId);
-  const drafts = parsePack(text).drafts.map(normalizeDraft);
-
-  const keys = drafts.map((d) => ({ type: d.type, german: d.german, article: d.article }));
+export async function importStageDrafts(
+  session: Session,
+  stage: Stage,
+  drafts: ItemDraft[],
+  tags: string[],
+): Promise<OpenResult> {
+  const normalized = drafts.map(normalizeDraft);
+  const keys = normalized.map((d) => ({ type: d.type, german: d.german, article: d.article }));
   const { data: existingRows, error: dupError } = await session.supabase.rpc('find_item_duplicates', { p_keys: keys });
   if (dupError) throw dupError;
   const existing = (existingRows ?? []) as (ExistingItem & { tags: string[] | null })[];
   const dups = findDuplicates(keys, existing);
 
-  const sourceId = await levelSource(session, stage.level);
-  const fresh = drafts.filter((_, i) => dups[i].existing.length === 0 && dups[i].batchIndex === null);
+  const fresh = normalized.filter((_, i) => dups[i].existing.length === 0 && dups[i].batchIndex === null);
   if (fresh.length > 0) {
+    const sourceId = await levelSource(session, stage.level);
     const payload = fresh.map((d) => ({
       type: d.type,
       german: d.german,
@@ -61,19 +61,30 @@ export async function openStage(session: Session, stageId: string): Promise<Open
       grammar_note_vi: d.grammar_note_vi,
       level: stage.level,
       source_id: sourceId,
-      tags: [...withPosTag([], d.pos), tag],
+      tags: [...withPosTag([], d.pos), ...tags],
       card_kinds: cardKindsFor(d),
     }));
     const { error } = await session.supabase.rpc('save_items', { p_items: payload });
     if (error) throw error;
   }
 
-  const untagged = existing.filter((item) => !item.tags?.includes(tag)).map((item) => item.id);
+  // Mục đã có: chỉ gắn tag còn thiếu (mục trùng nằm trong gói khác vẫn giữ tag cũ).
+  const matched = existing.filter((item) => dups.some((d) => d.existing.some((e) => e.id === item.id)));
   let tagged = 0;
-  if (untagged.length > 0) {
+  for (const tag of tags) {
+    const untagged = matched.filter((item) => !item.tags?.includes(tag)).map((item) => item.id);
+    if (untagged.length === 0) continue;
     const { data, error } = await session.supabase.rpc('add_item_tag', { p_ids: untagged, p_tag: tag });
     if (error) throw error;
-    tagged = data as number;
+    tagged = Math.max(tagged, data as number);
   }
   return { added: fresh.length, tagged };
+}
+
+/** Mở chặng (F10): nhập cả gói, gắn tag gói. Từ M11 chỉ dùng cho chặng chưa có bài học. */
+export async function openStage(session: Session, stageId: string): Promise<OpenResult> {
+  const stage = STAGES.find((s) => s.id === stageId);
+  const text = PACKS[stageId];
+  if (!stage || !text) throw new Error('unknown stage');
+  return importStageDrafts(session, stage, parsePack(text).drafts, [packTag(stageId)]);
 }

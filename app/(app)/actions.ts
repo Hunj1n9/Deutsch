@@ -5,13 +5,13 @@ import { planBeat } from '@/lib/heartbeat';
 import { getSession, SESSION_EXPIRED_VI } from '@/lib/supabase/session';
 import { addDays, localDate } from '@/lib/time';
 
-const activitySchema = z.enum(['review', 'writing', 'tutor']);
+const activitySchema = z.enum(['review', 'writing', 'tutor', 'lesson']);
 
 /**
  * Nhịp đo giờ học (SPEC F8): nối vào phiên đang chạy của hoạt động đó (cộng tối đa 30 giây) hoặc mở phiên mới.
  * Lỗi thì bỏ qua: mất một nhịp không đáng làm phiền người học.
  */
-export async function heartbeatAction(activity: 'review' | 'writing' | 'tutor'): Promise<void> {
+export async function heartbeatAction(activity: 'review' | 'writing' | 'tutor' | 'lesson'): Promise<void> {
   const parsed = activitySchema.safeParse(activity);
   if (!parsed.success) return;
   const session = await getSession();

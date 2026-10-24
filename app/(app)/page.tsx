@@ -4,11 +4,12 @@ import { DailyTasks, type DailyTask } from '@/components/home/DailyTasks';
 import { Icon } from '@/components/Icon';
 import { PageHeader } from '@/components/PageHeader';
 import { dailyWritingPrompt } from '@/lib/ai/writing-prompt';
-import { PACKS } from '@/data/packs';
+import { STAGE_LESSONS } from '@/data/lessons';
 import { STAGES } from '@/data/roadmap';
+import { findLesson } from '@/lib/course/catalog';
+import { loadCourseState } from '@/lib/course/db';
+import { courseHref, coursePosition, lessonDone, stepLabel } from '@/lib/course/position';
 import { loadProgress } from '@/lib/progress';
-import { roadmapPosition, stagePercent } from '@/lib/roadmap';
-import { loadRoadmapProgress } from '@/lib/roadmap-db';
 import { loadReviewCounts } from '@/lib/review/load';
 import { daysUntil } from '@/lib/stats';
 import { loadSettings, type UserSettings } from '@/lib/supabase/queries';
@@ -34,6 +35,9 @@ async function Today() {
   return (
     <>
       <ReviewBlocks session={session} settings={settings} />
+      <Suspense fallback={<div className="mb-3 h-36 rounded-block bg-pastel-sky" />}>
+        <LessonBlock session={session} settings={settings} />
+      </Suspense>
       <Suspense fallback={<div className="mb-3 h-32 rounded-block bg-surface" />}>
         <TasksBlock session={session} />
       </Suspense>
@@ -79,6 +83,41 @@ async function ReviewBlocks({ session, settings }: { session: Session; settings:
   );
 }
 
+/** Khối Bài học (SPEC F11): bài hoặc kiểm tra kế tiếp, một chạm; nhắc ôn trước khi còn nhiều thẻ đến hạn. */
+async function LessonBlock({ session, settings }: { session: Session; settings: UserSettings }) {
+  const [course, counts] = await Promise.all([loadCourseState(session), loadReviewCounts(session, settings.new_cards_per_day)]);
+  const next = coursePosition(STAGE_LESSONS, course.progress, course.passed);
+  if (!next) return null;
+  const resuming = next.kind === 'lesson' && next.state && !lessonDone(next.state);
+  const step = next.kind === 'lesson' ? stepLabel(next.state) : null;
+  return (
+    <section className="scribble mb-3 rounded-block bg-pastel-sky p-5">
+      <p className={blockLabel}>
+        {next.kind === 'lesson' ? 'Bài học' : 'Kiểm tra chặng'} · {next.stage.stage_id.toUpperCase()}
+      </p>
+      <p className="mt-1 text-[20px] font-bold leading-tight">
+        {next.kind === 'lesson' ? next.lesson.title_vi : STAGES.find((s) => s.id === next.stage.stage_id)?.title_vi}
+      </p>
+      <p className="mt-1 text-[14px] opacity-80">
+        {next.kind === 'lesson' ? `~30 phút${step ? ` · đang ở ${step}` : ''}` : '20 câu · đạt từ 16 câu'}
+      </p>
+      {counts.due > REVIEW_FIRST && (
+        <p className="mt-2 text-[14px] font-semibold">Còn {counts.due} thẻ đến hạn: ôn trước sẽ nhớ bài mới tốt hơn.</p>
+      )}
+      <Link
+        href={courseHref(next)}
+        className="mt-4 flex h-13 items-center justify-center gap-2 rounded-full bg-primary text-[16px] font-semibold text-on-primary"
+      >
+        {next.kind === 'test' ? 'Làm kiểm tra' : resuming ? 'Học tiếp' : 'Bắt đầu bài'}
+        <Icon name="arrow" />
+      </Link>
+    </section>
+  );
+}
+
+/** Trên ngần này thẻ đến hạn thì nhắc ôn trước khi học bài mới. */
+const REVIEW_FIRST = 50;
+
 async function TasksBlock({ session }: { session: Session }) {
   const today = localDate(new Date());
   const { data } = await session.supabase
@@ -91,17 +130,7 @@ async function TasksBlock({ session }: { session: Session }) {
   const titles = new Set(todays.map((r) => r.title));
   const yesterdayLeft = rows.filter((r) => r.task_date !== today && !r.done && !titles.has(r.title)).map((r) => r.title);
 
-  const progress = await loadRoadmapProgress(session);
-  const { current } = roadmapPosition(STAGES.filter((s) => PACKS[s.id]), progress);
-  const p = current ? progress.get(current.id) : undefined;
-  const roadmap = current
-    ? {
-        label: `${current.level} · ${current.title_vi}${p?.opened ? ` · thuộc ${Math.round(stagePercent(p) * 100)}%` : ''}`,
-        href: `/roadmap#${current.id}`,
-        action: p?.opened ? 'Xem' : 'Mở chặng',
-      }
-    : null;
-  return <DailyTasks tasks={todays} yesterdayLeft={yesterdayLeft} roadmap={roadmap} />;
+  return <DailyTasks tasks={todays} yesterdayLeft={yesterdayLeft} />;
 }
 
 async function WritingBlock({ session, settings }: { session: Session; settings: UserSettings }) {
@@ -109,7 +138,16 @@ async function WritingBlock({ session, settings }: { session: Session; settings:
     ? await session.supabase.from('sources').select('title, chapter').eq('id', settings.current_source_id).maybeSingle()
     : { data: null };
   const label = source ? [source.title, source.chapter].filter(Boolean).join(' · ') : null;
-  const prompt = await dailyWritingPrompt(localDate(new Date()), settings.current_level, label);
+  // Đề lấy theo bài vừa học gần nhất nếu có (SPEC F11), không thì AI sinh theo ngày.
+  const { data: last } = await session.supabase
+    .from('lesson_progress')
+    .select('lesson_id')
+    .not('completed_at', 'is', null)
+    .order('completed_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const lessonPrompt = last ? findLesson(last.lesson_id as string)?.lesson.writing_prompt_vi : undefined;
+  const prompt = lessonPrompt ?? (await dailyWritingPrompt(localDate(new Date()), settings.current_level, label));
   return (
     <Link href={`/write?prompt=${encodeURIComponent(prompt)}`} className="scribble mb-3 block rounded-block bg-pastel-lilac p-5">
       <p className={blockLabel}>Viết 5 câu</p>

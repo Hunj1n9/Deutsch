@@ -20,12 +20,15 @@ export function TutorChat({
   initialMessages,
   cardId,
   cardLabel,
+  lessonRef = null,
 }: {
   threads: ThreadOption[];
   threadId: string | null;
   initialMessages: ChatMessage[];
   cardId: string | null;
   cardLabel: string | null;
+  /** Mở từ bài học: bài và bài tập đang hỏi (SPEC F11). */
+  lessonRef?: { lessonId: string; exerciseId: string | null } | null;
 }) {
   const router = useRouter();
   const [threadId, setThreadId] = useState(initialThreadId);
@@ -53,7 +56,7 @@ export function TutorChat({
       const res = await fetch('/api/tutor', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ threadId, message, cardId }),
+        body: JSON.stringify({ threadId, message, cardId, lesson: threadId ? null : lessonRef }),
       });
       if (!res.ok || !res.body) {
         const body = (await res.json().catch(() => null)) as { error?: string } | null;
@@ -106,7 +109,7 @@ export function TutorChat({
 
       {cardLabel && !threadId && (
         <p className="rounded-[20px] bg-pastel-yellow p-3 text-[14px]">
-          Hỏi về thẻ: <span className="font-semibold" lang="de">{cardLabel}</span>
+          {lessonRef ? 'Hỏi về bài: ' : 'Hỏi về thẻ: '}<span className="font-semibold" lang="de">{cardLabel}</span>
         </p>
       )}
 

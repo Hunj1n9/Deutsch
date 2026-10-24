@@ -8,6 +8,12 @@ const paths = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  learn: (
+    <>
+      <path d="M3 9l9-5 9 5-9 5z" />
+      <path d="M7 11.5V16c0 1.5 2.2 3 5 3s5-1.5 5-3v-4.5M21 9v6" />
+    </>
+  ),
   pen: (
     <>
       <path d="M4 20h4L19 9l-4-4L4 16z" />

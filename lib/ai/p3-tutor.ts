@@ -7,6 +7,8 @@ export type TutorContext = {
   source: string | null;
   openErrors: string[];
   card: { kind: string; german: string; vietnamese: string; example_de: string | null } | null;
+  /** Mở từ bài học (F11): tên bài, điểm ngữ pháp, bài tập đang hỏi. */
+  lesson?: { title: string; grammar: string; exercise: string | null } | null;
 };
 
 export const EXAMPLE_DE = 'DE:';
@@ -31,6 +33,12 @@ export function tutorSystem(ctx: TutorContext): string {
     lines.push(
       `- Đang hỏi về thẻ ôn (${ctx.card.kind}): ${ctx.card.german} = ${ctx.card.vietnamese}` +
         (ctx.card.example_de ? `; ví dụ: ${ctx.card.example_de}` : ''),
+    );
+  }
+  if (ctx.lesson) {
+    lines.push(
+      `- Đang học bài: ${ctx.lesson.title} (ngữ pháp: ${ctx.lesson.grammar})` +
+        (ctx.lesson.exercise ? `; bài tập đang hỏi: ${ctx.lesson.exercise}` : ''),
     );
   }
   return lines.join('\n');

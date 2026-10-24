@@ -5,13 +5,13 @@
 ## 1. Bối cảnh và mục tiêu
 
 - **Người dùng:** đúng một người (chủ dự án), người Việt, bắt đầu từ số 0, mục tiêu TestDaF đạt 4 điểm cả 4 phần (TDN 4×4, mức C1) để học thạc sĩ dạy bằng tiếng Đức. Mốc trung gian: thi Goethe B2 sau khoảng 11 tháng.
-- **Cách học:** giáo trình (Netzwerk neu A1–B1) + khóa eDeutsch / bài Deutsch.vn cho phần giảng. App này **không giảng bài mới** (phần giảng vẫn ở giáo trình và khóa học), nhưng có **lộ trình A1 → B2 kèm gói từ tự viết** (F10, thêm 2026-10-24 theo yêu cầu người dùng) để luôn biết học gì tiếp và có sẵn nội dung ôn. App làm những việc các nguồn kia làm chưa tốt:
+- **Cách học:** ban đầu phần giảng nằm ở giáo trình (Netzwerk neu A1–B1) và khóa eDeutsch / Deutsch.vn; app có **lộ trình A1 → B2 kèm gói từ tự viết** (F10). **Từ M11 (F11–F12, thêm 2026-10-24 theo yêu cầu người dùng), app là một khóa học dùng được một mình:** mỗi chặng có các bài học (từ mới, ngữ pháp giải thích bằng tiếng Việt, bài tập, hội thoại để nghe và đọc, viết) và một bài kiểm tra chặng. Giáo trình và khóa học ngoài chỉ còn là nguồn bổ sung, không bắt buộc. Ngoài ra app làm những việc các nguồn kia làm chưa tốt:
   1. Gom mọi từ, mẫu câu, điểm ngữ pháp và **lỗi** từ mọi nguồn về một chỗ.
   2. Ôn bằng **gợi nhớ chủ động** (gõ ra đáp án, không lật thẻ) với **lịch giãn cách thích ứng (FSRS)**.
   3. **Sổ lỗi cá nhân:** lỗi lặp lại được gom nhóm và ôn đến khi hết mắc.
   4. **Gia sư AI bằng tiếng Việt** giải thích ngữ pháp.
   5. **Nhật ký và kế hoạch** để giữ kỷ luật tự học.
-- **Nguyên tắc sản phẩm (từ nghiên cứu):** tự kiểm tra + ôn giãn cách có hiệu quả cao nhất; luyện xen kẽ; sửa lỗi phải bắt người học tự sửa trước rồi mới cho đáp án; không có màn hình kiểu "đọc lại bài".
+- **Nguyên tắc sản phẩm (từ nghiên cứu):** tự kiểm tra + ôn giãn cách có hiệu quả cao nhất; luyện xen kẽ; sửa lỗi phải bắt người học tự sửa trước rồi mới cho đáp án; không có màn hình kiểu "đọc lại bài". Ở bài học (F11): mỗi phần trình bày phải ngắn và **ngay sau đó là bài tập gợi nhớ** về đúng phần vừa học; không có trang lý thuyết dài để đọc lướt.
 - **Ràng buộc quan trọng nhất:** thời gian xây app không được ăn vào thời gian học. Giai đoạn 1 phải dùng được hằng ngày sau tối đa 4 tuần. Mọi thứ ngoài phạm vi ở mục 2 đều để sau.
 
 ## 2. Phạm vi
@@ -27,10 +27,14 @@
 - F8 Nhật ký học, kế hoạch, dự báo, báo cáo tuần
 - F9 Xuất / nhập dữ liệu (sao lưu JSON)
 - F10 Lộ trình A1 → B2 và gói từ tự viết (thêm 2026-10-24)
+- F11 Bài học theo chặng (thêm 2026-10-24)
+- F12 Kiểm tra chặng (thêm 2026-10-24)
 
 ### Ngoài phạm vi (KHÔNG làm ở giai đoạn 1)
 - Chấm phát âm đến âm vị (giai đoạn A1–A2, dùng Azure Pronunciation Assessment de-DE)
-- Chấm bài viết dài theo thang Goethe/TestDaF, thi thử, mô phỏng TestDaF (giai đoạn B1–C1)
+- Chấm bài viết dài theo thang Goethe/TestDaF, thi thử, mô phỏng TestDaF (giai đoạn B1–C1). Kiểm tra chặng (F12) không phải thi thử: chỉ kiểm nội dung của một chặng.
+- Bài học C1 (lộ trình F10 dừng ở B2)
+- Luyện nói có chấm (ghi âm, chấm phát âm); bài học chỉ có nghe bằng giọng đọc của trình duyệt
 - Chạy offline, app di động gốc, nhiều người dùng, thanh toán, mạng xã hội, xếp hạng, huy hiệu, trò chơi
 
 ## 3. Công nghệ
@@ -236,6 +240,33 @@ create table weekly_reports (
   created_at timestamptz default now(),
   unique (user_id, week_start)
 );
+
+-- Bài học và kiểm tra chặng (F11, F12; thêm ở M11)
+alter type source_kind add value 'lesson';   -- lỗi ghi từ bài học / kiểm tra chặng
+
+create table lesson_progress (
+  user_id uuid not null,
+  lesson_id text not null,                -- vd 'a1-01-2' (dữ liệu tĩnh trong code)
+  step smallint not null default 0,       -- bước đang làm, để học tiếp
+  started_at timestamptz not null default now(),
+  completed_at timestamptz,               -- lần hoàn thành đầu tiên
+  skipped boolean not null default false, -- bỏ qua nhờ đạt kiểm tra chặng
+  score smallint,                         -- số bài tập đúng ngay lần đầu, lần làm gần nhất
+  total smallint,
+  primary key (user_id, lesson_id)
+);
+
+create table stage_tests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  stage_id text not null,                 -- vd 'a1-01'
+  score smallint not null,
+  total smallint not null,
+  passed boolean not null,
+  answers jsonb not null,                 -- từng câu: mã câu, đáp án đã gõ, đúng/sai (để xem lại)
+  taken_at timestamptz not null default now()
+);
+create index on stage_tests (user_id, stage_id, taken_at desc);
 ```
 
 ## 5. Tính năng
@@ -416,11 +447,107 @@ TCHT: xuất → xóa sạch → nhập lại → số thẻ, trạng thái FSRS
 - **Mở chặng** = nhập gói vào kho (F2 `save_items`), gắn tag `pack:<mã chặng>`, nguồn "Lộ trình <cấp>". Mục đã có thì không thêm lại, chỉ gắn tag. Thẻ mới vẫn theo `new_cards_per_day` (F3).
 - **Màn `/roadmap`:** các chặng theo cấp, % đã thuộc mỗi chặng (thẻ ở trạng thái Review / tổng thẻ của gói), chặng hiện tại, nút mở chặng kế. Khối "Bài mới hôm nay" (F7) gợi ý chặng kế.
 - Không đổi bảng: lộ trình và gói là dữ liệu tĩnh trong code; tiến độ tính từ thẻ có tag gói.
+- **Từ M11:** mục của gói được nhập theo từng bài (F11) thay vì cả chặng một lần; nút "Mở chặng" chỉ còn ở chặng chưa có bài (trên `/learn`). Chặng đã mở trước M11 giữ nguyên thẻ và lịch ôn. Trạng thái chặng ở `/roadmap` tính theo F11/F12 (xem F12).
 
 TCHT:
 - Test tự động trên toàn bộ gói: 100% mục qua `validateDraft`; không trùng trong và giữa các gói; mỗi mục từ/cụm có đủ 3 thẻ (vi_de, audio_de, cloze); động từ có ghi chú dạng chia.
 - Mở một chặng dưới 5 giây; mở lại không sinh mục hay thẻ trùng.
 - `/roadmap` hiện đúng chặng hiện tại và % đã thuộc ở 375px.
+
+### F11. Bài học theo chặng (thêm 2026-10-24)
+**Cấu trúc:** chặng (F10) → mỗi điểm ngữ pháp của chặng một bài (hiện mọi chặng có 3, tổng 150 bài) → kiểm tra chặng (F12). Mục của gói chia hết cho các bài của chặng theo chủ đề con; mục ngữ pháp (`g`) theo bài của điểm ngữ pháp đó. Một bài khoảng 25–40 phút.
+
+**Các bước của một bài** (làm theo thứ tự; mỗi bước một màn, có thanh tiến độ bước):
+1. **Mục tiêu:** 1–2 câu "Sau bài này bạn có thể…" (vd "giới thiệu tên, quê và nơi ở"). Nút Bắt đầu.
+2. **Từ mới:** đi theo nhóm 5 mục. Mỗi mục một thẻ giới thiệu (tiếng Đức, mạo từ tô màu, số nhiều, nghĩa, câu ví dụ có dịch, tự đọc to một lần). Hết nhóm là **lượt gợi nhớ ngay**: hiện nghĩa tiếng Việt, gõ tiếng Đức (danh từ kèm mạo từ), chấm bằng `answer-check`, thứ tự xáo trộn. Sai thì hiện đáp án và hỏi lại cuối lượt, tối đa 2 lần.
+3. **Ngữ pháp:** phần giải thích chia 1–3 đoạn, mỗi đoạn ≤ 120 từ tiếng Việt, có thể kèm một bảng và 2–4 ví dụ có dịch và nút nghe; đối chiếu tiếng Việt khi hữu ích. **Sau mỗi đoạn là 2–4 bài tập về đúng đoạn đó**; cuối bước là 4–6 bài tập trộn cả bài. Tổng 8–14 bài tập.
+4. **Hội thoại / đoạn đọc:** 6–12 dòng tự soạn, chỉ dùng từ đã học đến bài này (từ ngoài danh sách có chú nghĩa `gloss`), dùng điểm ngữ pháp của bài. (a) Nghe cả bài khi chưa hiện chữ, trả lời 3–5 câu hỏi hiểu. (b) Hiện chữ; chạm một dòng để nghe lại và xem dịch. (c) Chép chính tả 2 dòng của bài.
+5. **Vận dụng:** viết 3–5 câu theo đề của bài, dùng lại luồng F5 ngay trong bài (tự sửa, kiểm lại, xem đáp án; đề và cấp điền sẵn). Bỏ qua được.
+6. **Tổng kết:** điểm (số bài tập đúng ngay lần đầu / tổng), lỗi mới đã vào sổ lỗi, số thẻ đã vào hàng ôn, gợi ý làm lại nếu điểm < 70%, nút "Bài tiếp".
+
+**Kiểu bài tập** (chấm bằng hàm thuần ở client; mọi ô gõ có hàng nút umlaut):
+| Kiểu | Hiện | Người dùng | Chấm |
+| --- | --- | --- | --- |
+| `fill` | Câu có một chỗ trống + dịch tiếng Việt | Gõ chỗ trống | `answer-check` với danh sách đáp án |
+| `order` | Các mảnh câu xáo trộn + dịch | Chạm theo thứ tự | Khớp một trong các thứ tự đúng đã liệt kê |
+| `transform` | Câu + yêu cầu (vd "Chuyển sang Perfekt") | Gõ cả câu | `answer-check`; không khớp đáp án nào thì hỏi AI (P6) |
+| `translate` | Câu tiếng Việt ngắn | Gõ câu tiếng Đức | Như `transform` |
+| `choose` | Câu + 2–4 lựa chọn | Chạm một | Khớp. Chỉ dùng để phân biệt (der/die/das, Dativ/Akkusativ, als/wenn) |
+| `listen` | Nút nghe | Gõ câu vừa nghe | `answer-check` |
+| `question` | Câu hỏi hiểu hội thoại (richtig/falsch hoặc a/b/c) | Chạm một | Khớp |
+
+- Mỗi bài tập có thể có `hint_vi` (nút "Gợi ý"). Có `explain_vi` ngắn hiện sau khi trả lời. Đúng ngay lần đầu, không dùng gợi ý thì mới tính điểm.
+- Bài tập sai được đưa lại cuối bước một lần (không tính điểm lại).
+- Sau mỗi bài tập có nút "Hỏi gia sư" (mở F6 kèm ngữ cảnh: bài, bài tập, đáp án đã gõ).
+
+**Nối với ôn (F3):**
+- Xong lượt gợi nhớ của một nhóm từ: nhập các mục đó vào kho (`save_items`, gắn tag `pack:<chặng>` và `lesson:<mã bài>`, nguồn "Lộ trình <cấp>"). Mục đã có thì chỉ gắn tag.
+- Kết quả lần gõ đầu ở lượt gợi nhớ **là lần ôn đầu của thẻ `vi_de`**. Lần ôn này ghi `review_logs` và lập lịch bằng ts-fsrs, rating lấy theo luật đề xuất ở F3, người dùng không phải xác nhận. Thẻ vào bước học của FSRS như mọi thẻ đã ôn lần đầu (đến hạn lại sau vài phút đến 1 ngày tùy rating). Lần ôn này gắn cờ `lesson` và không tính vào giới hạn thẻ mới trong ngày. Thẻ `audio_de`, `cloze` giữ trạng thái New và vào phiên ôn theo `new_cards_per_day`, ưu tiên thẻ mới của mục đã học qua bài.
+- Thẻ `vi_de` không còn ở trạng thái New (đã mở chặng trước M11 hoặc đã thêm tay) thì lượt gợi nhớ chỉ để luyện, không ghi lần ôn.
+- Mục ngữ pháp (`g`) của bài được nhập khi xong bước Ngữ pháp, thẻ cloze ở trạng thái New.
+
+**Nối với sổ lỗi (F4):**
+- Mỗi điểm ngữ pháp trong dữ liệu có sẵn `rule_key`, `category`, `title_vi`, `explanation_vi` (1–2 câu).
+- Ghi một lần mắc lỗi với `rule_key` của điểm ngữ pháp, nguồn `lesson`, khi sai ở **bài tập trộn cuối bước Ngữ pháp** hoặc ở F12. Câu sai lấy câu có đáp án đã gõ, câu đúng lấy câu với đáp án đầu tiên. Sai ở bài tập ngay sau một đoạn giải thích thì không ghi, vì đó là lần đầu gặp quy tắc. Sai mạo từ ở lượt gợi nhớ thì ghi như F3.
+- Danh sách `rule_key` gửi cho P2/P3 (F4 "Khóa lỗi nhất quán") có thêm khóa của các điểm ngữ pháp đã học, để lỗi từ bài viết và từ bài học cùng một khóa.
+
+**Học tiếp và mở bài:**
+- Lưu bước đang làm vào `lesson_progress.step`. Mở lại bài thì vào đầu bước đó.
+- Làm lại bài đã xong được, nhưng chỉ để luyện: không nhập mục trùng, không ghi lần ôn, cập nhật `score` mới.
+- Thứ tự bài và chặng là **gợi ý, không khóa cứng**. Mở một bài khi bài trước chưa xong thì hỏi xác nhận một lần. Lý do: người học vẫn có thể đi trước bằng giáo trình.
+- Giờ học trên các màn bài học được đo bằng heartbeat F8 với `activity = 'lesson'`.
+
+**Dữ liệu bài học:** tĩnh trong code, mỗi chặng một file `data/lessons/<mã chặng>.ts`, tự soạn (không chép giáo trình). Hàm thuần đọc và kiểm dữ liệu ở `lib/course/`. Giải thích ngữ pháp dùng định dạng hạn chế: đoạn văn, `**đậm**`, danh sách `-`, bảng `|`. App tự hiển thị định dạng này, không thêm thư viện markdown. Khung dữ liệu:
+```ts
+type GrammarPoint = { key: string; rule_key: string; category: ErrorCategory; title_vi: string; explanation_vi: string };
+type Lesson = {
+  id: string;                    // 'a1-01-1'
+  title_vi: string; goal_vi: string;
+  items: string[];               // khóa mục trong gói (german, kèm mạo từ nếu là danh từ)
+  grammar: { point: string; sections: { text_vi: string; table?: string; examples: [de: string, vi: string][]; exercises: Exercise[] }[]; mixed: Exercise[] };
+  dialogue: { lines: { speaker: 'A' | 'B'; de: string; vi: string }[]; gloss: Record<string, string>; questions: Exercise[]; dictation: number[] };
+  writing_prompt_vi: string;
+};
+type StageLessons = { stage_id: string; points: GrammarPoint[]; lessons: Lesson[]; test: StageTestPool };
+```
+
+**Màn hình:**
+- `/learn` (trang Học): bài kế tiếp ở đầu trang (nút Học tiếp / Bắt đầu); bên dưới là các chặng theo cấp. Mỗi chặng mở ra 3 bài (chưa học / đang học bước x/6 / xong kèm điểm) và kiểm tra chặng (chưa làm / điểm cao nhất / đã qua). `/roadmap` chuyển hướng về `/learn`.
+- `/learn/[lessonId]`: làm bài, ẩn thanh điều hướng dưới như phiên ôn, thoát bằng nút X (lưu bước).
+- Trang Hôm nay (F7): thêm khối **Bài học** ngay sau Sổ lỗi, hiện bài hoặc kiểm tra kế tiếp và nút một chạm. Nếu còn trên 50 thẻ đến hạn thì nhắc "ôn trước" nhưng không chặn. Khối "Bài mới hôm nay" đổi tên thành "Việc học khác" (việc ngoài app) và thôi gợi ý mở chặng. Đề "Viết 5 câu" lấy theo bài vừa học gần nhất nếu có.
+
+TCHT:
+- Test tự động trên toàn bộ dữ liệu bài của các chặng đã có:
+  - Mọi mục của gói thuộc đúng một bài của chặng.
+  - Mỗi điểm ngữ pháp của chặng có đúng một bài.
+  - Mỗi bài có 8–14 bài tập ngữ pháp, 3–5 câu hỏi hiểu và 2 dòng chép chính tả.
+  - `fill` có đúng một `{…}`. Các mảnh của `order` ghép lại khớp một đáp án. `choose`/`question` có đúng một đáp án đúng nằm trong các lựa chọn.
+  - Mọi `rule_key` đúng định dạng F4 và không trùng giữa các điểm ngữ pháp.
+  - Hội thoại: ≥ 90% từ (sau chuẩn hóa) đã xuất hiện trong mục hoặc câu ví dụ của các bài đến bài này, hoặc có trong `gloss`.
+- Unit test hàm thuần: chấm từng kiểu bài tập; tính điểm; đổi kết quả gợi nhớ thành rating; vị trí khóa học (bài kế, chặng hiện tại).
+- Làm trọn bài A1-01-1 ở 375px:
+  - Rời giữa bài rồi mở lại thì vào đúng bước.
+  - Xong bài: mục của bài có trong `/items`, thẻ `vi_de` có `review_logs` (cờ `lesson`) và đã rời trạng thái New, thẻ khác ở trạng thái New.
+- Làm lại bài đã xong không sinh mục, thẻ hay `review_logs` trùng.
+- Sai một bài tập trộn của điểm "sein" thì sổ lỗi có một lần mắc với `rule_key` của điểm đó, nguồn `lesson`.
+- Giờ học trong bài được cộng vào `study_sessions` với `activity = 'lesson'`.
+
+### F12. Kiểm tra chặng (thêm 2026-10-24)
+- **Đề 20 câu**, rút ngẫu nhiên mỗi lần làm:
+  - 8 câu từ vựng: rút từ mục của gói chặng (6 Việt→Đức, 2 nghe chép).
+  - 9 câu ngữ pháp: 3 câu cho mỗi điểm ngữ pháp, rút từ kho soạn sẵn ≥ 5 câu mỗi điểm. Kho này khác các bài tập trong bài học.
+  - 3 câu đọc hiểu về một đoạn đọc mới 80–150 từ của chặng.
+- Không có gợi ý và không hiện đáp án trong lúc làm. Nộp xong mới hiện từng câu sai kèm đáp án và giải thích.
+- **Đạt khi đúng ≥ 16/20.** Chặng có một lần đạt thì tính là "đã qua"; chặng hiện tại là chặng đầu tiên chưa qua.
+- Chưa đạt: liệt kê điểm ngữ pháp đúng dưới 2/3 câu và gợi ý làm lại bài tương ứng. Mọi lần làm lưu vào `stage_tests`.
+- Câu ngữ pháp sai thì ghi sổ lỗi như F11.
+- **Bỏ qua chặng:** làm kiểm tra khi chưa học bài nào của chặng mà đạt thì các bài của chặng được đánh dấu `skipped`. Mục của gói được nhập vào kho, thẻ ở trạng thái New.
+- Trạng thái chặng ở `/learn` và Hôm nay tính theo F11/F12, không theo % thẻ Review như F10 nữa. % thẻ đã thuộc vẫn hiện để tham khảo.
+
+TCHT:
+- Unit test rút đề (đủ 20 câu, đúng tỉ lệ, không trùng), chấm, ngưỡng đạt 16/20, liệt kê điểm yếu.
+- Đạt kiểm tra A1-02 trước khi học: các bài A1-02 thành `skipped`, mục được nhập, A1-03 thành chặng hiện tại.
+- Làm kiểm tra ở 375px trọn luồng, không lộ đáp án trước khi nộp.
 
 ## 6. AI: prompt và schema
 
@@ -478,6 +605,12 @@ Chỉ tính đúng khi `correct` và `fixes_target_error` đều là `true`.
 ```
 Điều chỉnh phải cụ thể và đo được (vd "Giảm thẻ mới còn 10/ngày vì tỉ lệ nhớ 82% < 90%").
 
+**P6 — Phán đáp án bài tập** (F11 `transform`/`translate`, khi đáp án không khớp đáp án soạn sẵn nào; đầu vào: `instruction_vi`, `prompt`, `accepted_answers[]`, `answer`, `grammar_title_vi`, `level`). Schema:
+```json
+{ "correct": true, "uses_target_grammar": true, "note_vi": "Đúng, trật tự khác nhưng hợp lệ." }
+```
+Chỉ tính đúng khi cả hai là `true`. AI lỗi thì tính là sai, hiện đáp án soạn sẵn và báo "chưa kiểm được bằng AI".
+
 ## 7. Màn hình và route
 
 | Route | Nội dung |
@@ -492,9 +625,12 @@ Chỉ tính đúng khi `correct` và `fixes_target_error` đều là `true`.
 | `/tutor` | Gia sư (F6) |
 | `/progress` | Tiến độ, dự báo, báo cáo tuần (F8) |
 | `/settings` | Cài đặt, nguồn, sao lưu (F8, F9) |
-| `/roadmap` | Lộ trình A1 → B2, mở chặng, tiến độ chặng (F10) |
+| `/roadmap` | Lộ trình A1 → B2 (F10); từ M11 chuyển hướng về `/learn` |
+| `/learn` | Học: bài kế tiếp, các chặng, bài và kiểm tra chặng (F11, F12) |
+| `/learn/[lessonId]` | Làm một bài (F11) |
+| `/learn/test/[stageId]` | Kiểm tra chặng (F12) |
 
-Điều hướng: thanh dưới trên điện thoại gồm 5 mục: Hôm nay · Ôn · Thêm · Viết · Gia sư. Các trang còn lại vào từ menu.
+Điều hướng: thanh dưới trên điện thoại gồm 5 mục: Hôm nay · Học · Ôn · Viết · Gia sư (từ M11; trước đó "Thêm" thay cho "Học"). "Thêm" và các trang còn lại vào từ menu.
 
 Yêu cầu giao diện:
 - Chữ tiếng Đức dễ đọc (≥ 18px trên thẻ ôn).
@@ -525,6 +661,11 @@ Làm tuần tự, mỗi mốc kết thúc bằng: test xanh, chạy thử trên 
 | M8 | Gói A2 | |
 | M9 | Gói B1 | |
 | M10 | Gói B2 | |
+| M11 | Khung F11 + F12: migration, định dạng dữ liệu bài + kiểm tra tự động, trình làm bài (6 bước, 7 kiểu bài tập), P6, nối F3/F4/F8, `/learn`, khối Bài học ở Hôm nay, thanh điều hướng mới; nội dung mẫu A1-01, A1-02 (bài + kiểm tra) | thêm 2026-10-24 · 5–6 ngày |
+| M12 | Bài + kiểm tra A1-03 → A1-12 | |
+| M13 | Bài + kiểm tra A2 (12 chặng) | |
+| M14 | Bài + kiểm tra B1 (13 chặng) | |
+| M15 | Bài + kiểm tra B2 (13 chặng) | |
 
 **Điểm dừng để bắt đầu học thật:** sau M3 là đủ để dùng hằng ngày. Từ đó, việc build làm song song nhưng không quá 20% thời gian học mỗi tuần.
 

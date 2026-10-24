@@ -62,10 +62,18 @@ async function todayInfo({ supabase }: Session, newPerDay: number, now: Date) {
   const since = startOfLocalDay(localDate(now)).toISOString();
   const { data } = await supabase
     .from('review_logs')
-    .select('card_id, state_before, cards!inner(item_id)')
+    .select('card_id, state_before, flags, cards!inner(item_id)')
     .gte('reviewed_at', since);
-  const rows = (data ?? []) as unknown as { card_id: string; state_before: number | null; cards: { item_id: string } }[];
-  const newToday = new Set(rows.filter((r) => r.state_before === 0).map((r) => r.card_id)).size;
+  const rows = (data ?? []) as unknown as {
+    card_id: string;
+    state_before: number | null;
+    flags: string[] | null;
+    cards: { item_id: string };
+  }[];
+  // Lần ôn đầu ghi từ bài học (cờ lesson) không tính vào giới hạn thẻ mới (SPEC F11).
+  const newToday = new Set(
+    rows.filter((r) => r.state_before === 0 && !r.flags?.includes(LESSON_FLAG)).map((r) => r.card_id),
+  ).size;
   const reviewedToday = new Map<string, Set<string>>();
   for (const r of rows) {
     const set = reviewedToday.get(r.cards.item_id) ?? new Set<string>();
@@ -76,6 +84,13 @@ async function todayInfo({ supabase }: Session, newPerDay: number, now: Date) {
 }
 
 export const SESSION_LIMIT = 200;
+
+/** Cờ của lần ôn đầu ghi từ bài học. */
+export const LESSON_FLAG = 'lesson';
+
+function fromLesson(tags: readonly string[] | null): boolean {
+  return Boolean(tags?.some((t) => t.startsWith('lesson:')));
+}
 
 /** Kiểu thẻ đưa vào phiên ôn. */
 export const REVIEW_KINDS = ['vi_de', 'audio_de', 'cloze', 'error_fix'] as const;
@@ -114,7 +129,10 @@ export async function loadReviewSession(
   const usable = (rows: unknown) =>
     ((rows ?? []) as CardRow[]).map(toSessionCard).filter((c) => c.kind === 'error_fix' || viewCard(c.kind, c.item));
   const due = usable(dueRes.data).map((c) => ({ ...c, due: c.state.due }));
-  const fresh = usable(freshRes.data).map((c) => ({ ...c, due: c.state.due }));
+  // Thẻ mới của mục đã học qua bài học được ưu tiên (SPEC F11).
+  const fresh = usable(freshRes.data)
+    .map((c) => ({ ...c, due: c.state.due }))
+    .sort((a, b) => Number(fromLesson(b.item.tags)) - Number(fromLesson(a.item.tags)));
 
   const queue = buildSessionQueue({ due, fresh, newLimit: newLeft, reviewedToday }).map((c) => {
     const { due: _due, ...card } = c;

@@ -1,4 +1,5 @@
 import 'server-only';
+import { allGrammarRules } from './course/catalog';
 import type { ErrorCategory } from './errors';
 import { shouldResolve } from './errors';
 import type { Session } from './supabase/session';
@@ -8,13 +9,22 @@ export type ErrorEntry = {
   category: ErrorCategory;
   title_vi: string;
   explanation_vi: string;
-  source: 'textbook' | 'edeutsch' | 'deutschvn' | 'tutor' | 'writing' | 'other';
+  source: 'textbook' | 'edeutsch' | 'deutschvn' | 'tutor' | 'writing' | 'lesson' | 'other';
   text_wrong: string;
   text_correct: string;
 };
 
-/** Tối đa 200 khóa lỗi đã có (nhiều lần mắc trước) để AI dùng lại khóa cũ (SPEC F4). */
-export async function loadRuleKeys({ supabase }: Session): Promise<{ rule_key: string; title_vi: string }[]> {
+/**
+ * Tối đa 200 khóa lỗi đã có (nhiều lần mắc trước) để AI dùng lại khóa cũ (SPEC F4),
+ * cộng khóa của các điểm ngữ pháp trong bài học (F11) để lỗi từ bài viết và bài học cùng một khóa.
+ */
+export async function loadRuleKeys(session: Session): Promise<{ rule_key: string; title_vi: string }[]> {
+  const existing = await loadErrorRuleKeys(session);
+  const seen = new Set(existing.map((r) => r.rule_key));
+  return [...existing, ...allGrammarRules().filter((r) => !seen.has(r.rule_key))];
+}
+
+async function loadErrorRuleKeys({ supabase }: Session): Promise<{ rule_key: string; title_vi: string }[]> {
   const { data } = await supabase
     .from('errors')
     .select('rule_key, title_vi')

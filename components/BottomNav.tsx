@@ -12,8 +12,8 @@ function isActive(pathname: string, href: string): boolean {
 export function BottomNav() {
   const pathname = usePathname();
 
-  // Phiên ôn ẩn thanh điều hướng để tập trung (DECISIONS.md).
-  if (pathname.startsWith('/review')) return null;
+  // Phiên ôn, làm bài và kiểm tra chặng ẩn thanh điều hướng để tập trung (DECISIONS.md).
+  if (pathname.startsWith('/review') || pathname.startsWith('/learn/')) return null;
 
   return (
     <nav

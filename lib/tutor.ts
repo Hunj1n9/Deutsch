@@ -1,11 +1,16 @@
 import 'server-only';
 import type { TutorContext } from './ai/p3-tutor';
+import { lessonTutorContext } from './course/tutor-context';
 import { fullGerman } from './review-card';
 import { loadSettings } from './supabase/queries';
 import type { Session } from './supabase/session';
 
 /** Ngữ cảnh gửi kèm mỗi lượt hỏi gia sư (SPEC F6). */
-export async function loadTutorContext(session: Session, cardId: string | null): Promise<TutorContext> {
+export async function loadTutorContext(
+  session: Session,
+  cardId: string | null,
+  lessonRef: { lessonId: string; exerciseId: string | null } | null = null,
+): Promise<TutorContext> {
   const settings = await loadSettings(session);
   const [sourceRes, errorsRes, cardRes] = await Promise.all([
     settings.current_source_id
@@ -37,6 +42,7 @@ export async function loadTutorContext(session: Session, cardId: string | null):
     level: settings.current_level,
     source: source ? [source.title, source.chapter].filter(Boolean).join(' · ') : null,
     openErrors: ((errorsRes.data ?? []) as { title_vi: string }[]).map((e) => e.title_vi),
+    lesson: lessonRef ? lessonTutorContext(lessonRef.lessonId, lessonRef.exerciseId) : null,
     card: card
       ? {
           kind: card.kind,

@@ -7,10 +7,10 @@ import { BEAT_INTERVAL_MS, shouldBeat } from '@/lib/heartbeat';
 const EVENTS = ['pointerdown', 'keydown', 'input', 'scroll', 'touchstart'] as const;
 
 /**
- * Đo giờ học thật trên màn Ôn, Viết, Gia sư (SPEC F8): gửi nhịp ngay khi bắt đầu thao tác,
+ * Đo giờ học thật trên màn Ôn, Viết, Gia sư, Bài học (SPEC F8, F11): gửi nhịp ngay khi bắt đầu thao tác,
  * rồi mỗi 30 giây nếu còn thao tác trong 120 giây gần nhất. Không render gì.
  */
-export function ActivityTracker({ activity }: { activity: 'review' | 'writing' | 'tutor' }) {
+export function ActivityTracker({ activity }: { activity: 'review' | 'writing' | 'tutor' | 'lesson' }) {
   useEffect(() => {
     let lastInteraction = 0;
     let lastBeat = 0;
