@@ -119,7 +119,7 @@ export default defineStage({
         'erzielen', 'fusionieren', 'rentabel', 'konkurrenzfähig', 'profitabel', 'insolvent', 'zahlungsfähig',
         'in die roten Zahlen geraten', 'schwarze Zahlen schreiben', 'Gewinn machen', 'Câu quan hệ với wer',
         'Câu quan hệ với was', 'Bilanz', 'Aktionär', 'Börse', 'Filiale', 'auslagern', 'sanieren', 'expandieren', 'zurückgreifen',
-        'marktführend', 'wettbewerbsfähig', 'bankrott', 'lukrativ', 'unter dem Strich', 'Pleite gehen', 'Rendite',
+        'marktführend', 'wettbewerbsfähig', 'bankrott', 'lukrativ', 'unter dem Strich', 'pleitegehen', 'Rendite',
         'auf Hochtouren laufen', 'in den Ruin treiben',
       ],
       grammar: {
@@ -144,7 +144,7 @@ export default defineStage({
             table: 'Đứng trước | Đại từ | Ví dụ\nalles, nichts, etwas | was | Alles, was wir verdienen, …\ndas Beste, das Einzige | was | Das Beste, was du tun kannst, …\ncả câu trước | was | …, was niemand erwartet hatte.\nnơi chốn | wo | die Stadt, wo ich arbeite',
             examples: [
               ['Das ist alles, was ich weiß.', 'Đó là tất cả những gì tôi biết.'],
-              ['Die Firma ging Pleite, was niemand erwartet hatte.', 'Công ty phá sản, điều mà không ai ngờ tới.'],
+              ['Die Firma ging pleite, was niemand erwartet hatte.', 'Công ty phá sản, điều mà không ai ngờ tới.'],
             ],
             exercises: [
               choose('Es gibt nichts, ___ er nicht verkaufen kann.', ['was', 'das', 'wer'], 'was', { vi: 'Không có gì anh ấy không bán được.' }),
@@ -161,7 +161,7 @@ export default defineStage({
             'Das Startup schreibt schwarze Zahlen, was niemand erwartet hat.',
             'Das Startup schreibt schwarze Zahlen, was niemand erwartet hatte.',
           ]),
-          order('Wer / nicht / wettbewerbsfähig / ist, / geht / Pleite.', 'Ai không đủ sức cạnh tranh thì phá sản.'),
+          order('Wer / nicht / wettbewerbsfähig / ist, / geht / pleite.', 'Ai không đủ sức cạnh tranh thì phá sản.'),
         ],
       },
       dialogue: {
@@ -206,7 +206,7 @@ export default defineStage({
             text_vi:
               '**je nachdem** = "tùy theo", nói rằng kết quả **phụ thuộc** vào điều gì. Sau nó là **ob / wie / wann / wo / was / wie viel** và một **câu phụ** (động từ cuối). Thường đứng **đầu câu**, rồi vế chính bắt đầu bằng **động từ**: **Je nachdem, wie** das Wetter **ist**, **fahren** wir ans Meer.',
             examples: [
-              ['Je nachdem, wie viel es kostet, kaufe ich das teure Modell.', 'Tùy giá bao nhiêu, tôi sẽ mua mẫu đắt.'],
+              ['Je nachdem, wie viel es kostet, kaufe ich das teure oder das billige Modell.', 'Tùy giá bao nhiêu, tôi sẽ mua mẫu đắt hoặc mẫu rẻ.'],
               ['Wir kommen, je nachdem, ob wir Zeit haben.', 'Chúng tôi sẽ đến, tùy xem có thời gian không.'],
             ],
             exercises: [

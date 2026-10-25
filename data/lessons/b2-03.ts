@@ -148,7 +148,7 @@ export default defineStage({
           },
           {
             text_vi:
-              'Danh từ giống đực và trung ở Genitiv thêm **-s** hoặc **-es**: innerhalb **des Semesters**, außerhalb **des Campus**, anhand **des Textes**. Văn nói hay dùng "innerhalb **von** zwei Wochen" (+ Dativ), nhất là khi không có mạo từ; trong văn viết nên dùng Genitiv khi có mạo từ. **bezüglich** thường đứng đầu thư: **Bezüglich** Ihrer Anfrage …',
+              'Danh từ giống đực và trung ở Genitiv thêm **-s** hoặc **-es**: innerhalb **des Semesters**, anhand **des Textes**, außerhalb **des Landes**. Một số từ mượn không thêm -s: außerhalb **des Campus**. Văn nói hay dùng "innerhalb **von** zwei Wochen" (+ Dativ), nhất là khi không có mạo từ; trong văn viết nên dùng Genitiv khi có mạo từ. **bezüglich** thường đứng đầu thư: **Bezüglich** Ihrer Anfrage …',
             examples: [['Bezüglich Ihrer Zulassung haben wir noch eine Frage.', 'Liên quan đến giấy nhập học của bạn, chúng tôi còn một câu hỏi.']],
             exercises: [
               fill('Das Wohnheim liegt außerhalb {des} Campus.', 'Ký túc xá nằm ngoài khuôn viên trường.'),
@@ -253,7 +253,7 @@ export default defineStage({
           { speaker: 'A', de: 'Das klingt methodisch. Und wie merkst du dir die Fachbegriffe?', vi: 'Nghe có phương pháp đấy. Thế bạn nhớ thuật ngữ chuyên ngành thế nào?' },
           { speaker: 'B', de: 'Indem ich sie in eigenen Sätzen formuliere. So verstehe ich sie wirklich.', vi: 'Bằng cách diễn đạt chúng bằng câu của chính mình. Như vậy mình mới thật sự hiểu.' },
           { speaker: 'A', de: 'Letztes Semester habe ich so spät angefangen, dass ich eine Prüfung nachholen musste.', vi: 'Học kỳ trước mình bắt đầu muộn đến mức phải thi lại một môn.' },
-          { speaker: 'B', de: 'Dann mach dir einen Plan. Teil den Stoff auf, sodass du jeden Tag nur ein Thema lernst.', vi: 'Vậy hãy lập kế hoạch. Chia nhỏ nội dung để mỗi ngày chỉ học một chủ đề.' },
+          { speaker: 'B', de: 'Dann mach dir einen Plan. Teil den Stoff so auf, dass du jeden Tag nur ein Thema lernst.', vi: 'Vậy hãy lập kế hoạch. Chia nhỏ nội dung để mỗi ngày chỉ học một chủ đề.' },
           { speaker: 'A', de: 'Gute Idee. Ich probiere es ab morgen.', vi: 'Ý hay đấy. Từ mai mình sẽ thử.' },
         ],
         gloss: { kaum: 'hầu như không', mehrmals: 'nhiều lần', 'merkst du dir': 'bạn ghi nhớ (sich merken)', eigenen: 'của chính mình', Stoff: 'nội dung học', 'teil … auf': 'chia ra (aufteilen)' },

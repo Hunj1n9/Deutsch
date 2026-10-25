@@ -232,7 +232,7 @@ export default defineStage({
           { speaker: 'A', de: 'Hast du die Nachrichten gesehen? Der Bauminister soll Geld von einer Lobby bekommen haben.', vi: 'Bạn xem tin chưa? Nghe nói bộ trưởng xây dựng đã nhận tiền từ một nhóm vận động hành lang.' },
           { speaker: 'B', de: 'Ja. Er sagte im Interview, er habe nichts Falsches getan.', vi: 'Có. Ông ấy nói trong cuộc phỏng vấn rằng ông không làm gì sai.' },
           { speaker: 'A', de: 'Und die Opposition?', vi: 'Còn phe đối lập?' },
-          { speaker: 'B', de: 'Die Opposition behauptet, er habe das Gesetz für die Baufirmen geschrieben. Sie fordern seinen Rücktritt.', vi: 'Phe đối lập khẳng định ông ấy đã soạn luật có lợi cho các công ty xây dựng. Họ đòi ông từ chức.' },
+          { speaker: 'B', de: 'Die Opposition behauptet, er habe das Gesetz für die Baufirmen geschrieben. Sie fordert seinen Rücktritt.', vi: 'Phe đối lập khẳng định ông ấy đã soạn luật có lợi cho các công ty xây dựng. Họ đòi ông từ chức.' },
           { speaker: 'A', de: 'Das ist Machtmissbrauch, wenn es stimmt. Im Rechtsstaat muss das kontrolliert werden.', vi: 'Nếu đúng thì đó là lạm quyền. Trong nhà nước pháp quyền điều đó phải được kiểm soát.' },
           { speaker: 'B', de: 'Genau dafür gibt es die Gewaltenteilung und die Pressefreiheit. Die Journalisten haben den Fall ja aufgedeckt.', vi: 'Chính vì vậy mới có tam quyền phân lập và tự do báo chí. Các nhà báo đã phanh phui vụ việc.' },
           { speaker: 'A', de: 'Und was sagt die Bundesregierung?', vi: 'Thế chính phủ liên bang nói gì?' },

@@ -148,7 +148,7 @@ export default defineStage({
           },
         ],
         mixed: [
-          choose('Das Licht ist aus. Die Patienten ___ schon geschlafen haben.', ['werden', 'sind', 'haben'], 'werden', { vi: 'Đèn tắt rồi. Chắc bệnh nhân đã ngủ.' }),
+          choose('Das Licht ist aus. Die Patienten ___ schon eingeschlafen sein.', ['werden', 'sind', 'haben'], 'werden', { vi: 'Đèn tắt rồi. Chắc bệnh nhân đã ngủ rồi.' }),
           fill('Er war gestern nicht im Büro. Er wird sich krank gemeldet {haben}.', 'Hôm qua anh ấy không đến cơ quan. Chắc anh ấy đã báo ốm.'),
           choose('Bis nächsten Monat wird sie die Grippe ___ haben.', ['auskuriert', 'auskurieren', 'auskuriert sein'], 'auskuriert', { vi: 'Đến tháng sau cô ấy sẽ khỏi hẳn cúm.' }),
           transform('Viết thành phỏng đoán (Futur II)', 'Vermutlich ist der Krankenwagen schon angekommen.', [

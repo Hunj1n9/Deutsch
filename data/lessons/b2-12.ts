@@ -124,7 +124,7 @@ export default defineStage({
           {
             text_vi:
               'Văn bản pháp lý dùng nhiều **cụm danh từ – động từ** (đã gặp ở B2-01). Hay gặp: **zur Verfügung stellen** (cung cấp) / **zur Verfügung stehen** (sẵn có), **in Anspruch nehmen** (sử dụng dịch vụ, quyền), **zur Kenntnis nehmen** (ghi nhận), **in Kraft treten** (bắt đầu có hiệu lực) / **in Kraft sein** (đang có hiệu lực), **in Frage kommen** (có thể xem xét).',
-            table: 'Cụm | Nghĩa | Động từ gần nghĩa\nzur Verfügung stellen | cung cấp | bereitstellen\nin Anspruch nehmen | sử dụng | nutzen\nzur Kenntnis nehmen | ghi nhận | wahrnehmen\nin Kraft treten | có hiệu lực | gelten (ab)\nin Frage kommen | có thể xét | möglich sein',
+            table: 'Cụm | Nghĩa | Động từ gần nghĩa\nzur Verfügung stellen | cung cấp | bereitstellen\nin Anspruch nehmen | sử dụng | nutzen\nzur Kenntnis nehmen | ghi nhận | registrieren\nin Kraft treten | có hiệu lực | gelten (ab)\nin Frage kommen | có thể xét | möglich sein',
             examples: [
               ['Das neue Gesetz tritt am 1. Januar in Kraft.', 'Luật mới có hiệu lực từ ngày 1 tháng 1.'],
               ['Der Vermieter stellt eine Küche zur Verfügung.', 'Chủ nhà cung cấp một gian bếp.'],

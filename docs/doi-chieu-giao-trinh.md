@@ -15,7 +15,7 @@ Ngày: 2026-10-25. Làm sau khi xong M15 (đủ 50 chặng, 150 bài), theo yêu
 Mục lục liệt kê 46 điểm ngữ pháp ở Netzwerk neu A1, 30 ở A2, 34 ở B1 và 20 ở Aspekte neu B2 (một điểm có thể gồm vài dạng nhỏ). Đối chiếu từng điểm với bài của app:
 
 - **Phần lớn khớp**: hầu hết điểm của giáo trình có bài ở cùng cấp hoặc sớm hơn trong app.
-- **Chưa có bài**: 17 điểm, liệt kê ở bảng dưới (A1: 4, A2: 3, B1: 4, B2: 6).
+- **Chưa có bài**: 16 điểm, liệt kê ở bảng dưới (A1: 4, A2: 2, B1: 4, B2: 6). (Bản đầu ghi 17; điểm "werden làm động từ chính" thật ra đã có ở A2-12 và B1-09, xem `doi-chieu-ngu-phap.md`.)
 - **Có nhưng dạy muộn hơn**: 7 điểm, phần lớn chênh một cấp.
 - **App dạy thêm** vài điểm B2 mà Aspekte neu B2 không có (Futur II, động từ khuyết thiếu chủ quan, Gerundiv, sofern/insofern, câu điều kiện không có wenn); đây là các điểm Aspekte neu để sang C1, giữ lại có lợi cho TestDaF.
 
@@ -30,7 +30,6 @@ Mục lục liệt kê 46 điểm ngữ pháp ở Netzwerk neu A1, 30 ở A2, 34
 | A1 | Từ để hỏi Wen? Wem? | Chỉ lướt ở A2-09 | Trung bình |
 | A1 | man (người ta) | Chỉ dạy kỹ ở B2-08 | Trung bình |
 | A2 | Was für ein(e)? | Không có | Trung bình |
-| A2 | werden làm động từ chính (trở thành) | Chỉ có câu "Ich will Arzt werden" ở A1-12, không có bài | Trung bình |
 | A2 | Possessivartikel im Dativ (mit meinem Bruder) | Chỉ luyện gián tiếp qua bài Dativ | Thấp |
 | B1 | brauchen + zu + Infinitiv (Du brauchst nicht zu kommen) | Không có | Trung bình |
 | B1 | Nebensatz mit da (vì, đứng đầu câu) | Không có | Thấp |

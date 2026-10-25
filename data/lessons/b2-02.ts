@@ -168,7 +168,7 @@ export default defineStage({
       dialogue: {
         title_de: 'Fragen an den Betriebsrat',
         lines: [
-          { speaker: 'A', de: 'Guten Tag, ich habe ein paar Fragen zu meinem Vertrag. Ist der Betriebsrat heute geöffnet?', vi: 'Chào anh, tôi có vài câu hỏi về hợp đồng. Hội đồng công nhân hôm nay có mở cửa không?' },
+          { speaker: 'A', de: 'Guten Tag, ich habe ein paar Fragen zu meinem Vertrag. Ist das Büro des Betriebsrats heute geöffnet?', vi: 'Chào anh, tôi có vài câu hỏi về hợp đồng. Văn phòng hội đồng công nhân hôm nay có mở cửa không?' },
           { speaker: 'B', de: 'Ja, kommen Sie rein. Worum geht es?', vi: 'Có, mời chị vào. Chuyện gì vậy?' },
           { speaker: 'A', de: 'Ich möchte nach der Elternzeit in eine Teilzeitstelle wechseln. Ist das im Tarifvertrag geregelt?', vi: 'Tôi muốn chuyển sang làm bán thời gian sau thời gian nghỉ chăm con. Điều đó có được quy định trong thỏa ước không?' },
           { speaker: 'B', de: 'Ja, das ist klar geregelt. Sie haben ein Recht auf Teilzeit, wenn die Firma mehr als 15 Mitarbeiter hat.', vi: 'Có, điều đó được quy định rõ. Chị có quyền làm bán thời gian nếu công ty có hơn 15 nhân viên.' },

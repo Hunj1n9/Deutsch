@@ -134,7 +134,7 @@ export default defineStage({
           },
           {
             text_vi:
-              'Tên riêng: thêm **-s** và đứng **trước**: **Annas** Artikel, **Deutschlands** Regierung. Genitiv của ein/mein: **eines, meines** (giống đực, trung), **einer, meiner** (giống cái, số nhiều). Văn nói thường dùng **von** + Dativ: das Auto **von meinem Vater** = das Auto **meines Vaters**.',
+              'Tên riêng: thêm **-s** và đứng **trước**: **Annas** Artikel, **Deutschlands** Regierung. Genitiv của ein/mein: **eines, meines** (giống đực, trung), **einer, meiner** (giống cái); số nhiều chỉ có **meiner, keiner** (ein không có số nhiều). Văn nói thường dùng **von** + Dativ: das Auto **von meinem Vater** = das Auto **meines Vaters**.',
             examples: [['Das ist der Kommentar eines bekannten Journalisten.', 'Đây là bình luận của một nhà báo nổi tiếng.']],
             exercises: [
               transform('Viết lại với Genitiv', 'das Auto von meinem Vater', ['das Auto meines Vaters']),

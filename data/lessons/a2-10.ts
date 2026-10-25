@@ -152,7 +152,7 @@ export default defineStage({
         ],
         mixed: [
           transform('Thay phần viết hoa bằng da(r)-', 'Ich warte AUF DIE NACHRICHT.', ['Ich warte darauf.']),
-          choose('___ ärgerst du dich? – Über das Wetter.', ['Worüber', 'Über was', 'Wofür'], 'Worüber', { vi: 'Bạn bực vì gì? – Vì thời tiết.' }),
+          choose('___ ärgerst du dich? – Über das Wetter.', ['Worüber', 'Woran', 'Wofür'], 'Worüber', { vi: 'Bạn bực vì gì? – Vì thời tiết.' }),
           translate('Bạn chờ ai?', ['Auf wen wartest du?', 'Auf wen warten Sie?']),
           fill('Interessierst du dich für Videos? – Nein, ich interessiere mich nicht {dafür}.', 'Bạn có quan tâm đến video không? – Không, mình không quan tâm.'),
           order('Worauf / freust / du / dich?', 'Bạn mong chờ điều gì?'),

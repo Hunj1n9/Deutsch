@@ -87,7 +87,7 @@ export default defineStage({
           { speaker: 'A', de: 'Hast du von der Gen-Schere gehört? Sie soll die Medizin revolutionieren.', vi: 'Bạn nghe về "kéo cắt gen" chưa? Nghe nói nó sẽ cách mạng hóa y học.' },
           { speaker: 'B', de: 'Ja, das war ein echter Durchbruch. Die Forscherinnen haben dafür sogar den Nobelpreis bekommen.', vi: 'Có, đó là một bước đột phá thật sự. Các nhà nghiên cứu còn nhận giải Nobel nhờ nó.' },
           { speaker: 'A', de: 'Was genau ermöglicht diese Technik?', vi: 'Chính xác thì kỹ thuật này giúp làm được gì?' },
-          { speaker: 'B', de: 'Man kann Gene gezielt verändern. Aufgrund dieser Methode könnte man vielleicht Erbkrankheiten heilen.', vi: 'Người ta có thể thay đổi gen một cách có chủ đích. Nhờ phương pháp này có lẽ có thể chữa bệnh di truyền.' },
+          { speaker: 'B', de: 'Man kann Gene gezielt verändern. Mithilfe dieser Methode könnte man vielleicht Erbkrankheiten heilen.', vi: 'Người ta có thể thay đổi gen một cách có chủ đích. Nhờ phương pháp này có lẽ có thể chữa bệnh di truyền.' },
           { speaker: 'A', de: 'Klingt wegweisend. Aber gibt es keine ethischen Probleme?', vi: 'Nghe mang tính định hướng đấy. Nhưng không có vấn đề đạo đức sao?' },
           { speaker: 'B', de: 'Doch. Angesichts der Risiken fordern viele strenge Regeln, besonders bei Embryos.', vi: 'Có chứ. Trước những rủi ro, nhiều người đòi hỏi quy định nghiêm ngặt, nhất là với phôi thai.' },
           { speaker: 'A', de: 'Das verstehe ich. Nicht alles, was technisch möglich ist, ist auch ethisch richtig.', vi: 'Mình hiểu. Không phải mọi thứ khả thi về kỹ thuật đều đúng về đạo đức.' },
@@ -204,20 +204,20 @@ export default defineStage({
           },
           {
             text_vi:
-              'Phân số: **die Hälfte** (1/2), **ein Drittel** (1/3), **ein Viertel** (1/4), **drei Viertel**. Theo sau là **Genitiv**: ein Drittel **der** Befragten. Động từ chia theo **danh từ phân số**: **Ein Drittel** der Befragten **ist** dagegen. **Die Hälfte** der Studierenden **arbeitet** neben dem Studium. Phần trăm: **30 Prozent** der Befragten **sind** dafür (thường số nhiều).',
+              'Phân số: **die Hälfte** (1/2), **ein Drittel** (1/3), **ein Viertel** (1/4), **drei Viertel**. Theo sau là **Genitiv**: ein Drittel **der** Befragten. Động từ thường chia theo **danh từ phân số** (số ít): **Ein Drittel** der Befragten **ist** dagegen (theo nghĩa, số nhiều *sind* cũng được chấp nhận; với danh từ số ít thì chỉ số ít: Ein Viertel der Fläche **ist** Wald). **Die Hälfte** der Studierenden **arbeitet** neben dem Studium. Phần trăm: **30 Prozent** der Befragten **sind** dafür (thường số nhiều).',
             table: 'Cách nói | Ví dụ\ndie Hälfte + Gen | Die Hälfte der Befragten ist zufrieden.\nein Drittel + Gen | Ein Drittel der Kinder hat ein Handy.\nein Viertel + Gen | Ein Viertel der Fläche ist Wald.\nX Prozent + Gen | 60 Prozent der Nutzer sind jung.',
             examples: [['Aus der Grafik geht hervor, dass ein Viertel der Jugendlichen täglich liest.', 'Từ biểu đồ có thể thấy một phần tư thanh thiếu niên đọc sách hằng ngày.']],
             exercises: [
-              choose('Ein Drittel der Befragten ___ gegen das Projekt.', ['ist', 'sind', 'seien'], 'ist', { vi: 'Một phần ba người được hỏi phản đối dự án.' }),
+              choose('Ein Drittel der Fläche ___ mit Wald bedeckt.', ['ist', 'sind', 'seien'], 'ist', { vi: 'Một phần ba diện tích được rừng bao phủ.' }),
               fill('Die {Hälfte} der Studierenden hat einen Nebenjob.', 'Một nửa sinh viên có việc làm thêm.'),
-              translate('Một phần tư số người được hỏi dùng xe đạp.', ['Ein Viertel der Befragten fährt Fahrrad.', 'Ein Viertel der Befragten nutzt das Fahrrad.', 'Ein Viertel der Befragten benutzt das Fahrrad.']),
+              translate('Một phần tư số người được hỏi dùng xe đạp.', ['Ein Viertel der Befragten fährt Fahrrad.', 'Ein Viertel der Befragten nutzt das Fahrrad.', 'Ein Viertel der Befragten benutzt das Fahrrad.', 'Ein Viertel der Befragten fahren Fahrrad.']),
             ],
           },
         ],
         mixed: [
           choose('Der Umsatz stieg ___ 2 Millionen Euro. (đạt tới)', ['auf', 'um', 'von'], 'auf', { vi: 'Doanh thu tăng lên 2 triệu euro.' }),
           fill('Im Vergleich zu 2020 gab es einen Anstieg {um} zehn Prozent.', 'So với năm 2020 có mức tăng 10%.'),
-          choose('Die Hälfte der Teilnehmer ___ zufrieden.', ['war', 'waren', 'seien'], 'war', { vi: 'Một nửa số người tham gia hài lòng.' }),
+          choose('Die Hälfte des Geldes ___ schon ausgegeben.', ['war', 'waren', 'seien'], 'war', { vi: 'Một nửa số tiền đã tiêu hết.' }),
           choose('Aus dem Diagramm ___ hervor, dass die Zahlen kontinuierlich sinken.', ['geht', 'gehen', 'kommt'], 'geht', { vi: 'Từ sơ đồ có thể thấy các con số giảm liên tục.' }),
           order('Die Grafik / zeigt / einen Rückgang / um / 15 Prozent.', 'Biểu đồ cho thấy mức giảm 15%.'),
         ],
@@ -269,7 +269,7 @@ export default defineStage({
       grafik: [
         choose('Die Preise stiegen ___ 5 Prozent. (thêm 5 %)', ['um', 'auf', 'bei'], 'um'),
         choose('Die Quote sank ___ 3 Prozent. (xuống còn 3 %)', ['auf', 'um', 'von'], 'auf'),
-        choose('Ein Viertel der Befragten ___ dafür.', ['ist', 'sind', 'seien'], 'ist'),
+        choose('Ein Viertel der Fläche ___ Wald.', ['ist', 'sind', 'seien'], 'ist'),
         fill('Die Zahl stieg {von} 50 auf 80.', 'Con số tăng từ 50 lên 80.'),
         fill('Die {Hälfte} der Kinder spielt ein Instrument.', 'Một nửa số trẻ em chơi một nhạc cụ.'),
         order('Aus der Grafik / geht / hervor, / dass / die Zahlen / steigen.', 'Từ biểu đồ có thể thấy các con số đang tăng.'),
@@ -278,7 +278,7 @@ export default defineStage({
     reading: {
       title_de: 'Frauen in der Wissenschaft',
       text_de:
-        'Laut einer aktuellen Statistik ist in Deutschland etwa die Hälfte der Studierenden weiblich.Bei den Professuren sieht es anders aus: Nur ein Viertel der Professorinnen und Professoren ist weiblich. Im Vergleich zu 2010 ist der Anteil zwar um acht Prozentpunkte gestiegen, aber der Anstieg verläuft langsam. Besonders in den Naturwissenschaften und der Technik sind Frauen unterrepräsentiert. Aufgrund dieser Zahlen haben viele Universitäten Förderprogramme gestartet. Man bietet zum Beispiel Mentoring und flexible Arbeitszeiten für Eltern an. Experten sagen voraus, dass der Anteil bis 2035 auf ein Drittel steigen könnte.',
+        'Laut einer aktuellen Statistik ist in Deutschland etwa die Hälfte der Studierenden weiblich. Bei den Professuren sieht es anders aus: Nur ein Viertel der Professorinnen und Professoren ist weiblich. Im Vergleich zu 2010 ist der Anteil zwar um acht Prozentpunkte gestiegen, aber der Anstieg verläuft langsam. Besonders in den Naturwissenschaften und der Technik sind Frauen unterrepräsentiert. Aufgrund dieser Zahlen haben viele Universitäten Förderprogramme gestartet. Man bietet zum Beispiel Mentoring und flexible Arbeitszeiten für Eltern an. Experten sagen voraus, dass der Anteil bis 2035 auf ein Drittel steigen könnte.',
       gloss: {
         Statistik: 'thống kê',
         Professuren: 'chức danh giáo sư',

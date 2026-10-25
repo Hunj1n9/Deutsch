@@ -71,7 +71,7 @@ export default defineStage({
             examples: [['Am Morgen ist die U-Bahn immer voll.', 'Buổi sáng tàu điện ngầm lúc nào cũng đông.']],
             exercises: [
               translate('Bạn đi làm bằng gì?', ['Wie fährst du zur Arbeit?', 'Womit fährst du zur Arbeit?']),
-              choose('Um zehn Uhr ist der Bus fast ___.', ['leer', 'voll', 'gleich'], 'leer', { vi: 'Lúc mười giờ xe buýt gần như trống.' }),
+              choose('Um acht Uhr ist der Bus voll. Um zehn Uhr ist er fast ___.', ['leer', 'voll', 'gleich'], 'leer', { vi: 'Lúc tám giờ xe buýt đầy. Lúc mười giờ xe gần như trống.' }),
             ],
           },
         ],

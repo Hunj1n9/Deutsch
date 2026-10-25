@@ -262,7 +262,7 @@ export default defineStage({
         choose('Komm ___ mit, das wird lustig!', ['doch', 'eben', 'ja'], 'doch'),
         choose('Schau ___, da ist ein Regenbogen!', ['mal', 'eben', 'ja'], 'mal'),
         fill('Das ist {ja} eine tolle Idee!', 'Ý tưởng hay thật đấy!'),
-        choose('So ist das Leben ___.', ['eben', 'mal', 'doch'], 'eben'),
+        choose('So ist das Leben ___.', ['eben', 'mal', 'denn'], 'eben'),
         choose('Kommst du nicht? – ___, ich komme!', ['Doch', 'Ja', 'Mal'], 'Doch'),
         order('Ruf / mich / doch / mal / an!', 'Gọi cho mình nhé!'),
       ],

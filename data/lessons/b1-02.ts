@@ -251,7 +251,7 @@ export default defineStage({
           { speaker: 'A', de: 'Lena, hast du kurz Zeit? Es gibt ein Problem, über das wir reden müssen.', vi: 'Lena, bạn rảnh chút không? Có một vấn đề chúng ta cần nói.' },
           { speaker: 'B', de: 'Klar. Was ist los?', vi: 'Được chứ. Có chuyện gì vậy?' },
           { speaker: 'A', de: 'Die Töpfe, mit denen du gestern gekocht hast, stehen noch in der Küche. Das nervt mich ein bisschen.', vi: 'Mấy cái nồi bạn nấu hôm qua vẫn để trong bếp. Mình hơi bực.' },
-          { speaker: 'B', de: 'Oh, das tut mir leid. Ich hatte heute eine Prüfung, auf die ich lernen musste.', vi: 'Ôi, xin lỗi nhé. Hôm nay mình có bài thi phải ôn.' },
+          { speaker: 'B', de: 'Oh, das tut mir leid. Ich hatte heute eine Prüfung, für die ich lernen musste.', vi: 'Ôi, xin lỗi nhé. Hôm nay mình có bài thi phải ôn.' },
           { speaker: 'A', de: 'Ich verstehe. Ich will mich nicht aufregen. Vielleicht war es nur ein Missverständnis.', vi: 'Mình hiểu. Mình không muốn nổi nóng. Có lẽ chỉ là hiểu lầm.' },
           { speaker: 'B', de: 'Lass uns einen Kompromiss finden. Ich spüle heute alles, und morgen kochen wir zusammen.', vi: 'Mình tìm cách thỏa hiệp nhé. Hôm nay mình rửa hết, mai chúng ta nấu chung.' },
           { speaker: 'A', de: 'Super Idee! Im Großen und Ganzen vertragen wir uns ja gut.', vi: 'Ý hay! Nhìn chung bọn mình vẫn hòa thuận mà.' },

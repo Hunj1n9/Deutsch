@@ -56,7 +56,7 @@ export default defineStage({
           },
           {
             text_vi:
-              'Lời gián tiếp có thể có hoặc không có **dass**. Không có dass thì **động từ ở vị trí 2**: Er sagte, die Lage **sei** ernst. Có dass thì động từ **cuối câu**: Er sagte, dass die Lage ernst **sei**. Đại từ đổi theo người nói: "Ich **bin** besorgt" → Sie sagte, **sie sei** besorgt. Số nhiều của sein: sie **seien**.',
+              'Lời gián tiếp có thể có hoặc không có **dass**. Không có dass thì **động từ ở vị trí 2**: Er sagte, die Lage **sei** ernst. Có dass thì động từ **cuối câu**: Er sagte, dass die Lage ernst **sei**. Đại từ đổi theo người nói: "Ich **bin** besorgt" → Sie sagte, **sie sei** besorgt. Số nhiều của sein: sie **seien**. Khi Konjunktiv I trùng với Präsens (sie **haben**, sie **können**) thì dùng **Konjunktiv II**: Sie sagten, die Länder **hätten** ein Abkommen unterschrieben.',
             table: 'Lời trực tiếp | Lời gián tiếp\n„Ich bin besorgt.“ | Sie sagte, sie sei besorgt.\n„Wir sind bereit.“ | Sie sagten, sie seien bereit.\n„Die Lage ist ernst.“ | Er sagte, dass die Lage ernst sei.',
             examples: [['Die Aktivisten sagten, sie seien enttäuscht von der Klimakonferenz.', 'Các nhà hoạt động nói họ thất vọng về hội nghị khí hậu.']],
             exercises: [
@@ -79,7 +79,7 @@ export default defineStage({
           },
         ],
         mixed: [
-          choose('Die Zeitung berichtet, der Gletscher ___ in 30 Jahren verschwunden.', ['werde', 'wird', 'würden'], 'werde', { vi: 'Báo đưa tin sông băng sẽ biến mất trong 30 năm.' }),
+          choose('Die Zeitung berichtet, der Gletscher ___ in 30 Jahren verschwinden.', ['werde', 'wird', 'würden'], 'werde', { vi: 'Báo đưa tin sông băng sẽ biến mất trong 30 năm.' }),
           fill('Der Sprecher erklärte, die Stadt {müsse} sich an die Hitze anpassen. (müssen)', 'Người phát ngôn giải thích rằng thành phố phải thích nghi với cái nóng.'),
           transform('Chuyển sang lời gián tiếp', 'Die Bürgermeisterin sagt: „Ich habe einen Plan.“', [
             'Die Bürgermeisterin sagt, sie habe einen Plan.',

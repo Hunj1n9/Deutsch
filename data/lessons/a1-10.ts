@@ -152,8 +152,8 @@ export default defineStage({
               ['Morgen muss ich nicht arbeiten.', 'Mai tôi không phải đi làm.'],
             ],
             exercises: [
-              choose('Sie haben Fieber. Sie ___ nicht arbeiten.', ['dürfen', 'müssen'], 'dürfen', {
-                vi: 'Ông bị sốt. Ông không được đi làm.',
+              choose('Sie haben Fieber. Die Ärztin sagt: Sie ___ nicht arbeiten, das ist verboten.', ['dürfen', 'müssen'], 'dürfen', {
+                vi: 'Ông bị sốt. Bác sĩ nói: Ông không được đi làm, điều đó bị cấm.',
                 explain: 'Bác sĩ cấm đi làm → nicht dürfen.',
               }),
               choose('Es ist Sonntag. Ich ___ nicht früh aufstehen.', ['muss', 'darf'], 'muss', {

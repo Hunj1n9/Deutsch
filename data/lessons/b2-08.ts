@@ -282,10 +282,10 @@ export default defineStage({
     reading: {
       title_de: 'Vietnamesen in Deutschland',
       text_de:
-        'In Deutschland leben heute etwa 200.000 Menschen mit vietnamesischen Wurzeln. Ihre Geschichte ist zweigeteilt: Während im Westen in den Siebzigerjahren Bootsflüchtlinge aufgenommen wurden, kamen in die DDR Vertragsarbeiter. Nach der Wende mussten viele von ihnen neu anfangen, wohingegen die Flüchtlinge im Westen schon Fuß gefasst hatten. Die zweite Generation gilt oft als sehr erfolgreich in der Schule. Dieses positive Klischee kann aber auch Druck erzeugen. Viele junge Deutsch-Vietnamesen erzählen, dass sie in zwei Welten leben. Sie sprechen Deutsch, als wäre es ihre einzige Sprache, und lernen trotzdem die Kultur ihrer Eltern kennen.',
+        'In Deutschland leben heute etwa 200.000 Menschen mit vietnamesischen Wurzeln. Ihre Geschichte ist zweigeteilt: Während der Westen ab 1978 Bootsflüchtlinge aufnahm, kamen in den Achtzigerjahren vor allem Vertragsarbeiter in die DDR. Nach der Wende mussten viele von ihnen neu anfangen, wohingegen die Flüchtlinge im Westen schon Fuß gefasst hatten. Die zweite Generation gilt oft als sehr erfolgreich in der Schule. Dieses positive Klischee kann aber auch Druck erzeugen. Viele junge Deutsch-Vietnamesen erzählen, dass sie in zwei Welten leben. Sie sprechen Deutsch, als wäre es ihre einzige Sprache, und lernen trotzdem die Kultur ihrer Eltern kennen.',
       gloss: {
         zweigeteilt: 'chia làm hai',
-        Siebzigerjahren: 'những năm bảy mươi',
+        Achtzigerjahren: 'những năm tám mươi',
         Bootsflüchtlinge: 'thuyền nhân',
         Wende: 'sự kiện thống nhất nước Đức (1989/90)',
         Generation: 'thế hệ',
@@ -293,7 +293,7 @@ export default defineStage({
         einzige: 'duy nhất',
       },
       questions: [
-        mc('Ở Tây Đức những năm 70, ai đã được tiếp nhận?', ['thuyền nhân', 'lao động hợp đồng', 'sinh viên'], 'thuyền nhân'),
+        mc('Từ năm 1978, Tây Đức đã tiếp nhận ai?', ['thuyền nhân', 'lao động hợp đồng', 'sinh viên'], 'thuyền nhân'),
         tf('Nach der Wende mussten viele Vertragsarbeiter neu anfangen.', true),
         mc('Định kiến tích cực về thế hệ thứ hai có thể gây ra gì?', ['áp lực', 'tiền bạc', 'xung đột với hàng xóm'], 'áp lực'),
         tf('Die jungen Deutsch-Vietnamesen interessieren sich nicht für die Kultur ihrer Eltern.', false, { explain: '…und lernen trotzdem die Kultur ihrer Eltern kennen.' }),

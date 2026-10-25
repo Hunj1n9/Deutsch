@@ -16,7 +16,7 @@ export default defineStage({
       rule_key: 'partizip-ii-unregelmaessig',
       category: 'tense',
       title_vi: 'Partizip II: bất quy tắc -en và không có ge-',
-      explanation_vi: 'Động từ mạnh: geschrieben, gesprochen, geholfen. Không có ge-: -ieren (telefoniert), tiền tố be-/er-/ver-/wieder- (erklärt, verstanden).',
+      explanation_vi: 'Động từ mạnh: geschrieben, gesprochen, geholfen. Không có ge-: -ieren (telefoniert), tiền tố không tách be-/er-/ver- (erklärt, verstanden) và wiederholen (wiederholt).',
     },
     {
       key: 'konjunktionen',
@@ -131,7 +131,7 @@ export default defineStage({
           },
           {
             text_vi:
-              '**Không có ge-**: động từ đuôi **-ieren** (telefonieren → **telefoniert**, studieren → studiert) và động từ có tiền tố không tách **be-, er-, ver-, wieder-** (erklären → **erklärt**, verstehen → **verstanden**, wiederholen → **wiederholt**).',
+              '**Không có ge-**: động từ đuôi **-ieren** (telefonieren → **telefoniert**, studieren → studiert) và động từ có tiền tố không tách **be-, er-, ver-** (erklären → **erklärt**, verstehen → **verstanden**). Riêng **wiederholen** (ôn lại) không tách nên cũng không có ge-: **wiederholt**; còn wiederkommen thì tách: wiedergekommen.',
             table: 'Nguyên mẫu | Partizip II\ntelefonieren | telefoniert\nerklären | erklärt\nverstehen | verstanden\nwiederholen | wiederholt',
             examples: [
               ['Die Lehrerin hat die Grammatik erklärt.', 'Cô giáo đã giải thích ngữ pháp.'],

@@ -133,7 +133,7 @@ export default defineStage({
           },
           {
             text_vi:
-              '**seit**, **bis** cũng là **giới từ**: **seit** + Dativ (seit einem Jahr), **bis** + thời điểm (bis Montag, bis zum Abend). Liên từ seit có thể thay bằng **seitdem**. **bis** sau câu phủ định nghĩa "trước khi": Du darfst nicht spielen, **bis** du fertig bist.',
+              '**seit**, **bis** cũng là **giới từ**: **seit** + Dativ (seit einem Jahr), **bis** + thời điểm (bis Montag, bis zum Abend). Liên từ seit có thể thay bằng **seitdem**. **bis** hay đi sau **warten, bleiben**: Ich warte, **bis** du kommst. Lưu ý: "không được … trước khi" nói bằng **erst wenn**: Du darfst **erst** spielen, **wenn** du fertig bist.',
             examples: [['Ich habe das Gerät seit einem Jahr, bis jetzt funktioniert es gut.', 'Tôi có thiết bị này một năm rồi, đến giờ vẫn chạy tốt.']],
             exercises: [
               choose('Ich habe den Laptop ___ einem Jahr.', ['seit', 'bis', 'vor'], 'seit', { vi: 'Tôi có laptop này được một năm.' }),
@@ -155,9 +155,9 @@ export default defineStage({
           transform('Nối bằng seit', 'Ich habe einen kabellosen Kopfhörer. Seitdem höre ich mehr Musik.', [
             'Seit ich einen kabellosen Kopfhörer habe, höre ich mehr Musik.',
           ]),
-          choose('Du darfst nicht gehen, ___ das Programm installiert ist.', ['bis', 'seit'], 'bis', { vi: 'Bạn không được đi cho đến khi chương trình cài xong.' }),
+          choose('Du musst warten, ___ das Programm installiert ist.', ['bis', 'seit'], 'bis', { vi: 'Bạn phải đợi cho đến khi chương trình cài xong.' }),
           fill('Wir warten, bis der Techniker {kommt}.', 'Chúng tôi đợi đến khi kỹ thuật viên đến.'),
-          choose('___ Montag funktioniert das Internet nicht.', ['Seit', 'Bis'], 'Seit', { vi: 'Từ thứ Hai mạng không chạy.' }),
+          choose('Das Internet funktioniert schon ___ Montag nicht.', ['seit', 'bis'], 'seit', { vi: 'Mạng đã không chạy từ thứ Hai.' }),
           order('Bis / das Gerät / repariert / ist, / benutze / ich / das alte.', 'Cho đến khi thiết bị được sửa, tôi dùng cái cũ.'),
         ],
       },

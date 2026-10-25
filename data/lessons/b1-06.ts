@@ -155,7 +155,7 @@ export default defineStage({
           transform('Viết câu je … desto (mehr / müder)', 'Man arbeitet viel. Man ist müde.', ['Je mehr man arbeitet, desto müder ist man.']),
           choose('Je länger du wartest, ___ schwieriger wird es.', ['desto', 'als', 'wie'], 'desto', { vi: 'Bạn càng đợi lâu càng khó.' }),
           fill('Je öfter ich trainiere, desto stärker {werden} meine Muskeln.', 'Tôi càng tập thường xuyên, cơ càng khỏe.'),
-          choose('Je mehr Zucker man isst, desto ___ Übergewicht.', ['mehr riskiert man', 'man riskiert mehr'], 'mehr riskiert man', { vi: 'Càng ăn nhiều đường, càng dễ thừa cân.' }),
+          choose('Je mehr Zucker man isst, desto ___.', ['höher ist das Risiko', 'das Risiko ist höher'], 'höher ist das Risiko', { vi: 'Càng ăn nhiều đường, nguy cơ càng cao.' }),
           order('Je / ausgewogener / man / isst, / desto / gesünder / ist / man.', 'Ăn càng cân bằng, càng khỏe.'),
         ],
       },
