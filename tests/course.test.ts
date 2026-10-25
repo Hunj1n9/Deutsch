@@ -10,6 +10,7 @@ import {
   findTestQuestion,
   gradeTestQuestion,
   scoreTest,
+  stageTestSize,
   type TestQuestion,
 } from '@/lib/course/stage-test';
 import type { Exercise, StageLessons } from '@/lib/course/types';
@@ -141,6 +142,15 @@ describe('kiểm tra chặng (F12)', () => {
       expect(qs.filter((q) => q.section === 'reading')).toHaveLength(3);
       for (const q of qs) expect(findTestQuestion(stage, vocab, q.id)?.id).toBe(q.id);
     }
+  });
+
+  it('chặng 4 điểm ngữ pháp: đề 23 câu, đạt từ 19', () => {
+    expect(stageTestSize(3)).toEqual({ total: 20, pass: 16 });
+    expect(stageTestSize(4)).toEqual({ total: 23, pass: 19 });
+    const four = STAGE_LESSONS.find((s) => s.points.length === 4)!;
+    const qs = drawStageTest(four, vocabEntries(four.stage_id), 5);
+    expect(qs).toHaveLength(23);
+    expect(qs.filter((q) => q.section === 'grammar')).toHaveLength(12);
   });
 
   it('câu từ vựng: danh từ phải đúng mạo từ', () => {

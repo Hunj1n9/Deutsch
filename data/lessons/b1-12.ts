@@ -15,8 +15,8 @@ export default defineStage({
       key: 'seit-bis',
       rule_key: 'seit-bis-nebensatz',
       category: 'verb_position',
-      title_vi: 'seit / bis (liên từ thời gian)',
-      explanation_vi: 'seit = từ khi (việc còn kéo dài, câu chính thường Präsens); bis = cho đến khi. Cả hai mở câu phụ, động từ cuối. Giới từ: seit + Dativ, bis Montag / bis zum Abend.',
+      title_vi: 'seit, bis, sobald, solange (liên từ thời gian)',
+      explanation_vi: 'seit = từ khi (việc còn kéo dài, câu chính thường Präsens); bis = cho đến khi; sobald = ngay khi; solange = chừng nào còn. Tất cả mở câu phụ, động từ cuối.',
     },
     {
       key: 'sodass',
@@ -108,7 +108,7 @@ export default defineStage({
     },
     {
       title_vi: 'Thiết bị trong nhà',
-      goal_vi: 'Nói về cách dùng thiết bị, sự cố; dùng seit và bis.',
+      goal_vi: 'Nói về cách dùng thiết bị, sự cố; dùng seit, bis, sobald và solange.',
       items: [
         'Technik', 'Technologie', 'Gerät', 'Maschine', 'Roboter', 'Bedienungsanleitung', 'Funktion', 'Störung', 'Smartphone',
         'Speicher', 'herstellen', 'funktionieren', 'installieren', 'ersetzen', 'steuern', 'verbinden', 'technisch', 'automatisch',
@@ -120,7 +120,7 @@ export default defineStage({
         sections: [
           {
             text_vi:
-              '**seit** (từ khi) + câu phụ: việc bắt đầu trong quá khứ và **vẫn còn** → câu chính thường ở **Präsens**: **Seit** ich ein Smartphone **habe**, lese ich weniger. **bis** (cho đến khi): **Bis** das Gerät repariert **ist**, benutze ich das alte. Cả hai: động từ chia **cuối**.',
+              '**seit** (từ khi) + câu phụ: việc bắt đầu trong quá khứ và **vẫn còn** → câu chính thường ở **Präsens**: **Seit** ich ein Smartphone **habe**, lese ich weniger. **bis** (cho đến khi): **Bis** das Gerät repariert **ist**, benutze ich das alte. Cả hai: động từ chia **cuối**. **seit**, **bis** còn là **giới từ**: **seit** + Dativ (seit einem Jahr), **bis** Montag, **bis zum** Abend.',
             examples: [
               ['Seit ich das neue Handy habe, mache ich mehr Fotos.', 'Từ khi có điện thoại mới, tôi chụp ảnh nhiều hơn.'],
               ['Warte bitte, bis die Software installiert ist.', 'Hãy đợi cho đến khi phần mềm được cài xong.'],
@@ -129,16 +129,20 @@ export default defineStage({
               fill('{Seit} wir einen Roboter haben, putze ich weniger.', 'Từ khi có rô-bốt, tôi lau dọn ít hơn.'),
               choose('Warte, ___ das Update fertig ist.', ['bis', 'seit', 'bevor'], 'bis', { vi: 'Đợi đến khi bản cập nhật xong.' }),
               order('Seit / ich / im Homeoffice / arbeite, / spare / ich / viel Zeit.', 'Từ khi làm việc ở nhà, tôi tiết kiệm nhiều thời gian.'),
+              choose('Ich habe den Laptop ___ einem Jahr.', ['seit', 'bis', 'vor'], 'seit', { vi: 'Tôi có laptop này được một năm.' }),
             ],
           },
           {
             text_vi:
-              '**seit**, **bis** cũng là **giới từ**: **seit** + Dativ (seit einem Jahr), **bis** + thời điểm (bis Montag, bis zum Abend). Liên từ seit có thể thay bằng **seitdem**. **bis** sau câu phủ định nghĩa "trước khi": Du darfst nicht spielen, **bis** du fertig bist.',
-            examples: [['Ich habe das Gerät seit einem Jahr, bis jetzt funktioniert es gut.', 'Tôi có thiết bị này một năm rồi, đến giờ vẫn chạy tốt.']],
+              '**sobald** (ngay khi): việc ở câu chính xảy ra **ngay sau**: **Sobald** das Update fertig **ist**, starte ich neu. **solange** (chừng nào còn): hai việc **kéo dài cùng lúc**: **Solange** der Akku voll **ist**, funktioniert alles. Cũng mở câu phụ, động từ cuối. **bis** hay đi sau **warten, bleiben**: Ich warte, **bis** du kommst. "Không được … trước khi" nói bằng **erst wenn**: Du darfst **erst** spielen, **wenn** du fertig bist.',
+            examples: [
+              ['Sobald der Techniker kommt, rufe ich dich an.', 'Ngay khi kỹ thuật viên đến, tôi sẽ gọi bạn.'],
+              ['Solange das Gerät Garantie hat, ist die Reparatur kostenlos.', 'Chừng nào thiết bị còn bảo hành, sửa chữa miễn phí.'],
+            ],
             exercises: [
-              choose('Ich habe den Laptop ___ einem Jahr.', ['seit', 'bis', 'vor'], 'seit', { vi: 'Tôi có laptop này được một năm.' }),
+              choose('Ruf mich an, ___ du angekommen bist.', ['sobald', 'solange', 'seit'], 'sobald', { vi: 'Gọi cho tôi ngay khi bạn đến nơi.' }),
               transform('Nối bằng bis', 'Der Akku ist voll. Ich warte so lange.', ['Ich warte, bis der Akku voll ist.']),
-              choose('Seit er die Bedienungsanleitung gelesen hat, ___ alles.', ['versteht er', 'er versteht'], 'versteht er', { vi: 'Từ khi đọc sách hướng dẫn, anh ấy hiểu hết.' }),
+              choose('Ich bleibe drinnen, ___ es regnet.', ['solange', 'sobald'], 'solange', { vi: 'Chừng nào trời còn mưa tôi ở trong nhà.' }),
             ],
           },
           {
@@ -155,9 +159,9 @@ export default defineStage({
           transform('Nối bằng seit', 'Ich habe einen kabellosen Kopfhörer. Seitdem höre ich mehr Musik.', [
             'Seit ich einen kabellosen Kopfhörer habe, höre ich mehr Musik.',
           ]),
-          choose('Du darfst nicht gehen, ___ das Programm installiert ist.', ['bis', 'seit'], 'bis', { vi: 'Bạn không được đi cho đến khi chương trình cài xong.' }),
+          choose('Du musst warten, ___ das Programm installiert ist.', ['bis', 'seit'], 'bis', { vi: 'Bạn phải đợi cho đến khi chương trình cài xong.' }),
           fill('Wir warten, bis der Techniker {kommt}.', 'Chúng tôi đợi đến khi kỹ thuật viên đến.'),
-          choose('___ Montag funktioniert das Internet nicht.', ['Seit', 'Bis'], 'Seit', { vi: 'Từ thứ Hai mạng không chạy.' }),
+          choose('Das Internet funktioniert schon ___ Montag nicht.', ['seit', 'bis'], 'seit', { vi: 'Mạng đã không chạy từ thứ Hai.' }),
           order('Bis / das Gerät / repariert / ist, / benutze / ich / das alte.', 'Cho đến khi thiết bị được sửa, tôi dùng cái cũ.'),
         ],
       },
@@ -284,6 +288,8 @@ export default defineStage({
         order('Seit / sie / ein Auto / hat, / fährt / sie / nicht / mehr / Bus.', 'Từ khi có ô tô, cô ấy không đi xe buýt nữa.'),
         choose('Bis der Bus kommt, ___ wir.', ['warten', 'wir warten'], 'warten'),
         fill('Ich bleibe hier, bis du {kommst}.', 'Tôi ở đây cho đến khi bạn đến.'),
+        choose('___ ich Zeit habe, helfe ich dir.', ['Sobald', 'Seit'], 'Sobald'),
+        fill('Solange du Fieber {hast}, bleibst du im Bett.', 'Chừng nào còn sốt, bạn nằm trên giường.'),
       ],
       sodass: [
         fill('Es regnete, {sodass} wir zu Hause blieben.', 'Trời mưa nên chúng tôi ở nhà.'),

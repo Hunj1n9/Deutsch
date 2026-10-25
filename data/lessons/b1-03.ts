@@ -55,11 +55,12 @@ export default defineStage({
           },
           {
             text_vi:
-              '**weil** nêu **lý do** (kết quả như mong đợi), **obwohl** nêu điều **ngược mong đợi**: Ich bestehe die Prüfung, **weil** ich viel lerne. Ich bestehe die Prüfung, **obwohl** ich wenig lerne. Cả hai đều là liên từ phụ: động từ chia đứng **cuối**.',
+              '**weil** nêu **lý do** (kết quả như mong đợi), **obwohl** nêu điều **ngược mong đợi**: Ich bestehe die Prüfung, **weil** ich viel lerne. Ich bestehe die Prüfung, **obwohl** ich wenig lerne. Cả hai đều là liên từ phụ: động từ chia đứng **cuối**. **da** cũng nghĩa là "vì", hay đứng **đầu câu** khi lý do người nghe đã biết: **Da** es regnet, bleiben wir hier.',
             examples: [['Sie ist sehr begabt, obwohl sie nie Nachhilfe hatte.', 'Cô ấy rất có năng khiếu dù chưa bao giờ học thêm.']],
             exercises: [
               choose('Er hat schlechte Noten, ___ er oft schwänzt.', ['weil', 'obwohl'], 'weil', { vi: 'Cậu ấy điểm kém vì hay trốn học.' }),
               choose('Sie hat eine Eins, ___ sie kaum gelernt hat.', ['obwohl', 'weil'], 'obwohl', { vi: 'Cô ấy được điểm 1 dù hầu như không học.' }),
+              choose('___ der Kurs ausfällt, gehen wir in die Bibliothek.', ['Da', 'Obwohl'], 'Da', { vi: 'Vì lớp nghỉ nên chúng tôi đến thư viện.' }),
               transform('Nối hai câu bằng obwohl', 'Der Kurs ist freiwillig. Alle kommen.', [
                 'Obwohl der Kurs freiwillig ist, kommen alle.',
                 'Alle kommen, obwohl der Kurs freiwillig ist.',
@@ -140,12 +141,13 @@ export default defineStage({
           },
           {
             text_vi:
-              'Đổi qua lại: Obwohl ich müde **bin**, **lerne** ich. = Ich bin müde, **trotzdem lerne** ich. Weil das Seminar **ausfällt**, **gehe** ich nach Hause. = Das Seminar fällt aus, **deshalb gehe** ich nach Hause. trotzdem, deshalb cũng có thể đứng **sau động từ**: Ich lerne **trotzdem**.',
+              'Đổi qua lại: Obwohl ich müde **bin**, **lerne** ich. = Ich bin müde, **trotzdem lerne** ich. Weil das Seminar **ausfällt**, **gehe** ich nach Hause. = Das Seminar fällt aus, **deshalb gehe** ich nach Hause. trotzdem, deshalb cũng có thể đứng **sau động từ**: Ich lerne **trotzdem**. Cùng kiểu trạng từ: **sonst** (nếu không thì): Lern jetzt, **sonst bestehst** du die Prüfung nicht.',
             examples: [['Er hat die Klausur nicht bestanden, deshalb muss er sie wiederholen.', 'Anh ấy trượt bài thi, vì thế phải thi lại.']],
             exercises: [
               transform('Viết lại với trotzdem', 'Obwohl die Studiengebühr hoch ist, studiert sie dort.', ['Die Studiengebühr ist hoch, trotzdem studiert sie dort.']),
               transform('Viết lại với deshalb', 'Weil der Professor krank ist, fällt die Vorlesung aus.', ['Der Professor ist krank, deshalb fällt die Vorlesung aus.']),
               order('Ich / habe / Prüfungsangst, / deshalb / lerne / ich / jeden Tag.', 'Tôi sợ thi, vì thế ngày nào tôi cũng học.'),
+              choose('Beeil dich, sonst ___ du den Bus.', ['verpasst', 'du verpasst'], 'verpasst', { vi: 'Nhanh lên, không thì bạn lỡ xe buýt.' }),
             ],
           },
           {

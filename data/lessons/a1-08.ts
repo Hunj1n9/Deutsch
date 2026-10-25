@@ -213,7 +213,7 @@ export default defineStage({
         sections: [
           {
             text_vi:
-              'Hỏi đường: **Wie komme ich zum Bahnhof?** **zu** luôn đi với Dativ và thường rút gọn: zu dem → **zum** (der/das), zu der → **zur** (die): zum Bahnhof, zum Rathaus, **zur** Post, **zur** Haltestelle. Ngoại lệ: về nhà là **nach Hause**.',
+              'Hỏi đường: **Wie komme ich zum Bahnhof?** **zu** luôn đi với Dativ và thường rút gọn: zu dem → **zum** (der/das), zu der → **zur** (die): zum Bahnhof, zum Rathaus, **zur** Post, **zur** Haltestelle. Ngoại lệ: về nhà là **nach Hause**. Hỏi chung, không nói về ai cụ thể, dùng **man** (người ta), chia như er: **Wie kommt man** zum Bahnhof?',
             table: 'Danh từ | zu + Dativ\nder Bahnhof | zum Bahnhof\ndas Krankenhaus | zum Krankenhaus\ndie Haltestelle | zur Haltestelle',
             examples: [
               ['Wie komme ich zur Haltestelle?', 'Làm sao để đến bến xe buýt?'],
@@ -221,6 +221,7 @@ export default defineStage({
             ],
             exercises: [
               choose('Wie komme ich ___ Bahnhof?', ['zum', 'zur'], 'zum', { vi: 'Làm sao để đến nhà ga?' }),
+              choose('Wie ___ man zur Post?', ['kommt', 'kommen', 'komme'], 'kommt', { vi: 'Đi đến bưu điện thế nào?', explain: 'man chia như er/sie/es.' }),
               choose('Ich gehe ___ Apotheke.', ['zum', 'zur'], 'zur', { vi: 'Tôi đi đến hiệu thuốc.' }),
               fill('Wie komme ich {zum} Krankenhaus?', 'Làm sao để đến bệnh viện?'),
             ],

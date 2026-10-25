@@ -7,9 +7,10 @@ import { OpenStageButton } from '@/components/roadmap/OpenStageButton';
 import { LESSONS_BY_STAGE, STAGE_LESSONS } from '@/data/lessons';
 import { PACKS } from '@/data/packs';
 import { STAGES, stageHours, type Stage } from '@/data/roadmap';
-import { loadCourseState, type CourseState } from '@/lib/course/db';
+import { loadCourseState, loadLevelTests, type CourseState, type LevelBest } from '@/lib/course/db';
+import { LEVEL_PASS_RATIO, LEVEL_TOTAL } from '@/lib/course/level-test';
 import { courseHref, coursePosition, lessonDone, stageStatus, stepLabel, type CourseNext, type StageStatus } from '@/lib/course/position';
-import { TEST_PER_POINT } from '@/lib/course/stage-test';
+import { stageTestSize } from '@/lib/course/stage-test';
 import { stagePercent } from '@/lib/roadmap';
 import { loadRoadmapProgress, stageItemCount } from '@/lib/roadmap-db';
 import { getPageSession } from '@/lib/supabase/session';
@@ -39,14 +40,14 @@ const STATUS_VI: Record<StageStatus, string> = {
 async function Course() {
   const session = await getPageSession();
   if (!session) return null;
-  const [course, packProgress] = await Promise.all([loadCourseState(session), loadRoadmapProgress(session)]);
+  const [course, packProgress, levelTests] = await Promise.all([loadCourseState(session), loadRoadmapProgress(session), loadLevelTests(session)]);
   const next = coursePosition(STAGE_LESSONS, course.progress, course.passed);
 
   return (
     <div className="flex flex-col gap-4">
       <NextBlock next={next} />
       <p className="rounded-[20px] bg-surface p-4 text-[14px] leading-relaxed text-muted">
-        Mỗi chặng có 3 bài (từ mới, ngữ pháp, hội thoại, viết) và một <b className="text-ink">kiểm tra chặng</b> 20 câu, đạt từ 16 câu.
+        Mỗi chặng có 3–4 bài (từ mới, ngữ pháp, hội thoại, viết) và một <b className="text-ink">kiểm tra chặng</b> 20–23 câu, đạt khi đúng từ 80%.
         Từ học trong bài tự vào phiên ôn. Thứ tự chỉ là gợi ý: đã biết rồi thì làm kiểm tra để bỏ qua chặng.
       </p>
       {LEVELS.map((level) => (
@@ -61,9 +62,35 @@ async function Course() {
               packPercent={packProgress.get(s.id) ? stagePercent(packProgress.get(s.id)) : null}
             />
           ))}
+          <LevelExamCard
+            level={level}
+            state={levelTests.get(level)}
+            ready={STAGES.filter((s) => s.level === level).every((s) => course.passed.has(s.id))}
+          />
         </section>
       ))}
     </div>
+  );
+}
+
+/** Thi thử cuối cấp (F14): gợi ý khi đã qua mọi chặng của cấp nhưng không khóa. */
+function LevelExamCard({ level, state, ready }: { level: string; state: LevelBest | undefined; ready: boolean }) {
+  return (
+    <Link
+      href={`/learn/exam/${level}`}
+      className={`flex min-h-14 items-center justify-between gap-3 rounded-[20px] p-4 ${ready && !state?.passed ? 'scribble bg-pastel-yellow outline-2 outline-ink' : 'bg-surface'}`}
+    >
+      <span>
+        <span className="block text-[17px] font-bold">Thi thử {level}</span>
+        <span className="block text-[13px] text-muted">
+          {LEVEL_TOTAL} câu trộn cả cấp, đạt từ {Math.ceil(LEVEL_TOTAL * LEVEL_PASS_RATIO)} câu
+          {ready && !state ? ' · nên làm ngay' : ''}
+        </span>
+      </span>
+      <span className="shrink-0 text-[13px] font-semibold text-muted">
+        {state ? (state.passed ? `✓ đã đạt · cao nhất ${state.score}/${state.total}` : `cao nhất ${state.score}/${state.total}`) : 'chưa làm'}
+      </span>
+    </Link>
   );
 }
 
@@ -72,7 +99,7 @@ function NextBlock({ next }: { next: CourseNext | null }) {
     return (
       <section className="scribble rounded-block bg-pastel-sage p-5">
         <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Bài tiếp theo</p>
-        <p className="mt-1 text-[18px] font-semibold">Bạn đã qua mọi chặng hiện có bài. Bài của các chặng sau đang được soạn.</p>
+        <p className="mt-1 text-[18px] font-semibold">Bạn đã qua cả 50 chặng A1 → B2. Làm thi thử cuối cấp để ôn lại, rồi chuyển sang luyện đề thi thật.</p>
       </section>
     );
   }
@@ -152,7 +179,7 @@ function StageCard({
             <Link href={`/learn/test/${stage.id}`} className="flex min-h-11 items-center justify-between gap-2 rounded-[14px] bg-bg px-3 py-2">
               <span className="text-[15px] font-semibold">Kiểm tra chặng</span>
               <span className="shrink-0 text-[13px] text-muted">
-                {best ? `cao nhất ${best.score}/${best.total}` : `${8 + lessons.points.length * TEST_PER_POINT + 3} câu`}
+                {best ? `cao nhất ${best.score}/${best.total}` : `${stageTestSize(lessons.points.length).total} câu`}
               </span>
             </Link>
           </li>

@@ -37,8 +37,21 @@ import b1_10 from './b1-10';
 import b1_11 from './b1-11';
 import b1_12 from './b1-12';
 import b1_13 from './b1-13';
+import b2_01 from './b2-01';
+import b2_02 from './b2-02';
+import b2_03 from './b2-03';
+import b2_04 from './b2-04';
+import b2_05 from './b2-05';
+import b2_06 from './b2-06';
+import b2_07 from './b2-07';
+import b2_08 from './b2-08';
+import b2_09 from './b2-09';
+import b2_10 from './b2-10';
+import b2_11 from './b2-11';
+import b2_12 from './b2-12';
+import b2_13 from './b2-13';
 
 /** Bài học theo chặng (F11), theo thứ tự lộ trình. Chặng chưa có bài thì không có ở đây. */
-export const STAGE_LESSONS: readonly StageLessons[] = [a1_01, a1_02, a1_03, a1_04, a1_05, a1_06, a1_07, a1_08, a1_09, a1_10, a1_11, a1_12, a2_01, a2_02, a2_03, a2_04, a2_05, a2_06, a2_07, a2_08, a2_09, a2_10, a2_11, a2_12, b1_01, b1_02, b1_03, b1_04, b1_05, b1_06, b1_07, b1_08, b1_09, b1_10, b1_11, b1_12, b1_13];
+export const STAGE_LESSONS: readonly StageLessons[] = [a1_01, a1_02, a1_03, a1_04, a1_05, a1_06, a1_07, a1_08, a1_09, a1_10, a1_11, a1_12, a2_01, a2_02, a2_03, a2_04, a2_05, a2_06, a2_07, a2_08, a2_09, a2_10, a2_11, a2_12, b1_01, b1_02, b1_03, b1_04, b1_05, b1_06, b1_07, b1_08, b1_09, b1_10, b1_11, b1_12, b1_13, b2_01, b2_02, b2_03, b2_04, b2_05, b2_06, b2_07, b2_08, b2_09, b2_10, b2_11, b2_12, b2_13];
 
 export const LESSONS_BY_STAGE: ReadonlyMap<string, StageLessons> = new Map(STAGE_LESSONS.map((s) => [s.stage_id, s]));

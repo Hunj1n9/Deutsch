@@ -57,5 +57,7 @@ n|Bio-Laden|der|¨|cửa hàng thực phẩm hữu cơ|Ich kaufe Gemüse im {Bio
 adj|wolkenlos|||không một gợn mây|Der Himmel ist {wolkenlos}.|Bầu trời không một gợn mây.|
 adj|mild|||ôn hòa, dịu|Der Winter war dieses Jahr {mild}.|Mùa đông năm nay dịu.|
 p|Es ist schwül|||trời oi bức|Heute {ist es schwül}.|Hôm nay trời oi bức.|
+n|Pferd|das|-e|con ngựa|Auf dem Bauernhof gibt es zwei {Pferde}.|Ở trang trại có hai con ngựa.|
+n|Schwein|das|-e|con lợn|Das {Schwein} liegt im Schlamm.|Con lợn nằm trong bùn.|
 `;
 export default pack;

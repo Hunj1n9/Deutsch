@@ -77,7 +77,7 @@ export default defineStage({
           transform('Chuyển sang bị động', 'Man überweist das Geld morgen.', ['Das Geld wird morgen überwiesen.']),
           choose('Die Zinsen ___ am Jahresende gezahlt.', ['werden', 'wird'], 'werden', { vi: 'Lãi được trả vào cuối năm.' }),
           fill('Die Karte wird {geschickt}. (schicken)', 'Thẻ sẽ được gửi đi.'),
-          choose('Das Konto wird ___ meinem Vater bezahlt.', ['von', 'durch'], 'von', { vi: 'Tài khoản do bố tôi trả.' }),
+          choose('Die Miete wird ___ meinem Vater bezahlt.', ['von', 'durch'], 'von', { vi: 'Tiền nhà do bố tôi trả.' }),
           order('Hier / wird / eine Gebühr / verlangt.', 'Ở đây có thu phí.'),
         ],
       },

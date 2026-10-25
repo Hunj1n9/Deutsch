@@ -5,6 +5,8 @@ import { finishGrammarAction, lessonMistakeAction } from '@/app/(app)/learn/acti
 import type { Exercise, GrammarPoint, Lesson } from '@/lib/course/types';
 import { canSpeak, speakGerman } from '../review/speech';
 import { primaryClass } from '../ui';
+import { reportTarget } from '@/lib/course/report';
+import { ContentReport } from './ContentReport';
 import { ExerciseCard, type ExerciseOutcome } from './ExerciseCard';
 import { RichText, SimpleTable } from './RichText';
 
@@ -106,6 +108,11 @@ export function GrammarStep({
             </ul>
           )}
         </section>
+        <ContentReport
+          key={entry.section}
+          target={reportTarget('grammar', lesson.id, entry.section)}
+          excerpt={[s.text_vi, s.table, ...s.examples.map(([de, vi]) => `${de} = ${vi}`)].filter(Boolean).join(' · ')}
+        />
         <button type="button" onClick={next} className={primaryClass}>
           Luyện ngay
         </button>

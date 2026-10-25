@@ -54,5 +54,6 @@ n|Bräutigam|der|-e|chú rể|Der {Bräutigam} ist sehr nervös.|Chú rể rất
 n|Luftballon|der|-s|bóng bay|Die Kinder spielen mit {Luftballons}.|Bọn trẻ chơi bóng bay.|
 v|überraschen|||làm ngạc nhiên|Wir wollen sie {überraschen}.|Chúng tôi muốn tạo bất ngờ cho cô ấy.|er überrascht, hat überrascht
 p|Herzlich willkommen|||nhiệt liệt chào mừng|{Herzlich willkommen} bei uns!|Nhiệt liệt chào mừng đến nhà chúng tôi!|
+n|Rose|die|-n|hoa hồng|Er schenkt ihr rote {Rosen}.|Anh ấy tặng cô ấy hoa hồng đỏ.|
 `;
 export default pack;

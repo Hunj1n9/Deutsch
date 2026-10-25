@@ -182,3 +182,21 @@ export async function skipStage(session: Session, stage: StageLessons): Promise<
     await importStageDrafts(session, stageOf(lesson), lessonDrafts(lesson), [packTag(lesson.stage_id), lessonTag(lesson.id)]);
   }
 }
+
+export type LevelBest = { score: number; total: number; passed: boolean };
+export type LevelTestState = Map<string, LevelBest>;
+
+/** Thi thử cuối cấp (F14): lần điểm cao nhất của mỗi cấp và đã từng đạt chưa. */
+export async function loadLevelTests({ supabase }: Session): Promise<LevelTestState> {
+  const { data } = await supabase.from('level_tests').select('level, score, total, passed');
+  const out: LevelTestState = new Map();
+  for (const t of (data ?? []) as { level: string; score: number; total: number; passed: boolean }[]) {
+    const cur = out.get(t.level);
+    out.set(t.level, {
+      score: Math.max(cur?.score ?? 0, t.score),
+      total: t.total,
+      passed: Boolean(cur?.passed) || t.passed,
+    });
+  }
+  return out;
+}

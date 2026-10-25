@@ -59,5 +59,6 @@ n|Vorschlag|der|¨-e|đề xuất|Hast du einen besseren {Vorschlag}?|Bạn có 
 v|einverstanden sein|||đồng ý|Ich {bin} damit einverstanden.|Tôi đồng ý với điều đó.|einverstanden mit + Dativ
 n|Unterschied|der|-e|sự khác biệt|Was ist der {Unterschied} zwischen „der“ und „den“?|"der" và "den" khác nhau thế nào?|
 adj|deutlich|||rõ ràng|Sprechen Sie bitte {deutlich}!|Xin hãy nói rõ ràng!|
+n|Mannschaft|die|-en|đội (thể thao)|Mein Sohn spielt in der {Mannschaft} der Schule.|Con trai tôi chơi trong đội của trường.|
 `;
 export default pack;

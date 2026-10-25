@@ -100,7 +100,7 @@ adj|lukrativ|||sinh lợi cao|Das Geschäft ist sehr {lukrativ}.|Việc kinh doa
 adj|volkswirtschaftlich|||thuộc về kinh tế quốc dân|Das hat {volkswirtschaftliche} Folgen.|Điều đó có hậu quả đối với nền kinh tế quốc dân.|
 p|unter dem Strich|||xét cho cùng|{Unter dem Strich} haben wir Gewinn gemacht.|Xét cho cùng chúng tôi đã có lãi.|
 p|in die Höhe treiben|||đẩy giá lên|Die Nachfrage {treibt} die Preise in die Höhe.|Nhu cầu đẩy giá lên cao.|
-p|Pleite gehen|||phá sản|Viele kleine Läden {gehen} Pleite.|Nhiều cửa hàng nhỏ phá sản.|
+p|pleitegehen|||phá sản|Viele kleine Läden {gehen} pleite.|Nhiều cửa hàng nhỏ phá sản.|
 p|auf Kredit kaufen|||mua trả chậm|Viele {kaufen} ihr Auto auf Kredit.|Nhiều người mua ô tô trả chậm.|
 n|Wirtschaftsstandort|der|-e|địa điểm kinh tế|Deutschland ist ein starker {Wirtschaftsstandort}.|Đức là một địa điểm kinh tế mạnh.|
 n|Kundenbindung|die||sự gắn bó của khách hàng|Gute Qualität stärkt die {Kundenbindung}.|Chất lượng tốt củng cố sự gắn bó của khách hàng.|

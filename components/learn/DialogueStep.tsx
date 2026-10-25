@@ -4,11 +4,14 @@ import { useEffect, useMemo, useState } from 'react';
 import type { Exercise, Lesson } from '@/lib/course/types';
 import { canSpeak, speakDialogue, speakGerman, stopSpeaking } from '../review/speech';
 import { primaryClass, secondaryClass } from '../ui';
+import { reportTarget } from '@/lib/course/report';
+import { ContentReport } from './ContentReport';
 import { ExerciseCard } from './ExerciseCard';
+import { ShadowingStep } from './ShadowingStep';
 
 /**
  * Bước Hội thoại (SPEC F11): (a) nghe khi chưa hiện chữ rồi trả lời câu hỏi hiểu,
- * (b) hiện chữ, chạm dòng để nghe lại và xem dịch, (c) chép chính tả 2 dòng.
+ * (b) hiện chữ, chạm dòng để nghe lại và xem dịch, (c) chép chính tả 2 dòng, (d) nói theo có ghi âm (F15, bỏ qua được).
  */
 export function DialogueStep({
   lesson,
@@ -24,7 +27,7 @@ export function DialogueStep({
     () => d.dictation.map((i) => ({ kind: 'listen', id: `${lesson.id}.d.${i}`, text: d.lines[i].de, answers: [d.lines[i].de] })),
     [d, lesson.id],
   );
-  const [phase, setPhase] = useState<'listen' | 'read' | 'dictation'>('listen');
+  const [phase, setPhase] = useState<'listen' | 'read' | 'dictation' | 'shadow'>('listen');
   const [index, setIndex] = useState(0);
   const [speaking, setSpeaking] = useState(-1);
   const [shown, setShown] = useState<Set<number>>(new Set());
@@ -95,6 +98,7 @@ export function DialogueStep({
                 </span>
                 {shown.has(i) && <span className="block text-[14px] text-muted">{l.vi}</span>}
               </button>
+              {shown.has(i) && <ContentReport target={reportTarget('dialogue', lesson.id, i)} excerpt={`${l.speaker}: ${l.de} = ${l.vi}`} />}
             </li>
           ))}
         </ul>
@@ -117,6 +121,8 @@ export function DialogueStep({
     );
   }
 
+  if (phase === 'shadow') return <ShadowingStep title={d.title_de} lines={d.lines} onDone={onDone} />;
+
   const ex = dictation[index];
   return (
     <div className="flex flex-col gap-3">
@@ -128,7 +134,7 @@ export function DialogueStep({
         exercise={ex}
         lessonId={lesson.id}
         onAnswered={(o) => onScore(o.correct)}
-        onNext={() => (index + 1 < dictation.length ? setIndex(index + 1) : onDone())}
+        onNext={() => (index + 1 < dictation.length ? setIndex(index + 1) : (setPhase('shadow'), setIndex(0)))}
       />
     </div>
   );

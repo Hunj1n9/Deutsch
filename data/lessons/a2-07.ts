@@ -9,7 +9,7 @@ export default defineStage({
       rule_key: 'wenn-satz',
       category: 'verb_position',
       title_vi: 'Câu với wenn (nếu, mỗi khi); wenn hay als',
-      explanation_vi: 'wenn mở câu phụ, động từ cuối; câu phụ đứng trước thì động từ câu chính ngay sau dấu phẩy. Một lần trong quá khứ dùng als.',
+      explanation_vi: 'wenn mở câu phụ, động từ cuối; câu phụ đứng trước thì động từ câu chính ngay sau dấu phẩy. Một lần hoặc một giai đoạn trong quá khứ dùng als.',
     },
     {
       key: 'ob',
@@ -33,6 +33,7 @@ export default defineStage({
       items: [
         'Ausbildung', 'Studium', 'Fach', 'Note', 'Zeugnis', 'Abschluss', 'Abitur', 'Klasse', 'Grundschule', 'Kindergarten',
         'Stundenplan', 'Semester', 'Vorlesung', 'wenn', 'faul', 'streng', 'eine Prüfung ablegen', 'Câu với wenn',
+        'Mannschaft',
       ],
       grammar: {
         point: 'wenn',
@@ -53,7 +54,7 @@ export default defineStage({
           },
           {
             text_vi:
-              '**wenn** hay **als**? **als** dùng cho **một lần duy nhất trong quá khứ** (Als ich Kind war… = hồi tôi còn nhỏ). **wenn** dùng cho **mỗi lần** (kể cả lặp lại trong quá khứ) và cho hiện tại, tương lai: **Immer wenn** ich eine gute Note bekomme, freue ich mich.',
+              '**wenn** hay **als**? **als** dùng cho **một lần** hoặc **một giai đoạn** trong quá khứ (Als ich ankam… = khi tôi đến; Als ich Kind war… = hồi tôi còn nhỏ). **wenn** dùng cho **mỗi lần** (kể cả lặp lại trong quá khứ) và cho hiện tại, tương lai: **Immer wenn** ich eine gute Note bekomme, freue ich mich.',
             examples: [['Immer wenn ich in Hanoi bin, besuche ich meine alte Schule.', 'Mỗi lần ở Hà Nội tôi đều về thăm trường cũ.']],
             exercises: [
               choose('___ ich ein Kind war, wohnte ich in Hue.', ['Als', 'Wenn'], 'Als', { vi: 'Hồi tôi còn nhỏ, tôi sống ở Huế.' }),

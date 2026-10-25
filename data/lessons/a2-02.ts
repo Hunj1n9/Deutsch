@@ -115,6 +115,7 @@ export default defineStage({
       items: [
         'Karton', 'Kissen', 'Pflanze', 'Steckdose', 'Spiegel', 'Vorhang', 'einziehen', 'ausziehen', 'legen', 'stellen',
         'mitnehmen', 'überall', 'praktisch', 'legen / liegen, stellen / stehen',
+        'einpacken', 'auspacken', 'aufmachen', 'zumachen', 'Schere', 'Ding', 'Sache', 'renovieren', 'Garage', 'Geschirr', 'nirgends',
       ],
       grammar: {
         point: 'legen-liegen',
@@ -192,6 +193,7 @@ export default defineStage({
         'Hausordnung', 'Müll', 'Mülltonne', 'Hof', 'Schlüssel', 'hängen', 'setzen', 'stecken', 'reparieren',
         'streichen', 'klingeln', 'sich beschweren', 'sauber', 'schmutzig', 'den Müll trennen',
         'Ruhe', 'stören', 'erlauben', 'verboten', 'Paket', 'Bescheid sagen',
+        'Zettel', 'drüben',
       ],
       grammar: {
         point: 'haengen',

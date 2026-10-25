@@ -5,10 +5,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { judgeExerciseAction } from '@/app/(app)/learn/actions';
 import type { AnswerFlag } from '@/lib/answer-check';
 import { fullSentence, gradeExercise, hashSeed, shuffledChunks } from '@/lib/course/grade';
+import { exerciseExcerpt, reportTarget } from '@/lib/course/report';
 import { KIND_VI, type Exercise } from '@/lib/course/types';
 import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
+import { ContentReport } from './ContentReport';
 
 export const FLAG_VI: Record<AnswerFlag, string> = {
   umlaut_fallback: 'Viết ae/oe/ue thay cho ä/ö/ü',
@@ -351,6 +353,7 @@ export function ExerciseCard({
               Hỏi gia sư
             </Link>
           </div>
+          <ContentReport target={reportTarget('exercise', exercise.id)} excerpt={exerciseExcerpt(exercise)} />
           <button ref={nextRef} type="button" onClick={onNext} className={primaryClass}>
             Tiếp
           </button>

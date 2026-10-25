@@ -35,6 +35,7 @@ export default defineStage({
         'reservieren', 'empfehlen', 'Ist hier noch frei?', 'Ich hätte gern', 'typisch', 'vegetarisch',
         'Đuôi tính từ sau der/die/das (Nominativ)', 'Đuôi tính từ sau mạo từ xác định (Akk, Dativ)',
         'wählen',
+        'Hamburger', 'Rind',
       ],
       grammar: {
         point: 'adj-def',
@@ -118,6 +119,7 @@ export default defineStage({
       items: [
         'Vegetarier', 'Wein', 'Eis', 'Soße', 'Gewürz', 'Portion', 'Geschmack', 'salzig', 'sauer', 'bitter', 'fett',
         'hungrig', 'durstig', 'satt', 'weil', 'Guten Appetit', 'Câu với weil: động từ cuối câu',
+        'backen', 'Menge',
       ],
       grammar: {
         point: 'weil',
@@ -198,6 +200,7 @@ export default defineStage({
         'aussuchen', 'braten', 'schneiden', 'sich beeilen', 'zufrieden', 'Zum Wohl', 'Stimmt so',
         'Câu phụ đứng trước: động từ chính đứng ngay sau',
         'prüfen',
+        'Rest',
       ],
       grammar: {
         point: 'nebensatz-vorn',

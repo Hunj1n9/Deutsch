@@ -56,5 +56,8 @@ v|pendeln|||đi làm xa (đi về hằng ngày)|Ich {pendle} jeden Tag nach Köl
 adj|befristet|||có thời hạn|Der Vertrag ist {befristet}.|Hợp đồng có thời hạn.|
 p|Überstunden machen|||làm thêm giờ|Diese Woche muss ich {Überstunden machen}.|Tuần này tôi phải làm thêm giờ.|
 n|Vertrag|der|¨-e|hợp đồng|Ich unterschreibe den {Vertrag}.|Tôi ký hợp đồng.|
+n|Führerschein|der|-e|bằng lái xe|Für die Stelle brauchen Sie einen {Führerschein}.|Cho vị trí này bạn cần bằng lái xe.|
+n|Notiz|die|-en|ghi chú|Ich mache mir eine {Notiz}.|Tôi ghi chú lại.|
+v|notieren|||ghi lại|Ich habe die Telefonnummer {notiert}.|Tôi đã ghi lại số điện thoại.|er notiert, hat notiert
 `;
 export default pack;

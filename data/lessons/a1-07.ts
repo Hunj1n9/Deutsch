@@ -25,6 +25,13 @@ export default defineStage({
       title_vi: 'Vị trí của nicht; nicht hay kein',
       explanation_vi: 'nicht phủ định cả câu đứng cuối câu hoặc trước phần động từ cuối; đứng trước tính từ, nơi chốn. Danh từ không mạo từ/có ein dùng kein.',
     },
+    {
+      key: 'praep-akk',
+      rule_key: 'praep-akkusativ',
+      category: 'case',
+      title_vi: 'Giới từ đi với Akkusativ: für, ohne, durch, gegen, um',
+      explanation_vi: 'Sau für, ohne, durch, gegen, um luôn là Akkusativ: für den Vater, ohne einen Hund, durch den Park, um das Haus.',
+    },
   ],
   lessons: [
     {
@@ -272,6 +279,93 @@ export default defineStage({
       writing_prompt_vi:
         'Viết một tin nhắn rủ bạn đi chơi cuối tuần (Hast du Lust…?, Wie wäre es mit…?) và một tin nhắn từ chối lịch sự (Leider nicht, ich kann nicht…).',
     },
+    {
+      title_vi: 'Một ngày Chủ nhật ở công viên',
+      goal_vi: 'Kể về một buổi đi chơi và chơi thể thao; dùng für, ohne, durch, gegen, um với Akkusativ.',
+      items: [
+        'für', 'durch', 'Picknick', 'Decke', 'Spaziergang', 'Stadion', 'Spieler', 'Training', 'trainieren', 'Sonnenbrille',
+        'für, ohne, durch, gegen, um + Akkusativ',
+      ],
+      grammar: {
+        point: 'praep-akk',
+        sections: [
+          {
+            text_vi:
+              'Năm giới từ **für** (cho, dành cho), **ohne** (không có), **durch** (xuyên qua), **gegen** (đấu với, chống lại), **um** (quanh) **luôn đi với Akkusativ**. Như bài Akkusativ (A1-05), chỉ **giống đực** đổi: für **den** Vater, ohne **einen** Hund. Giống cái, giống trung và số nhiều giữ nguyên: für **die** Mutter, für **das** Kind. Mẹo nhớ năm chữ đầu: **F-O-D-G-U**.',
+            table: 'Giới từ | Nghĩa | Ví dụ\nfür | cho, dành cho | für den Freund\nohne | không có | ohne den Hund\ndurch | xuyên qua | durch den Park\ngegen | đấu với | gegen die Kinder\num | quanh | um das Haus',
+            examples: [
+              ['Der Kuchen ist für meinen Bruder.', 'Bánh này dành cho anh trai tôi.'],
+              ['Wir gehen durch den Park.', 'Chúng tôi đi xuyên qua công viên.'],
+            ],
+            exercises: [
+              choose('Der Kaffee ist für ___ Vater.', ['meinen', 'meinem', 'mein'], 'meinen', { vi: 'Cà phê này cho bố tôi.' }),
+              choose('Wir gehen durch ___ Park.', ['den', 'dem', 'der'], 'den', { vi: 'Chúng tôi đi xuyên qua công viên.' }),
+              fill('Ich komme ohne {meinen} Hund. (mein Hund)', 'Tôi đến mà không dẫn chó theo.'),
+            ],
+          },
+          {
+            text_vi:
+              'Đại từ sau các giới từ này cũng ở Akkusativ: für **mich**, für **dich**, ohne **ihn** (học kỹ ở A1-11). **gegen** còn nghĩa là **khoảng** (giờ): Wir kommen **gegen** acht Uhr. So sánh: **um** acht Uhr = đúng tám giờ (A1-03). Trong thể thao: Wir spielen **gegen** einen Verein aus Köln.',
+            examples: [
+              ['Ist das Eis für mich? – Ja, für dich!', 'Kem này cho mình à? – Ừ, cho bạn!'],
+              ['Das Training beginnt gegen sechs Uhr.', 'Buổi tập bắt đầu khoảng sáu giờ.'],
+            ],
+            exercises: [
+              choose('Ist der Saft für ___? – Ja, für dich!', ['mich', 'ich', 'mir'], 'mich', { vi: 'Nước ép cho mình à? – Ừ, cho bạn!' }),
+              choose('Wir kommen ___ acht Uhr, vielleicht etwas später.', ['gegen', 'um'], 'gegen', { vi: 'Chúng tôi đến khoảng tám giờ, có thể muộn hơn chút.' }),
+              fill('Wir laufen einmal {um} das Haus.', 'Chúng tôi chạy một vòng quanh nhà.'),
+            ],
+          },
+          {
+            text_vi:
+              'Đi chơi cuối tuần: **einen Spaziergang machen** (đi dạo), **ein Picknick machen** (đi picnic), mang theo **eine Decke** và **eine Sonnenbrille**. Thể thao: **trainieren** (tập luyện), **das Training** (buổi tập), **der Spieler** (cầu thủ), **ins Stadion gehen** (đến sân vận động).',
+            examples: [
+              ['Am Sonntag machen wir ein Picknick im Park.', 'Chủ nhật chúng tôi đi picnic ở công viên.'],
+              ['Er trainiert zweimal pro Woche.', 'Anh ấy tập hai lần một tuần.'],
+            ],
+            exercises: [
+              fill('Nach dem Essen machen wir einen {Spaziergang}.', 'Ăn xong chúng tôi đi dạo.'),
+              translate('Chúng tôi đi dạo xuyên qua công viên.', [
+                'Wir machen einen Spaziergang durch den Park.',
+                'Wir gehen durch den Park spazieren.',
+              ]),
+            ],
+          },
+        ],
+        mixed: [
+          choose('Mein Bruder spielt heute gegen ___ Freund.', ['seinen', 'seinem', 'sein'], 'seinen', { vi: 'Hôm nay anh tôi đấu với bạn của anh ấy.' }),
+          fill('Die Blumen sind für {die} Oma.', 'Hoa này dành cho bà.'),
+          translate('Bánh này dành cho bạn.', ['Der Kuchen ist für dich.', 'Dieser Kuchen ist für dich.']),
+          order('Wir / gehen / ohne / den Hund / spazieren.', 'Chúng tôi đi dạo mà không dẫn chó theo.'),
+          choose('Gehen wir durch ___ Stadt?', ['die', 'der', 'den'], 'die', { vi: 'Mình đi xuyên qua thành phố nhé?' }),
+        ],
+      },
+      dialogue: {
+        title_de: 'Ein Sonntag im Park',
+        lines: [
+          { speaker: 'A', de: 'Hast du am Sonntag Zeit? Wir machen ein Picknick im Park.', vi: 'Chủ nhật bạn rảnh không? Bọn mình đi picnic ở công viên.' },
+          { speaker: 'B', de: 'Gute Idee! Was bringe ich mit?', vi: 'Ý hay! Mình mang gì theo?' },
+          { speaker: 'A', de: 'Bring eine Decke mit. Und vielleicht Saft für die Kinder.', vi: 'Mang một tấm trải nhé. Và có lẽ nước ép cho bọn trẻ.' },
+          { speaker: 'B', de: 'Kommt dein Hund auch?', vi: 'Chó của bạn cũng đi à?' },
+          { speaker: 'A', de: 'Nein, wir kommen ohne den Hund. Er ist zu alt.', vi: 'Không, bọn mình đi không có chó. Nó già quá rồi.' },
+          { speaker: 'B', de: 'Und nach dem Picknick?', vi: 'Còn sau buổi picnic?' },
+          { speaker: 'A', de: 'Dann machen wir einen Spaziergang durch den Park.', vi: 'Sau đó bọn mình đi dạo qua công viên.' },
+          { speaker: 'B', de: 'Super. Am Nachmittag spielt mein Bruder Fußball, gegen einen Verein aus Köln.', vi: 'Tuyệt. Buổi chiều anh mình đá bóng, đấu với một câu lạc bộ ở Köln.' },
+          { speaker: 'A', de: 'Toll! Dann gehen wir alle zusammen ins Stadion!', vi: 'Hay quá! Vậy tất cả cùng đến sân vận động!' },
+          { speaker: 'B', de: 'Gut, aber ohne mich! Fußball finde ich langweilig.', vi: 'Được, nhưng không có mình nhé! Mình thấy bóng đá chán.' },
+        ],
+        gloss: { bringe: 'mang', 'bring … mit': 'mang theo', Kinder: 'bọn trẻ', Köln: 'thành phố Köln' },
+        questions: [
+          mc('Chủ nhật họ làm gì?', ['đi picnic ở công viên', 'đi xem phim', 'ở nhà'], 'đi picnic ở công viên'),
+          tf('Der Hund kommt mit.', false, { explain: 'Wir kommen ohne den Hund.' }),
+          mc('Sau buổi picnic họ làm gì?', ['đi dạo qua công viên', 'đi bơi', 'đi mua sắm'], 'đi dạo qua công viên'),
+          tf('B geht gern ins Stadion.', false, { explain: 'Gut, aber ohne mich! Fußball finde ich langweilig.' }),
+        ],
+        dictation: [4, 6],
+      },
+      writing_prompt_vi:
+        'Viết 4–5 câu về một buổi đi chơi: bạn đi đâu, với ai, mang gì cho ai. Dùng für, ohne, durch, gegen hoặc um với Akkusativ.',
+    },
   ],
   test: {
     grammar: {
@@ -298,6 +392,14 @@ export default defineStage({
         order('Ich / kann / nicht / schwimmen.', 'Tôi không biết bơi.'),
         fill('Ich habe {keine} Lust.', 'Tôi không hứng.'),
         choose('Wir gehen heute ___ ins Kino.', ['nicht', 'kein'], 'nicht'),
+      ],
+      'praep-akk': [
+        choose('Das ist für ___ Freund.', ['meinen', 'meinem'], 'meinen'),
+        choose('Wir gehen durch ___ Park.', ['den', 'dem'], 'den'),
+        fill('Ich trinke Kaffee {ohne} Milch.', 'Tôi uống cà phê không sữa.'),
+        choose('Er spielt gegen ___ Vater.', ['seinen', 'seinem'], 'seinen'),
+        order('Wir / laufen / um / das Haus.', 'Chúng tôi chạy quanh nhà.'),
+        fill('Der Kuchen ist für {dich}.', 'Bánh này dành cho bạn.'),
       ],
     },
     reading: {

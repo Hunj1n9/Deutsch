@@ -35,6 +35,7 @@ export default defineStage({
         'sich vorstellen', 'einstellen', 'zuverlässig', 'flexibel', 'freundlich', 'kreativ', 'dass',
         'Ich interessiere mich für', 'Spaß machen', 'Câu với dass',
         'Vertrag',
+        'Führerschein',
       ],
       grammar: {
         point: 'dass',
@@ -115,6 +116,7 @@ export default defineStage({
         'Gehalt', 'Lohn', 'Arbeitszeit', 'Teilzeit', 'Vollzeit', 'Schicht', 'Urlaubstag', 'Arbeitsvertrag', 'Besprechung',
         'Kantine', 'kündigen', 'erledigen', 'pendeln', 'befristet', 'unterwegs', 'Überstunden machen',
         'Präteritum của động từ khuyết thiếu',
+        'Notiz', 'notieren',
       ],
       grammar: {
         point: 'praet-modal',

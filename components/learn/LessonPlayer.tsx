@@ -98,7 +98,7 @@ export function LessonPlayer({
             <ul className="mt-3 flex flex-col gap-1 text-[15px]">
               <li>• {words.length} từ và cụm từ mới</li>
               <li>• Ngữ pháp: {point?.title_vi}</li>
-              <li>• Hội thoại „{lesson.dialogue.title_de}“</li>
+              <li>• Hội thoại „{lesson.dialogue.title_de}“, nghe, chép và nói theo</li>
               <li>• Viết vài câu và được AI sửa</li>
             </ul>
             <p className="mt-3 text-[14px] opacity-80">Khoảng 25–40 phút. Thoát giữa chừng thì lần sau học tiếp từ đầu bước đang làm.</p>

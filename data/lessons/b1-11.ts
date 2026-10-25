@@ -288,7 +288,7 @@ export default defineStage({
         choose('___ zu arbeiten, schläft er.', ['Statt', 'Ohne'], 'Statt'),
         choose('Sie kam, ohne ___.', ['anzurufen', 'zu anrufen'], 'anzurufen'),
         order('Statt / zu / lernen, / spielt / er.', 'Thay vì học, cậu ấy chơi.'),
-        choose('Er kaufte das Bild, ___ den Preis zu fragen.', ['ohne', 'um'], 'ohne'),
+        choose('Er kaufte das Bild, ___ nach dem Preis zu fragen.', ['ohne', 'um'], 'ohne'),
         fill('Statt fernzusehen, {lese} ich ein Buch.', 'Thay vì xem tivi, tôi đọc sách.'),
       ],
       falls: [

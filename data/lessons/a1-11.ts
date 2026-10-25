@@ -122,7 +122,7 @@ export default defineStage({
         sections: [
           {
             text_vi:
-              'Đại từ làm **tân ngữ** (Akkusativ): ich → **mich**, du → **dich**, er → **ihn**, sie → **sie**, es → **es**, wir → **uns**, ihr → **euch**, Sie → **Sie**. Chỉ **er → ihn** đổi khác hẳn. Thay danh từ theo giống: der Rock → **ihn**, die Hose → **sie**, das Kleid → **es**.',
+              'Đại từ làm **tân ngữ** (Akkusativ): ich → **mich**, du → **dich**, er → **ihn**, sie → **sie**, es → **es**, wir → **uns**, ihr → **euch**, Sie → **Sie**. Chỉ **er → ihn** đổi khác hẳn. Thay danh từ theo giống: der Rock → **ihn**, die Hose → **sie**, das Kleid → **es**. Hỏi người làm tân ngữ dùng **Wen?** (ai, Akkusativ của wer): **Wen** besuchst du? – Meinen Opa.',
             table: 'Nominativ | Akkusativ\nich | mich\ndu | dich\ner | ihn\nsie | sie\nes | es\nwir | uns\nihr | euch',
             examples: [
               ['Der Rock ist schön. Ich nehme ihn.', 'Cái chân váy đẹp. Tôi lấy nó.'],
@@ -130,6 +130,7 @@ export default defineStage({
             ],
             exercises: [
               choose('Der Pullover ist toll. Ich kaufe ___.', ['ihn', 'er', 'es'], 'ihn', { vi: 'Cái áo len đẹp quá. Tôi mua nó.' }),
+              choose('___ siehst du? – Meine Schwester.', ['Wen', 'Wer'], 'Wen', { vi: 'Bạn nhìn thấy ai? – Chị gái tôi.', explain: 'Người là tân ngữ → Wen; chủ ngữ → Wer.' }),
               choose('Die Jacke? Ich nehme ___.', ['sie', 'ihn', 'es'], 'sie', { vi: 'Cái áo khoác à? Tôi lấy nó.' }),
               fill('Siehst du {mich}?', 'Bạn có thấy tôi không?'),
             ],

@@ -7,6 +7,7 @@ import { dailyWritingPrompt } from '@/lib/ai/writing-prompt';
 import { STAGE_LESSONS } from '@/data/lessons';
 import { STAGES } from '@/data/roadmap';
 import { findLesson } from '@/lib/course/catalog';
+import { stageTestSize } from '@/lib/course/stage-test';
 import { loadCourseState } from '@/lib/course/db';
 import { courseHref, coursePosition, lessonDone, stepLabel } from '@/lib/course/position';
 import { loadProgress } from '@/lib/progress';
@@ -99,7 +100,7 @@ async function LessonBlock({ session, settings }: { session: Session; settings: 
         {next.kind === 'lesson' ? next.lesson.title_vi : STAGES.find((s) => s.id === next.stage.stage_id)?.title_vi}
       </p>
       <p className="mt-1 text-[14px] opacity-80">
-        {next.kind === 'lesson' ? `~30 phút${step ? ` · đang ở ${step}` : ''}` : '20 câu · đạt từ 16 câu'}
+        {next.kind === 'lesson' ? `~30 phút${step ? ` · đang ở ${step}` : ''}` : `${stageTestSize(next.stage.points.length).total} câu · đạt từ ${stageTestSize(next.stage.points.length).pass} câu`}
       </p>
       {counts.due > REVIEW_FIRST && (
         <p className="mt-2 text-[14px] font-semibold">Còn {counts.due} thẻ đến hạn: ôn trước sẽ nhớ bài mới tốt hơn.</p>

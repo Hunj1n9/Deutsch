@@ -9,6 +9,8 @@ import { ArticleChip } from '../ArticleChip';
 import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
+import { reportTarget } from '@/lib/course/report';
+import { ContentReport } from './ContentReport';
 import { answerInputClass, FLAG_VI } from './ExerciseCard';
 
 /** Một mục từ mới, đã chuẩn bị ở server. */
@@ -204,6 +206,13 @@ export function WordsStep({
             </button>
           )}
         </div>
+        <ContentReport
+          key={introWord.key}
+          target={reportTarget('word', lessonId.slice(0, 5), introWord.key)}
+          excerpt={[full(introWord), introWord.plural, introWord.vietnamese, introWord.example, introWord.exampleVi, introWord.note]
+            .filter(Boolean)
+            .join(' · ')}
+        />
         <button
           type="button"
           onClick={() => (intro + 1 < current.length ? setIntro(intro + 1) : startRecall())}

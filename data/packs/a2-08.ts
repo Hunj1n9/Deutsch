@@ -42,7 +42,6 @@ adv|hin|||đến đó (hướng đi)|Wie kommen wir {hin}?|Làm sao chúng ta đ
 adv|zurück|||trở lại|Wann bist du wieder {zurück}?|Khi nào bạn quay lại?|
 adv|ins Ausland|||ra nước ngoài|Sie geht für ein Jahr {ins Ausland}.|Cô ấy ra nước ngoài một năm.|
 prep|aus|||từ (bên trong ra)|Er kommt gerade {aus} dem Urlaub.|Anh ấy vừa đi nghỉ về.|aus + Dativ.
-prep|durch|||xuyên qua|Wir fahren {durch} die Schweiz.|Chúng tôi đi xuyên qua Thụy Sĩ.|durch + Akkusativ.
 prep|um … herum|||xung quanh|Wir laufen {um} den See herum.|Chúng tôi đi bộ quanh hồ.|um + Akkusativ.
 p|Wir haben Glück gehabt|||chúng tôi gặp may|Das Wetter war super, {wir haben Glück gehabt}.|Thời tiết tuyệt vời, chúng tôi gặp may.|
 g|Woher? Wohin? Wo?|||hỏi nơi chốn và hướng|{Wohin} fahrt ihr im Sommer?|Mùa hè các bạn đi đâu?|wo = ở đâu (vị trí); wohin = đi đâu (hướng); woher = từ đâu.
@@ -58,5 +57,8 @@ n|Wanderung|die|-en|chuyến đi bộ đường dài|Die {Wanderung} dauert vier
 adj|preisgünstig|||giá rẻ|Wir suchen ein {preisgünstiges} Hotel.|Chúng tôi tìm khách sạn giá rẻ.|
 p|eine Reise machen|||đi du lịch|Nächstes Jahr {machen} wir eine Reise nach Europa.|Năm sau chúng tôi đi du lịch châu Âu.|
 adj|sicher|||an toàn; chắc chắn|Ist das Land {sicher}?|Nước đó có an toàn không?|
+n|Hauptstadt|die|Hauptstädte|thủ đô|Berlin ist die {Hauptstadt} von Deutschland.|Berlin là thủ đô của Đức.|
+n|Fahrplan|der|Fahrpläne|lịch chạy tàu xe|Laut {Fahrplan} kommt der Zug um zehn.|Theo lịch tàu, tàu đến lúc mười giờ.|
+n|Ermäßigung|die|-en|sự giảm giá|Mit dem Studentenausweis bekommen Sie eine {Ermäßigung}.|Với thẻ sinh viên bạn được giảm giá.|
 `;
 export default pack;

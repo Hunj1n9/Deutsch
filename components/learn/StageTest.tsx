@@ -2,38 +2,68 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
-import { submitStageTestAction, type TestReview } from '@/app/(app)/learn/actions';
+import { submitLevelTestAction, submitStageTestAction, type TestReview } from '@/app/(app)/learn/actions';
+import { questionStage, type SectionScore } from '@/lib/course/level-test';
 import type { TestOutcome, TestView } from '@/lib/course/stage-test';
 import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { errorBoxClass, noticeBoxClass, primaryClass, secondaryClass } from '../ui';
+import { reportTarget } from '@/lib/course/report';
+import { ContentReport } from './ContentReport';
 import { AnswerInput, answerInputClass, ExercisePrompt } from './ExerciseCard';
 
-type Reading = { title_de: string; text_de: string; gloss: Record<string, string> };
+export type Reading = { title_de: string; text_de: string; gloss: Record<string, string> };
+
+/** Kiểm tra chặng (F12) hoặc thi thử cuối cấp (F14). */
+export type TestMode = { kind: 'stage'; stageId: string } | { kind: 'level'; level: string };
+
+const SECTION_VI: Record<string, string> = { vocab: 'Từ vựng', grammar: 'Ngữ pháp', reading: 'Đọc hiểu' };
+
+function formatElapsed(seconds: number): string {
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+}
 
 /**
- * Kiểm tra chặng (SPEC F12): 20 câu, không gợi ý, không hiện đáp án đến khi nộp. Server chấm lại.
+ * Bài kiểm tra (SPEC F12, F14): không gợi ý, không hiện đáp án đến khi nộp. Server chấm lại.
+ * Bài đọc lấy theo mã chặng của câu hỏi (thi thử có hai bài đọc của hai chặng).
  */
 export function StageTest({
-  stageId,
+  mode,
+  title,
+  passRatio,
   questions,
-  reading,
+  readings,
   points,
   lessonLinks,
   next,
 }: {
-  stageId: string;
+  mode: TestMode;
+  title: string;
+  passRatio: number;
   questions: TestView[];
-  reading: Reading;
+  readings: Record<string, Reading>;
   points: { key: string; title_vi: string; lessonId: string | null }[];
   lessonLinks: { id: string; title_vi: string }[];
   next: { href: string; label: string } | null;
 }) {
   const [index, setIndex] = useState(-1);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [result, setResult] = useState<{ outcome: TestOutcome; review: TestReview[]; skipped: boolean } | null>(null);
+  const [result, setResult] = useState<{
+    outcome: TestOutcome & { sections?: Record<string, SectionScore> };
+    review: TestReview[];
+    skipped: boolean;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [startedAt, setStartedAt] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
+  const timing = mode.kind === 'level' && index >= 0 && !result;
+
+  useEffect(() => {
+    if (!timing) return;
+    const t = setInterval(() => setElapsed(Math.floor((Date.now() - startedAt) / 1000)), 1000);
+    return () => clearInterval(t);
+  }, [timing, startedAt]);
 
   function answer(id: string, value: string) {
     setAnswers((a) => ({ ...a, [id]: value }));
@@ -44,10 +74,11 @@ export function StageTest({
   function submit() {
     setError(null);
     startTransition(async () => {
-      const res = await submitStageTestAction({
-        stageId,
-        answers: questions.map((q) => ({ id: q.id, answer: answers[q.id] ?? '' })),
-      });
+      const list = questions.map((q) => ({ id: q.id, answer: answers[q.id] ?? '' }));
+      const res =
+        mode.kind === 'stage'
+          ? await submitStageTestAction({ stageId: mode.stageId, answers: list })
+          : await submitLevelTestAction({ level: mode.level, answers: list });
       if (!res.ok) {
         setError(res.error);
         return;
@@ -61,13 +92,21 @@ export function StageTest({
     return (
       <div className="flex flex-col gap-3">
         <section className="scribble rounded-block bg-pastel-yellow p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Kiểm tra chặng</p>
+          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">{title}</p>
           <p className="mt-2 text-[17px] leading-relaxed">
             {questions.length} câu: từ vựng, ngữ pháp và đọc hiểu. Không có gợi ý, đáp án hiện sau khi nộp. Đạt khi đúng từ{' '}
-            {Math.ceil(questions.length * 0.8)} câu. Đề được rút ngẫu nhiên mỗi lần làm.
+            {Math.ceil(questions.length * passRatio)} câu. Đề được rút ngẫu nhiên mỗi lần làm.
+            {mode.kind === 'level' && ' Có đồng hồ đếm thời gian đã làm, không giới hạn giờ.'}
           </p>
         </section>
-        <button type="button" onClick={() => setIndex(0)} className={primaryClass}>
+        <button
+          type="button"
+          onClick={() => {
+            setStartedAt(Date.now());
+            setIndex(0);
+          }}
+          className={primaryClass}
+        >
           Bắt đầu
         </button>
       </div>
@@ -84,8 +123,21 @@ export function StageTest({
           <p className="mt-1 text-[34px] font-bold leading-none">
             {outcome.score}/{outcome.total}
           </p>
+          {mode.kind === 'level' && <p className="mt-1 text-[15px]">Thời gian: {formatElapsed(elapsed)}</p>}
           {skipped && <p className="mt-2 text-[15px]">Chặng được đánh dấu bỏ qua; từ của chặng đã vào kho để ôn.</p>}
         </section>
+        {outcome.sections && (
+          <ul className="grid grid-cols-3 gap-2" aria-label="Điểm từng phần">
+            {Object.entries(outcome.sections).map(([k, v]) => (
+              <li key={k} className="rounded-[16px] bg-surface p-3 text-center">
+                <p className="text-[12px] font-semibold text-muted">{SECTION_VI[k] ?? k}</p>
+                <p className="text-[20px] font-bold">
+                  {v.right}/{v.all}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
         {outcome.weakPoints.length > 0 && (
           <div className={noticeBoxClass}>
             <p className="font-semibold">Nên làm lại:</p>
@@ -121,6 +173,10 @@ export function StageTest({
                   <p className="text-[18px] font-semibold" lang="de">
                     {r.expected}
                   </p>
+                  <ContentReport
+                    target={reportTarget('test', r.id)}
+                    excerpt={`${q ? `${questionText(q)} · ` : ''}Đáp án: ${r.expected} · Đã gõ: ${r.answer || '(bỏ trống)'}`}
+                  />
                 </div>
               );
             })}
@@ -133,7 +189,7 @@ export function StageTest({
         )}
         <div className="flex gap-2">
           {/* Tải lại hẳn trang để server rút đề mới. */}
-          <a href={`/learn/test/${stageId}`} className={`${secondaryClass} flex-1`}>
+          <a href={mode.kind === 'stage' ? `/learn/test/${mode.stageId}` : `/learn/exam/${mode.level}`} className={`${secondaryClass} flex-1`}>
             Làm đề khác
           </a>
           <Link href="/learn" className={`${secondaryClass} flex-1`}>
@@ -176,9 +232,10 @@ export function StageTest({
         </div>
         <span className="text-[13px] font-semibold text-muted">
           {index + 1}/{questions.length}
+          {mode.kind === 'level' && ` · ${formatElapsed(elapsed)}`}
         </span>
       </div>
-      {q.section === 'reading' && <ReadingText reading={reading} />}
+      {q.section === 'reading' && readings[questionStage(q.id)] && <ReadingText reading={readings[questionStage(q.id)]} />}
       <TestQuestionView key={q.id} q={q} initial={answers[q.id] ?? ''} onAnswer={(v) => answer(q.id, v)} />
       <button type="button" onClick={() => answer(q.id, answers[q.id] ?? '')} className={`${secondaryClass} self-center`}>
         Bỏ qua câu này
@@ -187,13 +244,14 @@ export function StageTest({
   );
 }
 
-function QuestionLabel({ q }: { q: TestView }) {
-  if (q.section === 'vocab') {
-    return <p className="text-[13px] text-muted">{q.mode === 'vi_de' ? `Việt → Đức: ${q.vietnamese}` : 'Nghe và chép'}</p>;
-  }
+function questionText(q: TestView): string {
+  if (q.section === 'vocab') return q.mode === 'vi_de' ? `Việt → Đức: ${q.vietnamese}` : 'Nghe và chép';
   const e = q.exercise;
-  const text = 'text' in e ? e.text.replace('{_}', '___') : 'vi' in e ? e.vi : '';
-  return <p className="text-[13px] text-muted">{text}</p>;
+  return 'text' in e ? e.text.replace('{_}', '___') : 'vi' in e ? e.vi : '';
+}
+
+function QuestionLabel({ q }: { q: TestView }) {
+  return <p className="text-[13px] text-muted">{questionText(q)}</p>;
 }
 
 function ReadingText({ reading }: { reading: Reading }) {

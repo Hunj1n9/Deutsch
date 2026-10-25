@@ -55,5 +55,10 @@ g|Câu với weil: động từ cuối câu|||nêu lý do|Ich bestelle Wasser, w
 g|Câu phụ đứng trước: động từ chính đứng ngay sau|||đảo vị trí|Weil ich Hunger habe, {bestelle} ich Pizza.|Vì đói nên tôi gọi pizza.|Câu phụ chiếm vị trí 1, động từ câu chính ở vị trí 2.
 v|wählen|||chọn; bầu|Sie können zwischen drei Desserts {wählen}.|Ông/bà có thể chọn giữa ba món tráng miệng.|er wählt, hat gewählt
 v|prüfen|||kiểm tra|Bitte {prüfen} Sie die Rechnung.|Xin kiểm tra hóa đơn.|er prüft, hat geprüft
+n|Hamburger|der|-|bánh hamburger|Ich nehme einen {Hamburger} mit Pommes.|Tôi lấy một chiếc hamburger với khoai tây chiên.|
+n|Rind|das|-er|bò; thịt bò|Ist das Gericht mit Schwein oder mit {Rind}?|Món này là thịt lợn hay thịt bò?|
+v|backen|||nướng (bánh)|Meine Mutter {backt} jeden Sonntag einen Kuchen.|Mẹ tôi nướng bánh vào mỗi Chủ nhật.|er backt / bäckt, hat gebacken
+n|Menge|die|-n|lượng; nhiều|Im Restaurant waren eine {Menge} Leute.|Trong nhà hàng có rất nhiều người.|eine Menge = rất nhiều
+n|Rest|der|-e|phần còn lại|Können wir den {Rest} mitnehmen?|Chúng tôi mang phần còn lại về được không?|
 `;
 export default pack;

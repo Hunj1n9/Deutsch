@@ -34,6 +34,7 @@ export default defineStage({
         'Kaufhaus', 'Abteilung', 'Umkleidekabine', 'Mode', 'Stil', 'Anzug', 'Bluse', 'Gürtel', 'aussehen', 'anhaben',
         'elegant', 'hübsch', 'hässlich', 'altmodisch', 'gestreift', 'kariert', 'Kann ich Ihnen helfen?', 'Ich schaue nur',
         'Das steht dir gut', 'Đuôi tính từ sau ein/kein/mein (Nominativ)', 'Đuôi tính từ sau ein (Akkusativ)',
+        'Jeans',
       ],
       grammar: {
         point: 'adj-indef',
@@ -65,10 +66,11 @@ export default defineStage({
           },
           {
             text_vi:
-              'Ở cửa hàng, nhân viên hỏi **Kann ich Ihnen helfen?** – Trả lời **Danke, ich schaue nur.** (tôi chỉ xem thôi). Khen: **Das steht dir gut!** (hợp với bạn; stehen + Dativ). **aussehen** (trông): Du **siehst** toll **aus**! **anhaben** (đang mặc): Was **hast** du heute **an**?',
+              'Ở cửa hàng, nhân viên hỏi **Kann ich Ihnen helfen?** – Trả lời **Danke, ich schaue nur.** (tôi chỉ xem thôi). Khen: **Das steht dir gut!** (hợp với bạn; stehen + Dativ). **aussehen** (trông): Du **siehst** toll **aus**! **anhaben** (đang mặc): Was **hast** du heute **an**? Hỏi loại, kiểu: **Was für ein**…? (ein chia theo giống, cách): Was für **einen** Mantel suchen Sie? – Einen warmen.',
             examples: [['Der Anzug steht dir sehr gut.', 'Bộ vest rất hợp với bạn.']],
             exercises: [
               fill('Du {siehst} heute toll aus!', 'Hôm nay trông bạn tuyệt lắm!'),
+              choose('Was für ___ Jacke suchen Sie?', ['eine', 'einen', 'ein'], 'eine', { vi: 'Ông/bà tìm loại áo khoác nào?' }),
               translate('Cảm ơn, tôi chỉ xem thôi.', ['Danke, ich schaue nur.']),
             ],
           },
@@ -111,6 +113,7 @@ export default defineStage({
       items: [
         'Kasse', 'Angebot', 'Rabatt', 'Kassenbon', 'Kreditkarte', 'Bargeld', 'Qualität', 'Tasche', 'Brille', 'Schaufenster',
         'sparen', 'ausgeben', 'vergleichen', 'bedienen', 'preiswert', 'Was kostet …?', 'So sánh hơn: -er + als',
+        'mindestens',
       ],
       grammar: {
         point: 'komparativ',
@@ -187,6 +190,7 @@ export default defineStage({
         'Schmuck', 'Ring', 'Kette', 'Ohrring', 'Handschuh', 'Stoff', 'Baumwolle', 'Kleiderschrank', 'umtauschen',
         'zurückgeben', 'sich entscheiden', 'weich', 'hart', 'ähnlich', 'modisch', 'genauso', 'als', 'eine Nummer größer',
         'so … wie: so sánh bằng',
+        'egal', 'blond', 'sportlich', 'romantisch',
       ],
       grammar: {
         point: 'als-wie',

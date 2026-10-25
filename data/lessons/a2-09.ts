@@ -40,7 +40,7 @@ export default defineStage({
         sections: [
           {
             text_vi:
-              'Một số động từ đi với **Dativ** (không phải Akkusativ) cho người: **helfen, danken, gratulieren, gefallen, gehören, passen, schmecken**. Ich **gratuliere dir**! Das Buch **gehört mir**. Tiếng Việt nói "cảm ơn anh", "chúc mừng em" không đổi gì; tiếng Đức phải dùng Dativ: Ich danke **Ihnen** (không phải "Sie").',
+              'Một số động từ đi với **Dativ** (không phải Akkusativ) cho người: **helfen, danken, gratulieren, gefallen, gehören, passen, schmecken**. Ich **gratuliere dir**! Das Buch **gehört mir**. Tiếng Việt nói "cảm ơn anh", "chúc mừng em" không đổi gì; tiếng Đức phải dùng Dativ: Ich danke **Ihnen** (không phải "Sie"). Hỏi người ở Dativ dùng **Wem?**: **Wem** gehört das? – Mir.',
             table: 'Động từ | Ví dụ\nhelfen | Ich helfe dir.\ndanken | Ich danke Ihnen.\ngratulieren | Wir gratulieren dir!\ngehören | Das gehört mir.\ngefallen | Das gefällt mir.',
             examples: [
               ['Ich gratuliere dir zum Geburtstag!', 'Chúc mừng sinh nhật bạn!'],
@@ -48,13 +48,14 @@ export default defineStage({
             ],
             exercises: [
               choose('Ich danke ___ für die Hilfe.', ['Ihnen', 'Sie'], 'Ihnen', { vi: 'Tôi cảm ơn ông/bà đã giúp đỡ.' }),
+              choose('___ hilfst du? – Meinem Bruder.', ['Wem', 'Wen', 'Wer'], 'Wem', { vi: 'Bạn giúp ai? – Anh trai tôi.', explain: 'helfen + Dativ → hỏi Wem?' }),
               choose('Wir gratulieren ___ zum Geburtstag!', ['dir', 'dich'], 'dir', { vi: 'Chúng tôi chúc mừng sinh nhật bạn!' }),
               fill('Das Geschenk {gehört} mir.', 'Món quà là của tôi.'),
             ],
           },
           {
             text_vi:
-              'Danh từ ở Dativ: mạo từ **dem** (der/das), **der** (die), **den** + **-n** (số nhiều): Ich helfe **dem** Kind. Wir danken **der** Gastgeberin. Ich gratuliere **den** Kinder**n**. **passen zu** + Dativ: Die Kette **passt zu dem** Kleid.',
+              'Danh từ ở Dativ: mạo từ **dem** (der/das), **der** (die), **den** + **-n** (số nhiều): Ich helfe **dem** Kind. Wir danken **der** Gastgeberin. Ich gratuliere **den** Kinder**n**. Mạo từ sở hữu chia như ein: mit **meinem** Bruder, **meiner** Schwester, **meinen** Eltern. **passen zu** + Dativ: Die Kette **passt zu dem** Kleid.',
             examples: [['Ich danke der Gastgeberin für die Einladung.', 'Tôi cảm ơn bà chủ nhà vì lời mời.']],
             exercises: [
               choose('Ich helfe ___ Mann.', ['dem', 'den'], 'dem', { vi: 'Tôi giúp người đàn ông.' }),
@@ -111,6 +112,7 @@ export default defineStage({
         'Geschenk', 'Blume', 'Einladung', 'Gastgeber', 'Gästeliste', 'schenken', 'verpacken', 'überraschen',
         'zusagen', 'absagen', 'persönlich', 'herzlich', 'Herzlich willkommen', 'Hai tân ngữ: Dativ trước Akkusativ',
         'Mạo từ ở Dativ',
+        'Rose',
       ],
       grammar: {
         point: 'dat-akk',

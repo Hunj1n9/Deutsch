@@ -134,11 +134,12 @@ export default defineStage({
           },
           {
             text_vi:
-              '**lassen** còn là động từ chính = **để lại**: Ich lasse den Schirm zu Hause. **sich lassen** = có thể được: Das Glas **lässt sich** recyceln. Perfekt **có** nguyên mẫu: habe … reparieren **lassen**; **không có** nguyên mẫu: habe … **gelassen**.',
+              '**lassen** còn là động từ chính = **để lại**: Ich lasse den Schirm zu Hause. **sich lassen** = có thể được: Das Glas **lässt sich** recyceln. Perfekt **có** nguyên mẫu: habe … reparieren **lassen**; **không có** nguyên mẫu: habe … **gelassen**. Giống lassen, sau **sehen, hören, gehen, bleiben** nguyên mẫu **không có zu**: Ich **höre** die Vögel **singen**. Wir **gehen** am Sonntag **wandern**.',
             examples: [['Ich habe die Waschmaschine reparieren lassen.', 'Tôi đã mang máy giặt đi sửa.']],
             exercises: [
               choose('Ich habe den Kühlschrank reparieren ___.', ['lassen', 'gelassen'], 'lassen', { vi: 'Tôi đã nhờ sửa tủ lạnh.' }),
               choose('Ich habe meine Tasche im Bus ___.', ['gelassen', 'lassen'], 'gelassen', { vi: 'Tôi để quên túi trên xe buýt.' }),
+              choose('Ich sehe die Kinder im Garten ___.', ['spielen', 'zu spielen'], 'spielen', { vi: 'Tôi thấy bọn trẻ chơi trong vườn.' }),
               transform('Viết lại với lassen', 'Ein Techniker prüft unsere Heizung (für uns).', ['Wir lassen unsere Heizung prüfen.']),
             ],
           },

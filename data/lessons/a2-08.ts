@@ -32,8 +32,9 @@ export default defineStage({
       goal_vi: 'Hỏi và nói nơi chốn, hướng đi (wo, wohin, woher); kể một chuyến đi chơi ngắn.',
       items: [
         'Insel', 'See', 'Fluss', 'Wald', 'Küste', 'Landschaft', 'Ausflug', 'Wanderung', 'Sehenswürdigkeit', 'Altstadt',
-        'Schloss', 'hin', 'zurück', 'aus', 'durch', 'um … herum', 'besichtigen', 'berühmt', 'historisch',
+        'Schloss', 'hin', 'zurück', 'aus', 'um … herum', 'besichtigen', 'berühmt', 'historisch',
         'Woher? Wohin? Wo?',
+        'Hauptstadt',
       ],
       grammar: {
         point: 'wo-wohin',
@@ -115,6 +116,7 @@ export default defineStage({
         'losfahren', 'tanken', 'verpassen', 'sich verlaufen', 'fremd', 'abenteuerlich', 'eine Reise machen',
         'Wir haben Glück gehabt', 'nach / in / zu: đi đâu',
         'sicher',
+        'Fahrplan', 'Ermäßigung',
       ],
       grammar: {
         point: 'richtung',
@@ -199,7 +201,7 @@ export default defineStage({
         sections: [
           {
             text_vi:
-              '**Số thứ tự**: 1–19 thêm **-te**: der zwei**te**, der vier**te**; từ 20 thêm **-ste**: der zwanzig**ste**. Bất quy tắc: der **erste**, der **dritte**, der **siebte**. Khi viết: der 3. Mai (có dấu chấm). Hỏi: **Der Wievielte ist heute?** – **Heute ist der dritte Mai.**',
+              '**Số thứ tự**: 1–19 thêm **-te**: der zwei**te**, der vier**te**; từ 20 thêm **-ste**: der zwanzig**ste**. Bất quy tắc: der **erste**, der **dritte**, der **siebte** (sách cũ còn gặp dạng siebente). Khi viết: der 3. Mai (có dấu chấm). Hỏi: **Der Wievielte ist heute?** – **Heute ist der dritte Mai.**',
             table: 'Số | Thứ tự\n1. | erste\n2. | zweite\n3. | dritte\n7. | siebte\n20. | zwanzigste\n31. | einunddreißigste',
             examples: [
               ['Heute ist der erste Juli.', 'Hôm nay là mùng một tháng Bảy.'],
@@ -207,7 +209,7 @@ export default defineStage({
             ],
             exercises: [
               fill('Heute ist der {dritte} Mai. (3.)', 'Hôm nay là ngày 3 tháng Năm.'),
-              choose('Heute ist der ___ Juni. (7.)', ['siebte', 'siebente', 'siebenste'], 'siebte', { vi: 'Hôm nay là ngày 7 tháng Sáu.' }),
+              choose('Heute ist der ___ Juni. (7.)', ['siebte', 'siebene', 'siebenste'], 'siebte', { vi: 'Hôm nay là ngày 7 tháng Sáu.' }),
               fill('Morgen ist der {zwanzigste} März. (20.)', 'Ngày mai là ngày 20 tháng Ba.'),
             ],
           },
@@ -286,7 +288,7 @@ export default defineStage({
         fill('Heute ist der {erste} Mai. (1.)', 'Hôm nay là ngày 1 tháng Năm.'),
         choose('Ich komme am ___ Juni. (2.)', ['zweiten', 'zweite'], 'zweiten'),
         fill('Wir wohnen im {dritten} Stock. (3.)', 'Chúng tôi ở tầng ba.'),
-        choose('Der ___ Tag war schön. (7.)', ['siebte', 'siebente'], 'siebte'),
+        choose('Der ___ Tag war schön. (7.)', ['siebte', 'siebenste'], 'siebte'),
         fill('Mein Geburtstag ist am {zwanzigsten} Mai. (20.)', 'Sinh nhật tôi vào ngày 20 tháng Năm.'),
         order('Ich / fliege / am zehnten / Juli.', 'Tôi bay ngày 10 tháng Bảy.'),
       ],

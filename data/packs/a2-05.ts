@@ -53,5 +53,8 @@ g|Động từ phản thân: mich, dich, sich|||đại từ phản thân Akkusat
 g|Đại từ phản thân Dativ: mir, dir|||khi đã có tân ngữ Akkusativ|Ich putze {mir} die Zähne.|Tôi đánh răng.|mir, dir, sich, uns, euch, sich.
 g|deshalb: kết quả, động từ ngay sau|||nối hai câu chính|Ich habe Fieber, deshalb {bleibe} ich im Bett.|Tôi sốt, vì vậy tôi nằm trên giường.|deshalb/darum/deswegen chiếm vị trí 1.
 g|weil hay deshalb?|||nguyên nhân và kết quả|Ich bleibe zu Hause, weil ich krank {bin}.|Tôi ở nhà vì tôi bị ốm.|weil (nguyên nhân) → động từ cuối; deshalb (kết quả) → động từ ngay sau.
+n|Handtuch|das|Handtücher|khăn tắm, khăn lau|Nimm ein frisches {Handtuch} aus dem Schrank.|Lấy một chiếc khăn sạch trong tủ.|
+n|Seife|die|-n|xà phòng|Wasch dir die Hände mit {Seife}!|Rửa tay bằng xà phòng đi!|
+v|wecken|||đánh thức|Kannst du mich morgen um sechs {wecken}?|Mai bạn đánh thức mình lúc sáu giờ được không?|er weckt, hat geweckt
 `;
 export default pack;

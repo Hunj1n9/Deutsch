@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { PageHeader } from '@/components/PageHeader';
 import { BackupPanel } from '@/components/settings/BackupPanel';
+import { ReportList, type ReportItem } from '@/components/settings/ReportList';
 import { SettingsForm } from '@/components/settings/SettingsForm';
 import { SourceManager } from '@/components/settings/SourceManager';
 import { loadSettings, loadSources } from '@/lib/supabase/queries';
@@ -23,7 +24,16 @@ export default function Page() {
 async function Settings() {
   const session = await getPageSession();
   if (!session) return null;
-  const [settings, sources] = await Promise.all([loadSettings(session), loadSources(session)]);
+  const [settings, sources, openReports, resolved] = await Promise.all([
+    loadSettings(session),
+    loadSources(session),
+    session.supabase
+      .from('content_reports')
+      .select('id, target, excerpt, note, created_at')
+      .is('resolved_at', null)
+      .order('created_at', { ascending: false }),
+    session.supabase.from('content_reports').select('id', { count: 'exact', head: true }).not('resolved_at', 'is', null),
+  ]);
   return (
     <div className="flex flex-col gap-3">
       <SettingsForm
@@ -41,6 +51,7 @@ async function Settings() {
         }}
       />
       <SourceManager sources={sources} />
+      <ReportList open={(openReports.data ?? []) as ReportItem[]} resolvedCount={resolved.count ?? 0} />
       <BackupPanel />
     </div>
   );

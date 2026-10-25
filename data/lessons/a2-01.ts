@@ -34,6 +34,7 @@ export default defineStage({
         'Kindheit', 'Jugend', 'Ferien', 'Dorf', 'Spielzeug', 'Erinnerung', 'Geschichte', 'erzählen', 'sich erinnern',
         'aufwachsen', 'denken', 'geboren werden', 'Als Kind', 'Weißt du noch?',
         'Perfekt: Partizip II của động từ bất quy tắc', 'Perfekt của động từ hỗn hợp',
+        'Traum', 'träumen', 'basteln', 'Witz',
       ],
       grammar: {
         point: 'perfekt-unreg',
@@ -118,6 +119,7 @@ export default defineStage({
         'Unfall', 'Überraschung', 'Moment', 'Umzug', 'Lehre', 'passieren', 'vergessen', 'verlieren', 'laufen',
         'fallen', 'rennen', 'umziehen', 'kennenlernen', 'sterben', 'Perfekt của động từ tách',
         'Perfekt với sein: chuyển động và thay đổi',
+        'Lüge', 'wahr', 'Ahnung', 'Situation', 'komisch',
       ],
       grammar: {
         point: 'perfekt-trennbar',
@@ -173,13 +175,13 @@ export default defineStage({
           { speaker: 'A', de: 'Was ist passiert? Dein Arm!', vi: 'Có chuyện gì vậy? Tay bạn kìa!' },
           { speaker: 'B', de: 'Ich hatte gestern einen Unfall. Ich bin vom Fahrrad gefallen.', vi: 'Hôm qua mình bị tai nạn. Mình ngã xe đạp.' },
           { speaker: 'A', de: 'Oh nein! Wie ist das passiert?', vi: 'Ôi không! Sao lại thế?' },
-          { speaker: 'B', de: 'Ich war spät und bin schnell gefahren. Plötzlich ist eine Katze über die Straße gelaufen.', vi: 'Mình bị muộn nên đi nhanh. Đột nhiên một con mèo chạy qua đường.' },
+          { speaker: 'B', de: 'Ich war spät dran und bin schnell gefahren. Plötzlich ist eine Katze über die Straße gelaufen.', vi: 'Mình bị muộn nên đi nhanh. Đột nhiên một con mèo chạy qua đường.' },
           { speaker: 'A', de: 'Und dann?', vi: 'Rồi sao?' },
           { speaker: 'B', de: 'Ich habe gebremst und bin gefallen. Mein Handy habe ich auch verloren.', vi: 'Mình phanh lại rồi ngã. Mình còn làm mất điện thoại nữa.' },
           { speaker: 'A', de: 'Hast du es gefunden?', vi: 'Bạn tìm thấy chưa?' },
           { speaker: 'B', de: 'Nein. Aber ein Mann hat mir geholfen und mich nach Hause gebracht.', vi: 'Chưa. Nhưng có một người đàn ông đã giúp và đưa mình về nhà.' },
         ],
-        gloss: { plötzlich: 'đột nhiên', gebremst: 'đã phanh', Handy: 'điện thoại di động' },
+        gloss: { 'spät dran': 'bị muộn', plötzlich: 'đột nhiên', gebremst: 'đã phanh', Handy: 'điện thoại di động' },
         questions: [
           mc('Hôm qua B bị gì?', ['ngã xe đạp', 'ốm', 'mất việc'], 'ngã xe đạp'),
           tf('Ein Hund ist über die Straße gelaufen.', false, { explain: 'Eine Katze ist über die Straße gelaufen.' }),
@@ -198,6 +200,7 @@ export default defineStage({
         'Vergangenheit', 'Erlebnis', 'feiern', 'früher', 'damals', 'letztes Jahr', 'vor kurzem', 'plötzlich', 'endlich',
         'zuletzt', 'einmal', 'vorgestern', 'traurig', 'glücklich', 'schrecklich', 'wunderbar', 'aufgeregt', 'anstrengend',
         'Es war einmal',
+        'morgens', 'vormittags', 'nachmittags', 'abends', 'montags', 'dienstags', 'mittwochs', 'donnerstags', 'freitags', 'samstags', 'sonntags', 'übermorgen',
       ],
       grammar: {
         point: 'zeitadverb',

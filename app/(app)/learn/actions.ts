@@ -4,10 +4,12 @@ import { z } from 'zod';
 import { getAiClient } from '@/lib/ai/anthropic';
 import { isAcceptedAnswer, judgeExercise } from '@/lib/ai/p6-judge-exercise';
 import { AI_ERROR_VI } from '@/lib/ai/structured';
-import { LESSONS_BY_STAGE } from '@/data/lessons';
+import { LESSONS_BY_STAGE, STAGE_LESSONS } from '@/data/lessons';
 import { findLesson, findLessonExercise, grammarPoint, isMixedExercise, packDrafts, vocabEntries } from '@/lib/course/catalog';
 import { importGrammarItems, learnWords, loadCourseState, restartLesson, saveLessonStep, skipStage } from '@/lib/course/db';
 import { fullSentence } from '@/lib/course/grade';
+import { EXAM_LEVELS, findLevelQuestion, LEVEL_TOTAL, levelStages, questionStage, scoreLevelTest, type LevelOutcome } from '@/lib/course/level-test';
+import { cleanExcerpt, parseReportTarget, REPORT_NOTE_MAX, REPORT_TARGET_MAX } from '@/lib/course/report';
 import { findTestQuestion, gradeTestQuestion, scoreTest, type TestOutcome } from '@/lib/course/stage-test';
 import type { GrammarPoint } from '@/lib/course/types';
 import { SUMMARY_STEP } from '@/lib/course/types';
@@ -244,4 +246,84 @@ export async function submitStageTestAction(input: {
     }
   }
   return { ok: true, outcome, review, skipped };
+}
+
+/** Báo nội dung sai (F13): mỗi chỗ một dòng đang mở; báo lại thì cập nhật dòng đó. */
+export async function reportContentAction(input: { target: string; excerpt: string; note: string }): Promise<ActionResponse> {
+  const parsed = z
+    .object({
+      target: z.string().max(REPORT_TARGET_MAX).refine((t) => parseReportTarget(t) !== null),
+      excerpt: z.string().max(5000),
+      note: z.string().trim().max(REPORT_NOTE_MAX),
+    })
+    .safeParse(input);
+  if (!parsed.success) return { ok: false, error: 'Ghi chú tối đa 500 ký tự.' };
+  const session = await getSession();
+  if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
+  const row = { excerpt: cleanExcerpt(parsed.data.excerpt) || parsed.data.target, note: parsed.data.note || null };
+  const { supabase, userId } = session;
+  const { data: open } = await supabase
+    .from('content_reports')
+    .select('id')
+    .eq('target', parsed.data.target)
+    .is('resolved_at', null)
+    .maybeSingle();
+  const { error } = open
+    ? await supabase.from('content_reports').update({ ...row, created_at: new Date().toISOString() }).eq('id', open.id)
+    : await supabase.from('content_reports').insert({ user_id: userId, target: parsed.data.target, ...row });
+  if (error) {
+    logError('báo nội dung', error);
+    return { ok: false, error: 'Không lưu được. Thử lại.' };
+  }
+  return { ok: true };
+}
+
+/** Nộp thi thử cuối cấp (F14): server chấm lại theo mã câu, lưu lần làm, ghi lỗi ngữ pháp như F12. Không đổi trạng thái bài, chặng. */
+export async function submitLevelTestAction(input: {
+  level: string;
+  answers: { id: string; answer: string }[];
+}): Promise<ActionResponse<{ outcome: LevelOutcome; review: TestReview[]; skipped: boolean }>> {
+  const parsed = z
+    .object({
+      level: z.enum(EXAM_LEVELS),
+      answers: z.array(z.object({ id: z.string().max(300), answer: z.string().max(500) })).min(1).max(LEVEL_TOTAL),
+    })
+    .safeParse(input);
+  if (!parsed.success) return { ok: false, error: 'Dữ liệu không hợp lệ.' };
+  const stages = levelStages(STAGE_LESSONS, parsed.data.level);
+  if (stages.length === 0) return { ok: false, error: 'Cấp này chưa có thi thử.' };
+  const session = await getSession();
+  if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
+
+  const vocab = new Map(stages.map((s) => [s.stage_id, vocabEntries(s.stage_id)]));
+  const graded = parsed.data.answers.flatMap(({ id, answer }) => {
+    const question = findLevelQuestion(stages, vocab, id);
+    if (!question) return [];
+    return [{ question, answer, ...gradeTestQuestion(question, answer) }];
+  });
+  if (graded.length !== parsed.data.answers.length) return { ok: false, error: 'Đề không khớp. Tải lại trang rồi làm lại.' };
+  const outcome = scoreLevelTest(graded);
+  const review = graded.map((g) => ({ id: g.question.id, answer: g.answer, correct: g.correct, expected: g.expected }));
+
+  const { error } = await session.supabase.from('level_tests').insert({
+    user_id: session.userId,
+    level: parsed.data.level,
+    score: outcome.score,
+    total: outcome.total,
+    passed: outcome.passed,
+    answers: review,
+  });
+  if (error) {
+    logError('lưu thi thử', error);
+    return { ok: false, error: 'Không lưu được bài thi thử. Thử nộp lại.' };
+  }
+
+  const entries = graded.flatMap((g) => {
+    if (g.correct || g.question.section !== 'grammar' || !g.answer.trim()) return [];
+    const stage = LESSONS_BY_STAGE.get(questionStage(g.question.id));
+    const point = stage && grammarPoint(stage, g.question.point);
+    return point ? [errorEntry(point, fullSentence(g.question.exercise, g.answer), fullSentence(g.question.exercise))] : [];
+  });
+  if (entries.length) await recordErrors(session, entries).catch((e) => logError('ghi lỗi thi thử', e));
+  return { ok: true, outcome, review, skipped: false };
 }
