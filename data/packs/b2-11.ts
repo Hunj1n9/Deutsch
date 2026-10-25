@@ -96,5 +96,15 @@ v|deuten|||giải nghĩa|Wie kann man das Ende {deuten}?|Có thể giải nghĩa
 v|vertonen|||phổ nhạc|Das Gedicht wurde {vertont}.|Bài thơ đã được phổ nhạc.|er vertont, hat vertont
 p|Bände sprechen|||nói lên rất nhiều|Ihr Blick {sprach} Bände.|Ánh mắt cô ấy nói lên rất nhiều.|
 p|ein Buch verschlingen|||đọc ngấu nghiến|Ich habe {das Buch} in zwei Tagen verschlungen.|Tôi đã đọc ngấu nghiến cuốn sách trong hai ngày.|
+n|Hauptdarsteller|der|-|nam diễn viên chính|Der {Hauptdarsteller} spielt sehr überzeugend.|Nam diễn viên chính diễn rất thuyết phục.|Nữ: die Hauptdarstellerin.
+n|Drehbuch|das|¨-er|kịch bản phim|Das {Drehbuch} basiert auf einem Roman.|Kịch bản dựa trên một cuốn tiểu thuyết.|
+n|Kritiker|der|-|nhà phê bình|Die {Kritiker} loben den Film.|Các nhà phê bình khen bộ phim.|Nữ: die Kritikerin.
+v|verraten|||tiết lộ|Bitte {verrate} mir das Ende nicht!|Làm ơn đừng tiết lộ đoạn kết cho tôi!|du verrätst, er verrät, verriet, hat verraten
+adj|hervorragend|||xuất sắc|Die Musik ist {hervorragend}.|Âm nhạc thật xuất sắc.|
+n|Szene|die|-n|cảnh (phim, kịch)|Die letzte {Szene} hat mich berührt.|Cảnh cuối làm tôi xúc động.|
+n|Fortsetzung|die|-en|phần tiếp theo|Gibt es eine {Fortsetzung}?|Có phần tiếp theo không?|
+n|Spannung|die|-en|sự hồi hộp, kịch tính|Der Film hält die {Spannung} bis zum Ende.|Bộ phim giữ được kịch tính đến cuối.|
+n|Begeisterung|die||sự hào hứng, say mê|Sie liest mit großer {Begeisterung}.|Cô ấy đọc với niềm say mê lớn.|
+g|Trật tự Mittelfeld và vị trí nicht|||trật tự phần giữa câu|Ich habe den Film gestern {nicht} gesehen.|Hôm qua tôi đã không xem bộ phim.|Đại từ trước danh từ; Dativ trước Akkusativ (hai danh từ), Akkusativ trước Dativ (hai đại từ); te-ka-mo-lo; nicht cả câu đứng cuối Mittelfeld.
 `;
 export default pack;

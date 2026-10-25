@@ -217,6 +217,19 @@ export default defineStage({
               choose('Das ist ein Klischee, aber ___, das viele glauben.', ['eins', 'einer', 'welches'], 'eins', { vi: 'Đó là một định kiến, nhưng là cái mà nhiều người tin.' }),
             ],
           },
+          {
+            text_vi:
+              '**irgend-** = "nào đó, bất kỳ" khi không biết hoặc không quan trọng là gì: **irgendein** Buch (chia như ein), **irgendwelche** Bücher (số nhiều), **irgendjemand / irgendwer** (ai đó), **irgendetwas** (cái gì đó), **irgendwo** (đâu đó), **irgendwann** (lúc nào đó), **irgendwie** (bằng cách nào đó). Câu phủ định không dùng irgend-, mà dùng **kein, niemand, nichts, nirgends**.',
+            examples: [
+              ['Irgendwann möchte ich wieder in Vietnam leben.', 'Một lúc nào đó tôi muốn về sống ở Việt Nam.'],
+              ['Hast du noch irgendwelche Fragen?', 'Bạn còn câu hỏi nào không?'],
+            ],
+            exercises: [
+              choose('Ich habe meinen Schlüssel ___ verloren.', ['irgendwo', 'irgendwann', 'irgendwer'], 'irgendwo', { vi: 'Tôi làm mất chìa khóa ở đâu đó.' }),
+              fill('Kennst du {irgendeinen} guten Sprachkurs? (irgendein, Akkusativ)', 'Bạn có biết khóa học tiếng nào tốt không?'),
+              choose('Ich finde meinen Pass ___.', ['nirgends', 'irgendwo'], 'nirgends', { vi: 'Tôi không tìm thấy hộ chiếu ở đâu cả.' }),
+            ],
+          },
         ],
         mixed: [
           choose('Hier fühlt sich ___ ausgegrenzt.', ['niemand', 'niemanden', 'niemandem'], 'niemand', { vi: 'Ở đây không ai cảm thấy bị gạt ra ngoài.' }),

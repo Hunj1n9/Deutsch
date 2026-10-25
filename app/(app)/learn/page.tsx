@@ -10,7 +10,7 @@ import { STAGES, stageHours, type Stage } from '@/data/roadmap';
 import { loadCourseState, loadLevelTests, type CourseState, type LevelBest } from '@/lib/course/db';
 import { LEVEL_PASS_RATIO, LEVEL_TOTAL } from '@/lib/course/level-test';
 import { courseHref, coursePosition, lessonDone, stageStatus, stepLabel, type CourseNext, type StageStatus } from '@/lib/course/position';
-import { TEST_PER_POINT } from '@/lib/course/stage-test';
+import { stageTestSize } from '@/lib/course/stage-test';
 import { stagePercent } from '@/lib/roadmap';
 import { loadRoadmapProgress, stageItemCount } from '@/lib/roadmap-db';
 import { getPageSession } from '@/lib/supabase/session';
@@ -47,7 +47,7 @@ async function Course() {
     <div className="flex flex-col gap-4">
       <NextBlock next={next} />
       <p className="rounded-[20px] bg-surface p-4 text-[14px] leading-relaxed text-muted">
-        Mỗi chặng có 3 bài (từ mới, ngữ pháp, hội thoại, viết) và một <b className="text-ink">kiểm tra chặng</b> 20 câu, đạt từ 16 câu.
+        Mỗi chặng có 3–4 bài (từ mới, ngữ pháp, hội thoại, viết) và một <b className="text-ink">kiểm tra chặng</b> 20–23 câu, đạt khi đúng từ 80%.
         Từ học trong bài tự vào phiên ôn. Thứ tự chỉ là gợi ý: đã biết rồi thì làm kiểm tra để bỏ qua chặng.
       </p>
       {LEVELS.map((level) => (
@@ -179,7 +179,7 @@ function StageCard({
             <Link href={`/learn/test/${stage.id}`} className="flex min-h-11 items-center justify-between gap-2 rounded-[14px] bg-bg px-3 py-2">
               <span className="text-[15px] font-semibold">Kiểm tra chặng</span>
               <span className="shrink-0 text-[13px] text-muted">
-                {best ? `cao nhất ${best.score}/${best.total}` : `${8 + lessons.points.length * TEST_PER_POINT + 3} câu`}
+                {best ? `cao nhất ${best.score}/${best.total}` : `${stageTestSize(lessons.points.length).total} câu`}
               </span>
             </Link>
           </li>

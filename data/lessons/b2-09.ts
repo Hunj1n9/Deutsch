@@ -25,6 +25,13 @@ export default defineStage({
       title_vi: 'Mô tả biểu đồ: um / auf, phân số và phần trăm',
       explanation_vi: 'steigen/sinken um = thay đổi bao nhiêu (um 10 %), auf = đạt tới mức nào (auf 500). Phân số: die Hälfte, ein Drittel, ein Viertel + Genitiv; động từ chia theo danh từ phân số (Ein Drittel der Befragten ist …).',
     },
+    {
+      key: 'es',
+      rule_key: 'es-platzhalter-korrelat',
+      category: 'other',
+      title_vi: 'Từ es: giữ chỗ, báo trước câu dass, cụm cố định',
+      explanation_vi: 'es ở vị trí 1 chỉ giữ chỗ và biến mất khi có thành phần khác đứng đầu; es báo trước câu dass/zu (bỏ nếu câu đó đứng đầu); es cố định trong es gibt, es geht um, es handelt sich um.',
+    },
   ],
   lessons: [
     {
@@ -247,6 +254,89 @@ export default defineStage({
       writing_prompt_vi:
         'Mô tả một biểu đồ tưởng tượng về số du học sinh Việt Nam ở Đức từ 2015 đến 2025 (6–8 câu): chủ đề, xu hướng chính, số liệu với um/auf, một phân số, dự báo.',
     },
+    {
+      title_vi: 'Ngôn ngữ của bài báo khoa học',
+      goal_vi: 'Hiểu và dùng các vai trò của es trong văn khoa học: es giữ chỗ, es báo trước câu dass, các cụm cố định với es.',
+      items: [
+        'es handelt sich um', 'es kommt auf … an', 'schwerfallen', 'feststellen', 'auffallen', 'Annahme', 'Vermutung', 'Phänomen',
+        'Messwert', 'Từ es: giữ chỗ, báo trước, cố định',
+      ],
+      grammar: {
+        point: 'es',
+        sections: [
+          {
+            text_vi:
+              '**es** ở **vị trí 1** có khi chỉ để **giữ chỗ**, còn chủ ngữ thật đứng sau động từ; kiểu này hay gặp trong tin tức: **Es** nahmen 300 Forscher an der Konferenz teil. Động từ chia theo **chủ ngữ thật** (300 Forscher → nahmen). Khi thành phần khác đứng vị trí 1, es **biến mất**: An der Konferenz nahmen 300 Forscher teil. Bị động không có chủ ngữ cũng vậy: **Es** wird viel geforscht → Im Labor wird viel geforscht.',
+            examples: [
+              ['Es haben sich über 1.000 Personen an der Studie beteiligt.', 'Hơn 1.000 người đã tham gia nghiên cứu.'],
+              ['An der Studie haben sich über 1.000 Personen beteiligt.', 'Hơn 1.000 người đã tham gia nghiên cứu (không cần es).'],
+            ],
+            exercises: [
+              choose('Es ___ viele neue Daten veröffentlicht.', ['wurden', 'wurde'], 'wurden', { vi: 'Nhiều dữ liệu mới đã được công bố.', explain: 'Động từ chia theo chủ ngữ thật: viele neue Daten.' }),
+              transform('Đưa "Im Labor" lên đầu câu', 'Es wird im Labor auch nachts gearbeitet.', ['Im Labor wird auch nachts gearbeitet.']),
+              choose('Gestern ___ zwei Forscherinnen einen Vortrag.', ['hielten', 'hielten es', 'es hielten'], 'hielten', { vi: 'Hôm qua hai nhà nghiên cứu nữ thuyết trình.', explain: 'Vị trí 1 đã có "Gestern" nên không cần es.' }),
+            ],
+          },
+          {
+            text_vi:
+              '**es** còn **báo trước** một câu **dass** hoặc **zu + Infinitiv** đứng sau: **Es** ist bekannt, **dass** Schlaf wichtig ist. **Es** fällt mir schwer, Fachtexte **zu** lesen. Với **finden**, es là tân ngữ: Ich finde **es** wichtig, **dass** … Nếu câu dass đứng **đầu** thì bỏ es: **Dass** Schlaf wichtig ist, ist bekannt.',
+            examples: [
+              ['Es ist noch nicht bewiesen, dass das Medikament wirkt.', 'Vẫn chưa chứng minh được là thuốc có tác dụng.'],
+              ['Mir fällt es schwer, die Statistik zu verstehen.', 'Tôi thấy khó hiểu bảng thống kê.'],
+            ],
+            exercises: [
+              transform('Đưa câu dass lên đầu (bỏ es)', 'Es ist bekannt, dass Bewegung gesund ist.', ['Dass Bewegung gesund ist, ist bekannt.']),
+              fill('Ich finde {es} wichtig, dass die Daten öffentlich sind.', 'Tôi thấy việc dữ liệu được công khai là quan trọng.'),
+              choose('___ fällt vielen Studierenden schwer, Fachliteratur zu lesen.', ['Es', 'Er', 'Sie'], 'Es', { vi: 'Nhiều sinh viên thấy khó đọc tài liệu chuyên ngành.' }),
+            ],
+          },
+          {
+            text_vi:
+              'Cụm **cố định** với es: **es gibt** + Akk (có): Es gibt **einen** Zusammenhang. **es handelt sich um** + Akk (đó là, ở đây là). **es kommt auf** + Akk **an** (phụ thuộc vào). **es geht um** + Akk (nói về). Ở đây es là **chủ ngữ thật**, nên vẫn giữ khi đảo ngữ: Bei der Studie **geht es** um Schlaf. Bei dem Stoff **handelt es sich** um Kupfer.',
+            examples: [
+              ['Bei dem Phänomen handelt es sich um eine optische Täuschung.', 'Hiện tượng này là một ảo giác thị giác.'],
+              ['Ob das Experiment gelingt, kommt auf die Messwerte an.', 'Thí nghiệm thành công hay không phụ thuộc vào các giá trị đo.'],
+            ],
+            exercises: [
+              choose('Bei dieser Methode handelt ___ sich um ein neues Verfahren.', ['es', 'sie', 'das'], 'es', { vi: 'Phương pháp này là một quy trình mới.' }),
+              fill('Es gibt {einen} klaren Zusammenhang zwischen Schlaf und Lernen.', 'Có một mối liên hệ rõ ràng giữa giấc ngủ và việc học.'),
+            ],
+          },
+        ],
+        mixed: [
+          choose('In der Studie ___ es um die Folgen von Stress.', ['geht', 'gibt', 'handelt'], 'geht', { vi: 'Nghiên cứu nói về hậu quả của căng thẳng.' }),
+          transform('Viết lại với "Es" ở đầu câu', 'Viele Fragen bleiben offen.', ['Es bleiben viele Fragen offen.']),
+          choose('Dass die Hypothese stimmt, ___ noch nicht bewiesen.', ['ist', 'ist es', 'es ist'], 'ist', { vi: 'Việc giả thuyết đúng vẫn chưa được chứng minh.' }),
+          fill('Es kommt {auf} die Qualität der Daten an.', 'Điều đó phụ thuộc vào chất lượng dữ liệu.'),
+          translate('Có một mối liên hệ giữa giấc ngủ và trí nhớ.', ['Es gibt einen Zusammenhang zwischen Schlaf und Gedächtnis.']),
+        ],
+      },
+      dialogue: {
+        title_de: 'Ein Artikel über Schlafforschung',
+        lines: [
+          { speaker: 'A', de: 'Hast du den Artikel über Schlafforschung gelesen?', vi: 'Bạn đã đọc bài báo về nghiên cứu giấc ngủ chưa?' },
+          { speaker: 'B', de: 'Ja. Es haben über tausend Personen an der Studie teilgenommen.', vi: 'Rồi. Hơn một nghìn người đã tham gia nghiên cứu.' },
+          { speaker: 'A', de: 'Und worum geht es genau?', vi: 'Thế chính xác là nói về gì?' },
+          { speaker: 'B', de: 'Es geht um die Frage, ob Schlaf das Gedächtnis verbessert.', vi: 'Về câu hỏi liệu giấc ngủ có cải thiện trí nhớ không.' },
+          { speaker: 'A', de: 'Ich finde es spannend, dass man das messen kann.', vi: 'Mình thấy thú vị là người ta đo được điều đó.' },
+          { speaker: 'B', de: 'Die Forscher haben festgestellt, dass es einen klaren Zusammenhang gibt.', vi: 'Các nhà nghiên cứu xác định rằng có một mối liên hệ rõ ràng.' },
+          { speaker: 'A', de: 'Ist das schon bewiesen?', vi: 'Điều đó đã được chứng minh chưa?' },
+          { speaker: 'B', de: 'Nicht ganz. Es handelt sich zunächst um eine Vermutung, die man weiter prüfen muss.', vi: 'Chưa hẳn. Trước mắt đó mới là một phỏng đoán cần kiểm tra thêm.' },
+          { speaker: 'A', de: 'Mir fällt es übrigens schwer, solche Statistiken zu verstehen.', vi: 'Nhân tiện, mình thấy khó hiểu những bảng thống kê như vậy.' },
+          { speaker: 'B', de: 'Es kommt darauf an, wie gut die Grafik ist. Diese ist sehr klar.', vi: 'Còn tùy biểu đồ tốt đến đâu. Cái này rất rõ ràng.' },
+        ],
+        gloss: { Schlafforschung: 'nghiên cứu giấc ngủ', Gedächtnis: 'trí nhớ' },
+        questions: [
+          mc('Bài báo nói về gì?', ['giấc ngủ và trí nhớ', 'dinh dưỡng', 'thể thao'], 'giấc ngủ và trí nhớ'),
+          tf('An der Studie haben über tausend Personen teilgenommen.', true),
+          tf('Der Zusammenhang ist schon endgültig bewiesen.', false, { explain: 'Es handelt sich zunächst um eine Vermutung.' }),
+          mc('A thấy khó điều gì?', ['hiểu các bảng thống kê', 'đọc tiếng Anh', 'tìm bài báo'], 'hiểu các bảng thống kê'),
+        ],
+        dictation: [3, 7],
+      },
+      writing_prompt_vi:
+        'Tóm tắt một kết quả nghiên cứu bạn từng đọc (5–6 câu), dùng ít nhất ba cấu trúc với es: Es ist bekannt, dass …; Es gibt …; Es handelt sich um …; Es kommt darauf an, …',
+    },
   ],
   test: {
     grammar: {
@@ -273,6 +363,14 @@ export default defineStage({
         fill('Die Zahl stieg {von} 50 auf 80.', 'Con số tăng từ 50 lên 80.'),
         fill('Die {Hälfte} der Kinder spielt ein Instrument.', 'Một nửa số trẻ em chơi một nhạc cụ.'),
         order('Aus der Grafik / geht / hervor, / dass / die Zahlen / steigen.', 'Từ biểu đồ có thể thấy các con số đang tăng.'),
+      ],
+      es: [
+        choose('Es ___ viele Studierende an der Umfrage teil.', ['nahmen', 'nahm'], 'nahmen'),
+        fill('Ich finde {es} wichtig, dass man Quellen prüft.', 'Tôi thấy việc kiểm tra nguồn là quan trọng.'),
+        choose('Bei dem Stoff handelt ___ sich um Kupfer.', ['es', 'er'], 'es'),
+        order('Es / gibt / einen / Zusammenhang.', 'Có một mối liên hệ.'),
+        choose('Dass Rauchen schadet, ___ bekannt.', ['ist', 'ist es'], 'ist'),
+        fill('Im Labor {wird} auch am Wochenende gearbeitet.', 'Trong phòng thí nghiệm người ta làm cả cuối tuần.'),
       ],
     },
     reading: {

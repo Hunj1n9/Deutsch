@@ -11,6 +11,12 @@ export const TEST_PER_POINT = 3;
 export const TEST_READING = 3;
 export const PASS_RATIO = 0.8;
 
+/** Số câu của đề và số câu cần đúng để đạt, theo số điểm ngữ pháp của chặng. */
+export function stageTestSize(pointCount: number): { total: number; pass: number } {
+  const total = TEST_VOCAB_VI_DE + TEST_VOCAB_LISTEN + pointCount * TEST_PER_POINT + TEST_READING;
+  return { total, pass: Math.ceil(total * PASS_RATIO) };
+}
+
 /** Mục từ của gói dùng cho câu từ vựng (không gồm mục ngữ pháp). */
 export type VocabEntry = { key: string; german: string; article: string | null; vietnamese: string };
 

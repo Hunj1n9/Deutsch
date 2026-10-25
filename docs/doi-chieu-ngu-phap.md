@@ -19,25 +19,27 @@ Ngày: 2026-10-25. Bổ sung cho `docs/doi-chieu-giao-trinh.md` (so với Netzwe
 
 ### Đính chính bảng cũ
 
-Bảng "điểm app chưa có" trong `doi-chieu-giao-trinh.md` ghi *werden làm động từ chính* là chưa có. Thực ra app đã dạy: A2-12 bài 1 (Es wird sonnig, werden = trở nên) và B1-09 bài 1 (ba cách dùng werden: động từ chính, Futur, bị động). Đã bỏ dòng đó; bảng cũ còn **16** điểm.
+Bảng "điểm app chưa có" trong `doi-chieu-giao-trinh.md` ghi *werden làm động từ chính* là chưa có. Thực ra app đã dạy: A2-12 bài 1 (Es wird sonnig, werden = trở nên) và B1-09 bài 1 (ba cách dùng werden: động từ chính, Futur, bị động). Đã bỏ dòng đó; bảng cũ còn **16** điểm. Soát lại thì thêm hai điểm đã có sẵn: so sánh trước danh từ (A2-04, A2-12) và (an)statt dass, ohne dass (B1-11). 14 điểm còn lại đã bổ sung (bảng ở `doi-chieu-giao-trinh.md`).
 
-### Điểm sách ngữ pháp có mà app chưa dạy (ngoài 16 điểm cũ)
+### Điểm sách ngữ pháp có mà app chưa dạy (ngoài 16 điểm cũ) và chỗ đã bổ sung
 
-| Cấp | Điểm ngữ pháp | Có trong mục lục | Tình trạng trong app | Ưu tiên |
-|---|---|---|---|---|
-| B1 | sobald, solange (câu phụ thời gian) | Dreyer, Mittelstufe, Klipp und Klar A1–B1 | Chỉ xuất hiện trong câu (B2-02, B2-08), không có giải thích | Cao |
-| B1 | sonst / andernfalls (nếu không thì) | Grammatik aktiv, Mittelstufe | Chỉ là từ vựng | Trung bình |
-| B2 | es sei denn / außer wenn (trừ khi) | Mittelstufe | Không có; app chỉ có *sofern nicht* (B2-10) | Trung bình |
-| B2 | haben + zu + Infinitiv (Ich habe noch zu arbeiten) | Dreyer, Mittelstufe | Không có; *sein + zu* đã có ở B2-06 | Trung bình |
-| B1 | Infinitiv không zu sau hören, sehen, gehen, bleiben | Grammatik aktiv, Klipp und Klar | Chỉ một câu nhắc ở B1-04; *lassen* đã có bài riêng ở B1-09 | Thấp |
-| B2 | derselbe, derjenige (đại từ chỉ định) | Dreyer | Chỉ có *dasselbe* trong câu | Thấp |
-| C1 | zumal (nhất là vì) | Dreyer | Không có | Thấp (C1) |
+| Cấp | Điểm ngữ pháp | Có trong mục lục | Đã bổ sung ở |
+|---|---|---|---|
+| B1 | sobald, solange (câu phụ thời gian) | Dreyer, Mittelstufe, Klipp und Klar A1–B1 | B1-12 bài 2: điểm seit/bis mở rộng thành seit, bis, sobald, solange (đoạn, bài tập, kho kiểm tra) |
+| B1 | sonst (nếu không thì) | Grammatik aktiv, Mittelstufe | Đoạn trong B1-03 bài 2 |
+| B2 | es sei denn / außer wenn (trừ khi) | Mittelstufe | Đoạn mới trong B2-10 bài 2 |
+| B2 | haben + zu + Infinitiv | Dreyer, Mittelstufe | Đoạn mới trong B2-06 bài 3 |
+| B1 | Infinitiv không zu sau sehen, hören, gehen, bleiben | Grammatik aktiv, Klipp und Klar | Đoạn trong B1-09 bài 2 |
+| B2 | derjenige, derselbe | Dreyer | Đoạn mới trong B2-04 bài 2 |
+| C1 | zumal (nhất là vì) | Dreyer | Chưa thêm: thuộc C1, ngoài phạm vi A1–B2 |
 
 Các điểm khác trong mục lục bảy cuốn trên (thì, cách, mạo từ, đuôi tính từ, bị động các thì, Konjunktiv I/II, câu quan hệ các cách, liên từ hai vế, giới từ Genitiv, Nominalstil, phân từ mở rộng, Modalpartikeln…) đều có bài ở cùng cấp hoặc sớm hơn.
 
-### Đề xuất
+### Cách bổ sung (2026-10-25)
 
-Gộp 16 điểm cũ với 7 điểm trên (23 điểm), ưu tiên cao: giới từ Akkusativ, giới từ thời gian + Dativ, so sánh trước danh từ, trật tự Mittelfeld, từ es, sobald/solange. Hai cách làm đã nêu ở `doi-chieu-giao-trinh.md` (thêm đoạn vào bài có sẵn, hoặc thêm bài bổ sung thứ 4). Cả hai đều cần duyệt vì đụng đến SPEC hoặc cấu trúc chặng.
+- **Bài thứ 4** cho 4 điểm lớn, ưu tiên cao: giới từ Akkusativ (A1-07), giới từ thời gian + Dativ (A1-12), từ es (B2-09), Mittelfeld và vị trí nicht (B2-11). Mỗi bài đủ các bước như bài thường: từ mới (thêm vào gói của chặng), ngữ pháp 3 đoạn, hội thoại, viết, và kho kiểm tra riêng. Kiểm tra của các chặng này có 23 câu (12 câu ngữ pháp), đạt từ 19.
+- **Gộp vào bài có sẵn** cho các điểm nhỏ: thêm câu giải thích và 1 bài tập vào đoạn gần nhất (A1–B1), hoặc thêm đoạn thứ ba với 2–3 bài tập (B2). Mọi bài vẫn trong giới hạn 3 đoạn, 2–4 bài tập mỗi đoạn, 8–14 bài tập mỗi bài.
+- Tổng: 154 bài. Lý do chọn cách này ghi ở `DECISIONS.md`.
 
 ## 2. Kết quả soát lỗi nội dung (đã sửa)
 

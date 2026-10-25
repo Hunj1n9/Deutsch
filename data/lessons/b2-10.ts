@@ -140,6 +140,18 @@ export default defineStage({
               ]),
             ],
           },
+          {
+            text_vi:
+              '**es sei denn** (= **außer wenn**) = "trừ khi": nêu **ngoại lệ duy nhất** của câu trước. Nó đứng **sau** câu chính, có dấu phẩy hai bên; sau đó là câu có trật tự **câu chính** (động từ vị trí 2): Die Wahl findet statt, **es sei denn**, es **gibt** einen Sturm. Gần nghĩa với **sofern nicht** (động từ cuối): …, sofern es keinen Sturm **gibt**.',
+            examples: [
+              ['Ich gehe wählen, es sei denn, ich bin krank.', 'Tôi sẽ đi bầu, trừ khi tôi bị ốm.'],
+              ['Das Gesetz tritt in Kraft, es sei denn, das Gericht stoppt es.', 'Luật sẽ có hiệu lực, trừ khi tòa án ngăn lại.'],
+            ],
+            exercises: [
+              choose('Ich komme zur Sitzung, es sei denn, ich ___ länger arbeiten.', ['muss', 'müsse', 'müssen'], 'muss', { vi: 'Tôi sẽ đến cuộc họp, trừ khi phải làm muộn.' }),
+              transform('Viết lại với "es sei denn"', 'Wir fahren morgen, außer wenn es regnet.', ['Wir fahren morgen, es sei denn, es regnet.', 'Wir fahren morgen, es sei denn, dass es regnet.']),
+            ],
+          },
         ],
         mixed: [
           choose('___ du am Sonntag Zeit hast, komm mit zur Wahl.', ['Sofern', 'Insofern', 'Als'], 'Sofern', { vi: 'Nếu Chủ nhật bạn có thời gian thì đi bầu cùng nhé.' }),

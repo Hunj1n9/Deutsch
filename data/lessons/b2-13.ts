@@ -220,6 +220,18 @@ export default defineStage({
               translate('Tôi có thể nói một chút về điều đó không?', ['Darf ich kurz etwas dazu sagen?', 'Darf ich etwas dazu sagen?', 'Kann ich kurz etwas dazu sagen?']),
             ],
           },
+          {
+            text_vi:
+              'Bài mạch lạc nhờ các từ **chỉ lại** điều đã nói, tránh lặp danh từ: **dies** (điều này): Die Mieten steigen. **Dies** belastet vor allem Familien. **darauf, damit, dafür** thay giới từ + vật đã nhắc. **Ersteres … Letzteres** (cái trước … cái sau). **Wie bereits erwähnt**, … (như đã nói) rồi động từ ngay sau dấu phẩy.',
+            examples: [
+              ['Viele Studierende arbeiten neben dem Studium. Dies wirkt sich auf die Noten aus.', 'Nhiều sinh viên làm thêm. Điều này ảnh hưởng đến điểm số.'],
+              ['Man kann mit dem Zug oder mit dem Auto fahren. Ersteres ist umweltfreundlicher.', 'Có thể đi tàu hoặc ô tô. Cách thứ nhất thân thiện môi trường hơn.'],
+            ],
+            exercises: [
+              choose('Die Kosten steigen. ___ ist besonders für Familien ein Problem.', ['Dies', 'Diese', 'Dieser'], 'Dies', { vi: 'Chi phí tăng. Điều này đặc biệt là vấn đề với các gia đình.' }),
+              choose('Wie bereits ___, fehlt für das Projekt noch Geld.', ['erwähnt', 'erwähnen', 'erwähnte'], 'erwähnt', { vi: 'Như đã nói, dự án còn thiếu tiền.' }),
+            ],
+          },
         ],
         mixed: [
           choose('Zudem ___ die Lösung sehr teuer.', ['ist', 'sie ist', 'sei'], 'ist', { vi: 'Ngoài ra giải pháp rất đắt.' }),

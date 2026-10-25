@@ -231,6 +231,18 @@ export default defineStage({
               fill('Er war krank, sodass er die Prüfung nachholen {musste}.', 'Anh ấy bị ốm nên phải thi bù.'),
             ],
           },
+          {
+            text_vi:
+              '**dadurch, dass** cùng nghĩa với **indem** (bằng cách): **dadurch** đứng trong câu chính, **dass** mở câu phụ (động từ cuối): Man lernt **dadurch**, **dass** man übt = Man lernt, **indem** man übt. Khi hai vế **khác chủ ngữ**, **dadurch, dass** còn nêu **nguyên nhân**: **Dadurch, dass** der Bus ausfiel, kamen alle zu spät. Đặt đầu câu thì vế chính bắt đầu bằng động từ.',
+            examples: [
+              ['Er hat die Prüfung dadurch bestanden, dass er jeden Tag geübt hat.', 'Anh ấy thi đỗ nhờ ngày nào cũng luyện tập.'],
+              ['Dadurch, dass die Bibliothek länger offen ist, können mehr Studierende dort lernen.', 'Nhờ thư viện mở cửa lâu hơn, nhiều sinh viên học được ở đó hơn.'],
+            ],
+            exercises: [
+              transform('Viết lại với "dadurch, dass"', 'Man verbessert die Aussprache, indem man laut liest.', ['Man verbessert die Aussprache dadurch, dass man laut liest.', 'Dadurch, dass man laut liest, verbessert man die Aussprache.']),
+              choose('Sie spart Zeit dadurch, ___ sie online lernt.', ['dass', 'indem', 'sodass'], 'dass', { vi: 'Cô ấy tiết kiệm thời gian nhờ học trực tuyến.' }),
+            ],
+          },
         ],
         mixed: [
           choose('Ich gliedere meine Hausarbeit, ___ ich zuerst Stichpunkte sammle.', ['indem', 'sodass', 'obwohl'], 'indem', { vi: 'Tôi lập dàn ý bài tiểu luận bằng cách thu thập ý chính trước.' }),

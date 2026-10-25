@@ -138,12 +138,13 @@ export default defineStage({
           },
           {
             text_vi:
-              'Động từ **tách**: **zu** chen giữa tiền tố và gốc, viết liền: ein**zu**reichen, an**zu**rufen, kennen**zu**lernen. **Không** dùng zu sau động từ khuyết thiếu (Ich muss arbeiten), sau werden, lassen và sau gehen, sehen, hören.',
+              'Động từ **tách**: **zu** chen giữa tiền tố và gốc, viết liền: ein**zu**reichen, an**zu**rufen, kennen**zu**lernen. **Không** dùng zu sau động từ khuyết thiếu (Ich muss arbeiten), sau werden, lassen và sau gehen, sehen, hören. **brauchen** + **nicht/nur** + zu = không cần / chỉ cần: Du **brauchst nicht zu** kommen (= Du musst nicht kommen).',
             table: 'Động từ | zu + Infinitiv\narbeiten | zu arbeiten\neinreichen | einzureichen\nanrufen | anzurufen\nsich bewerben | sich zu bewerben',
             examples: [['Vergessen Sie nicht, Ihr Arbeitszeugnis einzureichen.', 'Đừng quên nộp giấy nhận xét công việc.']],
             exercises: [
               fill('Ich habe vor, die Unterlagen morgen {einzureichen}. (einreichen)', 'Tôi định nộp hồ sơ vào ngày mai.'),
               choose('Ich muss die Bewerbung heute ___.', ['schreiben', 'zu schreiben'], 'schreiben', { vi: 'Hôm nay tôi phải viết hồ sơ.' }),
+              choose('Sie brauchen das Formular nicht ___.', ['auszudrucken', 'ausdrucken', 'zu ausdrucken'], 'auszudrucken', { vi: 'Ông/bà không cần in mẫu đơn.' }),
               transform('Viết lại với zu + Infinitiv', 'Ich rufe morgen an. Das habe ich vor.', ['Ich habe vor, morgen anzurufen.']),
             ],
           },

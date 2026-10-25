@@ -66,10 +66,11 @@ export default defineStage({
           },
           {
             text_vi:
-              'Ở cửa hàng, nhân viên hỏi **Kann ich Ihnen helfen?** – Trả lời **Danke, ich schaue nur.** (tôi chỉ xem thôi). Khen: **Das steht dir gut!** (hợp với bạn; stehen + Dativ). **aussehen** (trông): Du **siehst** toll **aus**! **anhaben** (đang mặc): Was **hast** du heute **an**?',
+              'Ở cửa hàng, nhân viên hỏi **Kann ich Ihnen helfen?** – Trả lời **Danke, ich schaue nur.** (tôi chỉ xem thôi). Khen: **Das steht dir gut!** (hợp với bạn; stehen + Dativ). **aussehen** (trông): Du **siehst** toll **aus**! **anhaben** (đang mặc): Was **hast** du heute **an**? Hỏi loại, kiểu: **Was für ein**…? (ein chia theo giống, cách): Was für **einen** Mantel suchen Sie? – Einen warmen.',
             examples: [['Der Anzug steht dir sehr gut.', 'Bộ vest rất hợp với bạn.']],
             exercises: [
               fill('Du {siehst} heute toll aus!', 'Hôm nay trông bạn tuyệt lắm!'),
+              choose('Was für ___ Jacke suchen Sie?', ['eine', 'einen', 'ein'], 'eine', { vi: 'Ông/bà tìm loại áo khoác nào?' }),
               translate('Cảm ơn, tôi chỉ xem thôi.', ['Danke, ich schaue nur.']),
             ],
           },

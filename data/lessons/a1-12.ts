@@ -25,6 +25,13 @@ export default defineStage({
       title_vi: 'und, aber, oder, denn: vị trí 0, động từ vẫn ở vị trí 2',
       explanation_vi: 'Sau und/aber/oder/denn câu giữ trật tự bình thường: Ich bin müde, aber ich muss arbeiten. denn = vì, không đổi trật tự.',
     },
+    {
+      key: 'praep-zeit',
+      rule_key: 'praep-zeit-dativ',
+      category: 'case',
+      title_vi: 'Giới từ thời gian + Dativ: vor, nach, seit, in',
+      explanation_vi: 'vor (… trước), nach (sau …), seit (từ … đến nay), in (… nữa) đi với Dativ: vor einem Jahr, nach dem Kurs, seit zwei Monaten, in einer Woche. seit đi với Präsens.',
+    },
   ],
   lessons: [
     {
@@ -277,6 +284,88 @@ export default defineStage({
       writing_prompt_vi:
         'Viết 5 câu về nghề của bạn hoặc người thân và nghề bạn muốn làm (Ich will … werden), dùng und, aber, oder, denn.',
     },
+    {
+      title_vi: 'Những mốc thời gian của tôi',
+      goal_vi: 'Kể các mốc học tập và công việc: vor einem Jahr, seit zwei Monaten, nach dem Kurs, in einer Woche.',
+      items: ['letzte Woche', 'nächstes Jahr', 'geboren', 'Plan', 'bald', 'Kollegin', 'Deutschkurs', 'Anfang', 'vor, nach, seit, in + Dativ (thời gian)'],
+      grammar: {
+        point: 'praep-zeit',
+        sections: [
+          {
+            text_vi:
+              'Giới từ **vor**, **nach**, **seit**, **in** chỉ thời gian đi với **Dativ**: **vor** einem Jahr (một năm trước), **nach** dem Kurs (sau khóa học), **seit** zwei Monaten (từ hai tháng nay), **in** einer Woche (một tuần nữa). Mạo từ Dativ: **dem** (der/das), **der** (die), **einem/einer**; số nhiều **den** và danh từ thêm **-n**: seit zwei Jahr**en**, vor drei Woche**n**.',
+            table: 'Giới từ | Nghĩa | Ví dụ\nvor | … trước | vor einem Monat\nnach | sau … | nach der Arbeit\nseit | từ … đến nay | seit zwei Jahren\nin | … nữa | in einer Woche',
+            examples: [
+              ['Vor einem Jahr war ich in Hanoi.', 'Một năm trước tôi ở Hà Nội.'],
+              ['Nach der Arbeit gehe ich nach Hause.', 'Sau giờ làm tôi về nhà.'],
+            ],
+            exercises: [
+              choose('Ich war ___ einem Jahr in Berlin.', ['vor', 'seit', 'in'], 'vor', { vi: 'Một năm trước tôi ở Berlin.' }),
+              fill('Ich lerne seit zwei {Monaten} Deutsch. (Monat)', 'Tôi học tiếng Đức được hai tháng rồi.'),
+              choose('Nach ___ Kurs trinken wir einen Kaffee.', ['dem', 'den', 'der'], 'dem', { vi: 'Sau khóa học chúng ta uống cà phê.' }),
+            ],
+          },
+          {
+            text_vi:
+              '**seit** + **Präsens**: việc bắt đầu trong quá khứ và **vẫn còn**: Ich **wohne seit** drei Jahren hier (không dùng Perfekt như tiếng Anh). **vor** + quá khứ: Ich **bin vor** drei Jahren nach Deutschland **gekommen**. **in** + tương lai, thường dùng Präsens: **In** zwei Wochen **habe** ich Urlaub. Tiếng Việt nói "ba năm trước", tiếng Đức đặt vor **trước**: vor drei Jahren.',
+            examples: [
+              ['Ich wohne seit drei Jahren in Leipzig.', 'Tôi sống ở Leipzig được ba năm rồi.'],
+              ['In zwei Wochen habe ich Urlaub.', 'Hai tuần nữa tôi được nghỉ phép.'],
+            ],
+            exercises: [
+              choose('Ich ___ seit zwei Jahren in dieser Firma.', ['arbeite', 'habe gearbeitet'], 'arbeite', { vi: 'Tôi làm ở công ty này được hai năm rồi.', explain: 'seit + việc vẫn còn → Präsens.' }),
+              choose('___ einer Woche habe ich eine Prüfung. (một tuần nữa)', ['In', 'Vor', 'Seit'], 'In', { vi: 'Một tuần nữa tôi có bài thi.' }),
+              translate('Tôi đã đến Đức hai năm trước.', ['Ich bin vor zwei Jahren nach Deutschland gekommen.', 'Vor zwei Jahren bin ich nach Deutschland gekommen.']),
+            ],
+          },
+          {
+            text_vi:
+              'Không có giới từ thì cụm thời gian ở **Akkusativ**: **letzte Woche** (tuần trước), **letzten Monat**, **letztes Jahr**; **nächste Woche**, **nächstes Jahr** (năm sau). Năm sinh: Ich bin **1998 geboren** (không nói "in 1998"). **bald** = sắp, chẳng bao lâu nữa. **am Anfang** = lúc đầu.',
+            examples: [
+              ['Letztes Jahr war ich in Vietnam.', 'Năm ngoái tôi ở Việt Nam.'],
+              ['Ich bin 1995 in Hue geboren.', 'Tôi sinh năm 1995 ở Huế.'],
+            ],
+            exercises: [
+              choose('___ Woche hatte ich viel Arbeit.', ['Letzte', 'Letzten', 'Letztes'], 'Letzte', { vi: 'Tuần trước tôi có nhiều việc.' }),
+              fill('Ich bin 2001 in Da Nang {geboren}.', 'Tôi sinh năm 2001 ở Đà Nẵng.'),
+            ],
+          },
+        ],
+        mixed: [
+          choose('Seit ___ Woche lerne ich jeden Tag.', ['einer', 'einem', 'eine'], 'einer', { vi: 'Từ một tuần nay ngày nào tôi cũng học.' }),
+          fill('Vor drei {Wochen} habe ich die Prüfung gemacht. (Woche)', 'Ba tuần trước tôi đã thi.'),
+          translate('Tôi học tiếng Đức được sáu tháng rồi.', ['Ich lerne seit sechs Monaten Deutsch.', 'Seit sechs Monaten lerne ich Deutsch.']),
+          order('Nach / dem / Kurs / möchte / ich / in Deutschland / arbeiten.', 'Sau khóa học tôi muốn làm việc ở Đức.'),
+          choose('Ich habe ___ Jahr eine Reise gemacht.', ['letztes', 'letzte', 'letzten'], 'letztes', { vi: 'Năm ngoái tôi đã đi du lịch.' }),
+        ],
+      },
+      dialogue: {
+        title_de: 'Wie lange schon?',
+        lines: [
+          { speaker: 'A', de: 'Wie lange bist du schon in Deutschland?', vi: 'Bạn ở Đức được bao lâu rồi?' },
+          { speaker: 'B', de: 'Ich bin vor einem Jahr nach Leipzig gekommen.', vi: 'Mình đến Leipzig một năm trước.' },
+          { speaker: 'A', de: 'Und seit wann lernst du Deutsch?', vi: 'Còn bạn học tiếng Đức từ khi nào?' },
+          { speaker: 'B', de: 'Seit zwei Jahren. Am Anfang hatte ich einen Deutschkurs in Hanoi.', vi: 'Được hai năm rồi. Lúc đầu mình học một khóa tiếng Đức ở Hà Nội.' },
+          { speaker: 'A', de: 'Arbeitest du schon hier?', vi: 'Bạn đã đi làm ở đây chưa?' },
+          { speaker: 'B', de: 'Ja, seit drei Monaten in einer Firma. Meine Kollegin hilft mir viel.', vi: 'Rồi, được ba tháng ở một công ty. Đồng nghiệp giúp mình nhiều.' },
+          { speaker: 'A', de: 'Toll! Und was ist dein Plan?', vi: 'Tuyệt! Còn kế hoạch của bạn là gì?' },
+          { speaker: 'B', de: 'In einem Monat habe ich eine Prüfung. Nach der Prüfung möchte ich an der Universität studieren.', vi: 'Một tháng nữa mình có bài thi. Sau bài thi mình muốn học đại học.' },
+          { speaker: 'A', de: 'Viel Glück! Letzte Woche habe ich auch eine Prüfung gemacht.', vi: 'Chúc may mắn! Tuần trước mình cũng đi thi.' },
+          { speaker: 'B', de: 'Und? Hast du bestanden?', vi: 'Thế nào? Bạn đỗ không?' },
+          { speaker: 'A', de: 'Ja! Nächstes Jahr mache ich einen neuen Kurs.', vi: 'Đỗ! Năm sau mình học một khóa mới.' },
+        ],
+        gloss: { 'wie lange': 'bao lâu', 'seit wann': 'từ khi nào', bestanden: 'đã đỗ (bestehen)', 'viel Glück': 'chúc may mắn' },
+        questions: [
+          mc('B đến Leipzig khi nào?', ['một năm trước', 'hai năm trước', 'ba tháng trước'], 'một năm trước'),
+          tf('B lernt seit zwei Jahren Deutsch.', true),
+          mc('B làm ở công ty được bao lâu?', ['ba tháng', 'một năm', 'hai năm'], 'ba tháng'),
+          tf('Die Prüfung von B ist in einer Woche.', false, { explain: 'In einem Monat habe ich eine Prüfung.' }),
+        ],
+        dictation: [1, 7],
+      },
+      writing_prompt_vi:
+        'Viết 5 câu về các mốc của bạn: bạn sinh năm nào, vor … bạn làm gì, seit … bạn học hoặc làm gì, in … bạn sẽ làm gì.',
+    },
   ],
   test: {
     grammar: {
@@ -303,6 +392,14 @@ export default defineStage({
         order('Er / ist / Koch / und / sie / ist / Lehrerin.', 'Anh ấy là đầu bếp và cô ấy là giáo viên.'),
         choose('Die Arbeit ist schwer, ___ ich mag sie.', ['aber', 'denn'], 'aber'),
         fill('Ich bleibe zu Hause, denn ich {bin} krank.', 'Tôi ở nhà vì tôi bị ốm.'),
+      ],
+      'praep-zeit': [
+        choose('Ich wohne ___ drei Jahren hier.', ['seit', 'vor'], 'seit'),
+        choose('___ einer Woche war ich krank.', ['Vor', 'Seit'], 'Vor'),
+        fill('Nach {dem} Kurs gehen wir essen.', 'Sau khóa học chúng ta đi ăn.'),
+        choose('In ___ Monat habe ich Urlaub.', ['einem', 'einen'], 'einem'),
+        fill('Ich lerne seit zwei {Jahren} Deutsch. (Jahr)', 'Tôi học tiếng Đức được hai năm rồi.'),
+        order('Vor / zwei / Wochen / war / ich / in Berlin.', 'Hai tuần trước tôi ở Berlin.'),
       ],
     },
     reading: {

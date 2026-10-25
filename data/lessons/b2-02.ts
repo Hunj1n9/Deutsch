@@ -230,6 +230,19 @@ export default defineStage({
               transform('Viết lại với tính từ -bar', 'Der Chef kann heute nicht erreicht werden.', ['Der Chef ist heute nicht erreichbar.']),
             ],
           },
+          {
+            text_vi:
+              'Tính từ mang nghĩa **phủ định** hay được tạo bằng tiền tố và hậu tố: **un-** (unklar, unzufrieden, unbezahlbar); **miss-** cho danh từ và động từ (das **Miss**verständnis, **miss**lingen = thất bại); **-los** = không có (arbeits**los**, erfolg**los**, kosten**los**); **-frei** = không chứa, miễn (alkohol**frei**, barriere**frei**, steuer**frei**). Gặp nhiều trong tin tuyển dụng và văn bản B2.',
+            examples: [
+              ['Die Weiterbildung ist für alle Mitarbeiter kostenlos.', 'Khóa nâng cao miễn phí cho mọi nhân viên.'],
+              ['Nach dem Missverständnis war die Stimmung im Team schlecht.', 'Sau sự hiểu lầm, không khí trong nhóm tệ đi.'],
+            ],
+            exercises: [
+              choose('Seit drei Monaten ist er ___ und sucht eine Stelle.', ['arbeitslos', 'unarbeitlich', 'arbeitsfrei'], 'arbeitslos', { vi: 'Ba tháng nay anh ấy thất nghiệp và đang tìm việc.' }),
+              fill('Das Büro ist {barrierefrei}, es gibt einen Aufzug. (Barriere + -frei)', 'Văn phòng không có rào cản, có thang máy.'),
+              choose('Leider war meine Bewerbung ___.', ['erfolglos', 'unerfolgreich', 'misserfolgt'], 'erfolglos', { vi: 'Tiếc là hồ sơ của tôi không thành công.' }),
+            ],
+          },
         ],
         mixed: [
           choose('Ein Jobwechsel ___ sich gut planen.', ['lässt', 'kann', 'wird'], 'lässt', { vi: 'Việc đổi việc có thể lên kế hoạch tốt.' }),

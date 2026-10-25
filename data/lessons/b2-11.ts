@@ -25,6 +25,13 @@ export default defineStage({
       title_vi: 'Hạt từ tình thái: doch, ja, eben, mal',
       explanation_vi: 'doch: nhắc điều người nghe nên biết, thúc giục (Komm doch mit!). ja: điều cả hai đều biết hoặc ngạc nhiên (Das ist ja toll!). eben: chấp nhận thực tế (Das ist eben so). mal: làm lời yêu cầu nhẹ (Schau mal!). Hạt từ không nhấn trọng âm, đứng sau động từ.',
     },
+    {
+      key: 'mittelfeld',
+      rule_key: 'mittelfeld-tekamolo-nicht',
+      category: 'other',
+      title_vi: 'Trật tự phần giữa câu (Mittelfeld) và vị trí của nicht',
+      explanation_vi: 'Đại từ đứng trước danh từ; hai danh từ: Dativ trước Akkusativ, hai đại từ: Akkusativ trước Dativ; trạng ngữ theo te-ka-mo-lo. nicht phủ định cả câu đứng cuối Mittelfeld, trước phần động từ cuối và trước bổ ngữ nơi chốn, giới từ.',
+    },
   ],
   lessons: [
     {
@@ -239,6 +246,90 @@ export default defineStage({
       writing_prompt_vi:
         'Viết một đoạn hội thoại (6–8 câu) rủ bạn đi xem triển lãm hoặc buổi hòa nhạc; dùng mỗi hạt từ doch, ja, eben, mal ít nhất một lần.',
     },
+    {
+      title_vi: 'Viết bài phê bình phim',
+      goal_vi: 'Viết câu dài đúng trật tự phần giữa câu (đại từ, tân ngữ, te-ka-mo-lo) và đặt nicht đúng chỗ khi bình phim, sách.',
+      items: [
+        'Hauptdarsteller', 'Drehbuch', 'Kritiker', 'verraten', 'hervorragend', 'Szene', 'Fortsetzung', 'Spannung', 'Begeisterung',
+        'Trật tự Mittelfeld và vị trí nicht',
+      ],
+      grammar: {
+        point: 'mittelfeld',
+        sections: [
+          {
+            text_vi:
+              'Phần giữa câu (**Mittelfeld**: giữa động từ chia và phần động từ cuối) có trật tự riêng. (1) **Đại từ** đứng **trước** danh từ: Gestern hat **mir** ein Freund das Buch geschenkt. (2) Hai tân ngữ là **danh từ**: **Dativ trước Akkusativ**: Sie empfiehlt **dem Publikum** den Film. (3) Hai tân ngữ là **đại từ**: **Akkusativ trước Dativ**: Sie empfiehlt **ihn ihm**. (Đã gặp ở A2-09; ở B2 cần làm đúng trong câu dài.)',
+            table: 'Tân ngữ | Trật tự | Ví dụ\nhai danh từ | Dativ – Akkusativ | Ich leihe meinem Bruder das Buch.\nmột đại từ | đại từ trước | Ich leihe es meinem Bruder.\nhai đại từ | Akkusativ – Dativ | Ich leihe es ihm.',
+            examples: [
+              ['Die Kritikerin hat dem Publikum den Film empfohlen.', 'Nhà phê bình đã giới thiệu bộ phim cho khán giả.'],
+              ['Gestern hat mir ein Freund das Buch geschenkt.', 'Hôm qua một người bạn tặng tôi cuốn sách.'],
+            ],
+            exercises: [
+              choose('Er zeigt ___. (den Film / dem Publikum)', ['ihn ihm', 'ihm ihn'], 'ihn ihm', { vi: 'Anh ấy cho họ xem nó.', explain: 'Hai đại từ: Akkusativ trước Dativ.' }),
+              choose('Ich leihe ___.', ['ihn meinem Bruder', 'meinem Bruder ihn'], 'ihn meinem Bruder', { vi: 'Tôi cho anh trai mượn nó.', explain: 'Đại từ đứng trước danh từ.' }),
+              transform('Thay "den Film" bằng đại từ', 'Ich empfehle meiner Schwester den Film.', ['Ich empfehle ihn meiner Schwester.']),
+            ],
+          },
+          {
+            text_vi:
+              '**Trạng ngữ** trong Mittelfeld thường theo **te-ka-mo-lo**: **te**mporal (khi nào) – **ka**usal (vì sao) – **mo**dal (thế nào) – **lo**kal (ở đâu): Wir sind **gestern** **wegen des Regens** **mit dem Taxi** **ins Kino** gefahren. Đây là trật tự **trung tính**; muốn nhấn mạnh thì đưa một phần lên vị trí 1 (bài 2). Tiếng Việt hay nói nơi chốn trước; tiếng Đức để nơi chốn **sau cùng**.',
+            examples: [
+              ['Sie hat den Roman letzten Sommer mit großer Begeisterung im Urlaub gelesen.', 'Mùa hè năm ngoái cô ấy đã say mê đọc cuốn tiểu thuyết trong kỳ nghỉ.'],
+            ],
+            exercises: [
+              choose('Wir fahren ___ ins Theater.', ['morgen mit dem Bus', 'mit dem Bus morgen'], 'morgen mit dem Bus', { vi: 'Ngày mai chúng tôi đi xe buýt đến nhà hát.', explain: 'Thời gian (te) trước cách thức (mo).' }),
+              transform('Sắp xếp trạng ngữ theo te-ka-mo-lo', 'Wir gehen (ins Museum / heute / zu Fuß).', ['Wir gehen heute zu Fuß ins Museum.']),
+            ],
+          },
+          {
+            text_vi:
+              'Phủ định **cả câu**: **nicht** đứng **về cuối** Mittelfeld: sau tân ngữ và trạng ngữ thời gian, nhưng **trước** phần động từ cuối, trước trạng ngữ nơi chốn và bổ ngữ có giới từ: Ich habe den Film gestern **nicht** gesehen. Er ist **nicht** ins Kino gegangen. Sie interessiert sich **nicht** für Opern. Phủ định **một phần** thì nicht đứng ngay trước phần đó, thường kèm **sondern**: Ich meine **nicht** den Film, sondern das Buch.',
+            examples: [
+              ['Die Kritik hat mich nicht überzeugt.', 'Bài phê bình không thuyết phục được tôi.'],
+              ['Wir sind gestern nicht ins Theater gegangen.', 'Hôm qua chúng tôi không đi xem kịch.'],
+            ],
+            exercises: [
+              choose('Ich habe das Buch ___.', ['gestern nicht gelesen', 'nicht gestern gelesen'], 'gestern nicht gelesen', { vi: 'Hôm qua tôi đã không đọc sách.', explain: 'Phủ định cả câu: nicht sau trạng ngữ thời gian.' }),
+              transform('Phủ định cả câu bằng nicht', 'Der Regisseur hat die Kritiker überzeugt.', ['Der Regisseur hat die Kritiker nicht überzeugt.']),
+              choose('Sie interessiert sich ___.', ['nicht für Opern', 'für Opern nicht'], 'nicht für Opern', { vi: 'Cô ấy không quan tâm đến opera.' }),
+            ],
+          },
+        ],
+        mixed: [
+          choose('Kannst du ___ leihen? (das Buch, mir)', ['es mir', 'mir es'], 'es mir', { vi: 'Bạn cho mình mượn nó được không?' }),
+          transform('Phủ định cả câu', 'Wir sind am Wochenende ins Museum gegangen.', ['Wir sind am Wochenende nicht ins Museum gegangen.']),
+          transform('Thay "das Gedicht" bằng đại từ', 'Die Lehrerin erklärt den Schülern das Gedicht.', ['Die Lehrerin erklärt es den Schülern.']),
+          choose('Ich habe den Roman ___ gelesen.', ['letztes Jahr im Urlaub', 'im Urlaub letztes Jahr'], 'letztes Jahr im Urlaub', { vi: 'Năm ngoái tôi đọc cuốn tiểu thuyết trong kỳ nghỉ.' }),
+          choose('Das Ende hat ___ überrascht.', ['mich nicht', 'nicht mich'], 'mich nicht', { vi: 'Đoạn kết không làm tôi bất ngờ.' }),
+          translate('Hôm qua tôi đã không đi xem phim.', ['Ich bin gestern nicht ins Kino gegangen.', 'Gestern bin ich nicht ins Kino gegangen.']),
+        ],
+      },
+      dialogue: {
+        title_de: 'Eine Filmkritik',
+        lines: [
+          { speaker: 'A', de: 'Hast du die Kritik zum neuen Film schon geschrieben?', vi: 'Bạn viết bài phê bình về bộ phim mới chưa?' },
+          { speaker: 'B', de: 'Noch nicht. Ich habe den Film erst gestern Abend im Kino gesehen.', vi: 'Chưa. Mình mới xem phim ở rạp tối qua.' },
+          { speaker: 'A', de: 'Und? Hat er dir gefallen?', vi: 'Thế nào? Bạn có thích không?' },
+          { speaker: 'B', de: 'Ehrlich gesagt nicht besonders. Die Handlung hat mich nicht überzeugt.', vi: 'Nói thật là không lắm. Cốt truyện không thuyết phục được mình.' },
+          { speaker: 'A', de: 'Aber der Hauptdarsteller ist doch hervorragend!', vi: 'Nhưng nam diễn viên chính xuất sắc mà!' },
+          { speaker: 'B', de: 'Das stimmt. Er spielt seine Rolle sehr überzeugend.', vi: 'Đúng vậy. Anh ấy đóng vai rất thuyết phục.' },
+          { speaker: 'A', de: 'Ich habe meiner Schwester den Film empfohlen. Sie will ihn morgen sehen.', vi: 'Mình đã giới thiệu bộ phim cho chị gái. Chị ấy định mai đi xem.' },
+          { speaker: 'B', de: 'Dann verrate ihr das Ende nicht!', vi: 'Vậy đừng tiết lộ đoạn kết cho chị ấy nhé!' },
+          { speaker: 'A', de: 'Keine Sorge, ich verrate es ihr nicht.', vi: 'Đừng lo, mình không kể cho chị ấy đâu.' },
+          { speaker: 'B', de: 'Gut. Ich schicke dir meine Kritik heute Abend per E-Mail.', vi: 'Tốt. Tối nay mình gửi bài phê bình cho bạn qua email.' },
+        ],
+        gloss: { 'ehrlich gesagt': 'nói thật', 'nicht besonders': 'không lắm' },
+        questions: [
+          tf('B hat den Film gestern im Kino gesehen.', true),
+          mc('B nghĩ gì về cốt truyện?', ['không thuyết phục', 'rất hay', 'quá dài'], 'không thuyết phục'),
+          tf('A hat den Film seiner Schwester nicht empfohlen.', false, { explain: 'Ich habe meiner Schwester den Film empfohlen.' }),
+          mc('B sẽ gửi bài phê bình thế nào?', ['qua email tối nay', 'bằng thư', 'ngày mai ở trường'], 'qua email tối nay'),
+        ],
+        dictation: [1, 6],
+      },
+      writing_prompt_vi:
+        'Viết một đoạn phê bình phim hoặc sách (5–6 câu): bạn xem hoặc đọc khi nào, ở đâu, giới thiệu cho ai. Có ít nhất hai câu phủ định với nicht đặt đúng chỗ.',
+    },
   ],
   test: {
     grammar: {
@@ -265,6 +356,14 @@ export default defineStage({
         choose('So ist das Leben ___.', ['eben', 'mal', 'denn'], 'eben'),
         choose('Kommst du nicht? – ___, ich komme!', ['Doch', 'Ja', 'Mal'], 'Doch'),
         order('Ruf / mich / doch / mal / an!', 'Gọi cho mình nhé!'),
+      ],
+      mittelfeld: [
+        choose('Ich gebe ___. (das Buch, ihm)', ['es ihm', 'ihm es'], 'es ihm'),
+        choose('Sie schenkt ___ eine Kette. (ihrer Mutter)', ['ihrer Mutter', 'ihre Mutter'], 'ihrer Mutter'),
+        choose('Ich habe den Film ___ gesehen.', ['gestern nicht', 'nicht gestern'], 'gestern nicht'),
+        choose('Er ist ___ gegangen.', ['nicht ins Kino', 'ins Kino nicht'], 'nicht ins Kino'),
+        fill('Kannst du {es} mir zeigen? (das Foto)', 'Bạn cho mình xem nó được không?'),
+        choose('Wir fahren ___ nach Berlin.', ['morgen mit dem Zug', 'mit dem Zug morgen'], 'morgen mit dem Zug'),
       ],
     },
     reading: {

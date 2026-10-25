@@ -32,7 +32,7 @@ export default defineStage({
       goal_vi: 'Hỏi và nói nơi chốn, hướng đi (wo, wohin, woher); kể một chuyến đi chơi ngắn.',
       items: [
         'Insel', 'See', 'Fluss', 'Wald', 'Küste', 'Landschaft', 'Ausflug', 'Wanderung', 'Sehenswürdigkeit', 'Altstadt',
-        'Schloss', 'hin', 'zurück', 'aus', 'durch', 'um … herum', 'besichtigen', 'berühmt', 'historisch',
+        'Schloss', 'hin', 'zurück', 'aus', 'um … herum', 'besichtigen', 'berühmt', 'historisch',
         'Woher? Wohin? Wo?',
         'Hauptstadt',
       ],

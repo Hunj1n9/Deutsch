@@ -59,5 +59,16 @@ adv|vielleicht|||có lẽ|{Vielleicht} komme ich mit.|Có lẽ tôi đi cùng.|
 v|glauben|||tin, nghĩ rằng|Ich {glaube}, das Konzert ist gut.|Tôi nghĩ buổi hòa nhạc hay.|er glaubt, hat geglaubt
 n|Eintritt|der|-e|vé vào cửa|Der {Eintritt} kostet zehn Euro.|Vé vào cửa giá mười euro.|
 prep|ohne|||không có, không cùng|Wir gehen {ohne} Peter ins Kino.|Chúng tôi đi xem phim không có Peter.|ohne + Akkusativ
+prep|für|||cho, dành cho|Der Kuchen ist {für} dich.|Bánh này dành cho bạn.|für + Akkusativ.
+prep|durch|||xuyên qua|Wir gehen {durch} den Park.|Chúng tôi đi xuyên qua công viên.|durch + Akkusativ.
+n|Picknick|das|-s|bữa picnic|Am Sonntag machen wir ein {Picknick}.|Chủ nhật chúng tôi đi picnic.|
+n|Decke|die|-n|tấm chăn, tấm trải|Wir sitzen auf einer {Decke}.|Chúng tôi ngồi trên tấm trải.|
+n|Spaziergang|der|¨-e|cuộc đi dạo|Wir machen einen {Spaziergang}.|Chúng tôi đi dạo.|
+n|Stadion|das|Stadien|sân vận động|Am Samstag gehen wir ins {Stadion}.|Thứ Bảy chúng tôi đến sân vận động.|
+n|Spieler|der|-|cầu thủ, người chơi|Der {Spieler} ist sehr schnell.|Cầu thủ đó rất nhanh.|
+n|Training|das|-s|buổi tập|Das {Training} beginnt um sechs.|Buổi tập bắt đầu lúc sáu giờ.|
+v|trainieren|||tập luyện|Wir {trainieren} zweimal pro Woche.|Chúng tôi tập hai lần một tuần.|er trainiert, hat trainiert
+n|Sonnenbrille|die|-n|kính râm|Ich brauche eine {Sonnenbrille}.|Tôi cần một cái kính râm.|
+g|für, ohne, durch, gegen, um + Akkusativ|||giới từ đi với Akkusativ|Der Kuchen ist für {meinen} Vater.|Bánh này cho bố tôi.|Sau für, ohne, durch, gegen, um luôn là Akkusativ: den, einen, meinen (chỉ giống đực đổi).
 `;
 export default pack;

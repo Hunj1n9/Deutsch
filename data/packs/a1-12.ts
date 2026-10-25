@@ -55,5 +55,14 @@ g|Liên từ und, aber, oder, denn: vị trí 0|||nối hai câu chính|Ich bin 
 g|Partizip II bất quy tắc: -en|||động từ mạnh tạo Partizip với -en|Ich habe einen Brief {geschrieben}.|Tôi đã viết một lá thư.|schreiben → geschrieben, lesen → gelesen, sprechen → gesprochen.
 g|Partizip II không có ge-|||động từ đuôi -ieren và có tiền tố không tách|Er hat Medizin {studiert}.|Anh ấy đã học y.|studieren → studiert; besuchen → besucht; verstehen → verstanden.
 n|Konto|das|Konten|tài khoản (ngân hàng)|Ich habe ein {Konto} bei der Bank.|Tôi có một tài khoản ở ngân hàng.|
+p|letzte Woche|||tuần trước|{Letzte Woche} hatte ich eine Prüfung.|Tuần trước tôi có một bài thi.|Không có giới từ, ở Akkusativ: letzte Woche, letzten Monat, letztes Jahr.
+p|nächstes Jahr|||năm sau|{Nächstes Jahr} mache ich einen neuen Kurs.|Năm sau tôi học một khóa mới.|nächste Woche, nächsten Monat, nächstes Jahr.
+o|geboren|||sinh ra|Ich bin 1998 in Hanoi {geboren}.|Tôi sinh năm 1998 ở Hà Nội.|Ich bin … geboren (đi với sein; năm không có giới từ).
+n|Plan|der|¨-e|kế hoạch|Ich habe einen {Plan}.|Tôi có một kế hoạch.|
+adv|bald|||sắp, chẳng bao lâu nữa|Ich habe {bald} Urlaub.|Tôi sắp được nghỉ phép.|
+n|Kollegin|die|-nen|đồng nghiệp (nữ)|Meine {Kollegin} hilft mir.|Đồng nghiệp của tôi giúp tôi.|
+n|Deutschkurs|der|-e|khóa học tiếng Đức|Der {Deutschkurs} beginnt im Mai.|Khóa học tiếng Đức bắt đầu vào tháng Năm.|
+n|Anfang|der|¨-e|lúc đầu, sự bắt đầu|Am {Anfang} war alles neu.|Lúc đầu mọi thứ đều mới.|am Anfang = lúc đầu.
+g|vor, nach, seit, in + Dativ (thời gian)|||giới từ thời gian đi với Dativ|Ich lerne seit zwei {Jahren} Deutsch.|Tôi học tiếng Đức được hai năm rồi.|vor einem Jahr, nach dem Kurs, seit zwei Monaten, in einer Woche; số nhiều Dativ thêm -n.
 `;
 export default pack;

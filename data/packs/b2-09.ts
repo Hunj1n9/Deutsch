@@ -45,7 +45,7 @@ p|um … Prozent steigen|||tăng … phần trăm|Die Preise sind {um} fünf Pro
 g|aufgrund / infolge / angesichts + Genitiv|||do, vì, trước tình hình|Aufgrund {des} schlechten Wetters wurde der Start verschoben.|Do thời tiết xấu, việc phóng bị hoãn.|Văn viết; trong văn nói thường dùng wegen.
 g|Bị động thay bằng man|||văn nói tự nhiên hơn|Man {führte} die Studie in zehn Ländern durch.|Nghiên cứu được tiến hành ở mười quốc gia.|= Die Studie wurde in zehn Ländern durchgeführt.
 g|Mô tả biểu đồ: steigen um / auf|||um = mức thay đổi, auf = mức đạt tới|Die Zahl stieg {auf} 500.|Con số tăng lên 500.|steigen um 10 % (thêm 10 %); steigen auf 500 (lên tới 500).
-g|Phân số và phần trăm|||die Hälfte, ein Drittel, ein Viertel|Ein {Viertel} der Befragten ist dagegen.|Một phần tư số người được hỏi phản đối.|Động từ chia theo danh từ phân số (số ít).
+g|Phân số và phần trăm|||die Hälfte, ein Drittel, ein Viertel|Ein {Viertel} der Befragten ist dagegen.|Một phần tư số người được hỏi phản đối.|Động từ thường chia số ít theo danh từ phân số; theo nghĩa, số nhiều cũng được chấp nhận.
 n|Grundlagenforschung|die||nghiên cứu cơ bản|Die {Grundlagenforschung} braucht Zeit.|Nghiên cứu cơ bản cần thời gian.|
 n|Naturwissenschaft|die|-en|khoa học tự nhiên|Physik und Chemie sind {Naturwissenschaften}.|Vật lý và hóa học là khoa học tự nhiên.|
 n|Geisteswissenschaft|die|-en|khoa học nhân văn|Sie studiert {Geisteswissenschaften}.|Cô ấy học các ngành khoa học nhân văn.|
@@ -90,5 +90,15 @@ v|erproben|||thử nghiệm|Die neue Methode wird gerade {erprobt}.|Phương ph�
 v|quantifizieren|||định lượng|Der Nutzen lässt sich schwer {quantifizieren}.|Lợi ích khó định lượng.|er quantifiziert, hat quantifiziert
 p|Licht ins Dunkel bringen|||làm sáng tỏ|Die Studie {bringt} Licht ins Dunkel.|Nghiên cứu làm sáng tỏ vấn đề.|
 p|auf der Hand liegen|||hiển nhiên|Die Vorteile {liegen} auf der Hand.|Lợi ích là hiển nhiên.|
+p|es handelt sich um|||đó là, ở đây là|Bei dem Fund {handelt} es sich um einen Meteoriten.|Vật tìm thấy là một thiên thạch.|es là chủ ngữ cố định; + Akkusativ.
+p|es kommt auf … an|||phụ thuộc vào|Es {kommt} auf die Methode an.|Điều đó phụ thuộc vào phương pháp.|+ Akkusativ; với câu phụ: Es kommt darauf an, ob …
+v|schwerfallen|||cảm thấy khó|Statistik {fällt} mir schwer.|Tôi thấy thống kê khó.|+ Dativ; es fällt mir schwer, … zu …; fiel schwer, ist schwergefallen
+v|feststellen|||xác định, nhận thấy|Die Forscher {stellten} fest, dass die Werte steigen.|Các nhà nghiên cứu xác định rằng các giá trị tăng.|stellte fest, hat festgestellt
+v|auffallen|||gây chú ý, được nhận ra|Mir {fällt} auf, dass viele Daten fehlen.|Tôi nhận thấy nhiều dữ liệu bị thiếu.|+ Dativ; fiel auf, ist aufgefallen
+n|Annahme|die|-n|giả định|Die {Annahme} hat sich bestätigt.|Giả định đã được xác nhận.|
+n|Vermutung|die|-en|phỏng đoán|Das ist nur eine {Vermutung}.|Đó chỉ là một phỏng đoán.|
+n|Phänomen|das|-e|hiện tượng|Das {Phänomen} ist noch nicht erklärt.|Hiện tượng này chưa được giải thích.|
+n|Messwert|der|-e|giá trị đo|Die {Messwerte} sind sehr genau.|Các giá trị đo rất chính xác.|
+g|Từ es: giữ chỗ, báo trước, cố định|||các vai trò của es|Ich finde {es} wichtig, dass die Daten stimmen.|Tôi thấy việc dữ liệu chính xác là quan trọng.|es giữ chỗ ở vị trí 1 (bỏ khi có thành phần khác đứng đầu); es báo trước câu dass; es cố định: es gibt, es geht um, es handelt sich um.
 `;
 export default pack;

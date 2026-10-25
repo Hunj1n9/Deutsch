@@ -221,6 +221,19 @@ export default defineStage({
               translate('Đây là một vấn đề cần được giải quyết.', ['Das ist ein zu lösendes Problem.', 'Das ist ein Problem, das gelöst werden muss.']),
             ],
           },
+          {
+            text_vi:
+              'Cùng nhóm với **sein + zu** là **haben + zu + Infinitiv** = **phải**, nhưng chủ ngữ là **người làm**: Ich **habe** heute noch viel **zu tun** (= Ich muss noch viel tun). **nichts zu …** = không có quyền, không có gì để: Hier **haben** Sie nichts **zu suchen**. So sánh: Die Tabletten **sind** einzunehmen (thuốc phải được uống) – Der Patient **hat** die Tabletten einzunehmen (bệnh nhân phải uống).',
+            examples: [
+              ['Der Patient hat zwei Wochen im Bett zu bleiben.', 'Bệnh nhân phải nằm trên giường hai tuần.'],
+              ['Ich habe heute noch drei Berichte zu schreiben.', 'Hôm nay tôi còn phải viết ba bản báo cáo.'],
+            ],
+            exercises: [
+              transform('Viết lại với "haben + zu"', 'Sie muss die Formulare ausfüllen.', ['Sie hat die Formulare auszufüllen.']),
+              choose('Die Ärztin ___ heute noch viele Patienten zu untersuchen.', ['hat', 'ist', 'wird'], 'hat', { vi: 'Hôm nay bác sĩ còn phải khám nhiều bệnh nhân.' }),
+              choose('Die Rechnung ___ bis Montag zu bezahlen.', ['ist', 'hat', 'wird'], 'ist', { vi: 'Hóa đơn phải được thanh toán trước thứ Hai.' }),
+            ],
+          },
         ],
         mixed: [
           choose('Die Ärztin erklärt die ___ Schritte.', ['zu beachtenden', 'zu beachten', 'beachtet'], 'zu beachtenden', { vi: 'Bác sĩ giải thích các bước cần lưu ý.' }),

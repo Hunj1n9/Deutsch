@@ -482,7 +482,7 @@ TCHT:
 - `/roadmap` hiện đúng chặng hiện tại và % đã thuộc ở 375px.
 
 ### F11. Bài học theo chặng (thêm 2026-10-24)
-**Cấu trúc:** chặng (F10) → mỗi điểm ngữ pháp của chặng một bài (hiện mọi chặng có 3, tổng 150 bài) → kiểm tra chặng (F12). Mục của gói chia hết cho các bài của chặng theo chủ đề con; mục ngữ pháp (`g`) theo bài của điểm ngữ pháp đó. Một bài khoảng 25–40 phút.
+**Cấu trúc:** chặng (F10) → mỗi điểm ngữ pháp của chặng một bài (phần lớn chặng có 3; A1-07, A1-12, B2-09, B2-11 có 4 từ 2026-10-25; tổng 154 bài) → kiểm tra chặng (F12). Mục của gói chia hết cho các bài của chặng theo chủ đề con; mục ngữ pháp (`g`) theo bài của điểm ngữ pháp đó. Một bài khoảng 25–40 phút.
 
 **Các bước của một bài** (làm theo thứ tự; mỗi bước một màn, có thanh tiến độ bước):
 1. **Mục tiêu:** 1–2 câu "Sau bài này bạn có thể…" (vd "giới thiệu tên, quê và nơi ở"). Nút Bắt đầu.
@@ -539,7 +539,7 @@ type StageLessons = { stage_id: string; points: GrammarPoint[]; lessons: Lesson[
 ```
 
 **Màn hình:**
-- `/learn` (trang Học): bài kế tiếp ở đầu trang (nút Học tiếp / Bắt đầu); bên dưới là các chặng theo cấp. Mỗi chặng mở ra 3 bài (chưa học / đang học bước x/6 / xong kèm điểm) và kiểm tra chặng (chưa làm / điểm cao nhất / đã qua). `/roadmap` chuyển hướng về `/learn`.
+- `/learn` (trang Học): bài kế tiếp ở đầu trang (nút Học tiếp / Bắt đầu); bên dưới là các chặng theo cấp. Mỗi chặng mở ra các bài (chưa học / đang học bước x/6 / xong kèm điểm) và kiểm tra chặng (chưa làm / điểm cao nhất / đã qua). `/roadmap` chuyển hướng về `/learn`.
 - `/learn/[lessonId]`: làm bài, ẩn thanh điều hướng dưới như phiên ôn, thoát bằng nút X (lưu bước).
 - Trang Hôm nay (F7): thêm khối **Bài học** ngay sau Sổ lỗi, hiện bài hoặc kiểm tra kế tiếp và nút một chạm. Nếu còn trên 50 thẻ đến hạn thì nhắc "ôn trước" nhưng không chặn. Khối "Bài mới hôm nay" đổi tên thành "Việc học khác" (việc ngoài app) và thôi gợi ý mở chặng. Đề "Viết 5 câu" lấy theo bài vừa học gần nhất nếu có.
 
@@ -560,12 +560,12 @@ TCHT:
 - Giờ học trong bài được cộng vào `study_sessions` với `activity = 'lesson'`.
 
 ### F12. Kiểm tra chặng (thêm 2026-10-24)
-- **Đề 20 câu**, rút ngẫu nhiên mỗi lần làm:
+- **Đề 20 câu** (23 câu ở chặng có 4 điểm ngữ pháp), rút ngẫu nhiên mỗi lần làm:
   - 8 câu từ vựng: rút từ mục của gói chặng (6 Việt→Đức, 2 nghe chép).
-  - 9 câu ngữ pháp: 3 câu cho mỗi điểm ngữ pháp, rút từ kho soạn sẵn ≥ 5 câu mỗi điểm. Kho này khác các bài tập trong bài học.
+  - 9 câu ngữ pháp (12 nếu chặng có 4 điểm): 3 câu cho mỗi điểm ngữ pháp, rút từ kho soạn sẵn ≥ 5 câu mỗi điểm. Kho này khác các bài tập trong bài học.
   - 3 câu đọc hiểu về một đoạn đọc mới 80–150 từ của chặng.
 - Không có gợi ý và không hiện đáp án trong lúc làm. Nộp xong mới hiện từng câu sai kèm đáp án và giải thích.
-- **Đạt khi đúng ≥ 16/20.** Chặng có một lần đạt thì tính là "đã qua"; chặng hiện tại là chặng đầu tiên chưa qua.
+- **Đạt khi đúng ≥ 80%** (16/20; 19/23). Chặng có một lần đạt thì tính là "đã qua"; chặng hiện tại là chặng đầu tiên chưa qua.
 - Chưa đạt: liệt kê điểm ngữ pháp đúng dưới 2/3 câu và gợi ý làm lại bài tương ứng. Mọi lần làm lưu vào `stage_tests`.
 - Câu ngữ pháp sai thì ghi sổ lỗi như F11.
 - **Bỏ qua chặng:** làm kiểm tra khi chưa học bài nào của chặng mà đạt thì các bài của chặng được đánh dấu `skipped`. Mục của gói được nhập vào kho, thẻ ở trạng thái New.

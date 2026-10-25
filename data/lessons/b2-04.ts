@@ -152,6 +152,19 @@ export default defineStage({
               choose('Die Stadt, ___ die Firma ihren Sitz hat, ist klein.', ['wo', 'was', 'wer'], 'wo', { vi: 'Thành phố nơi công ty đặt trụ sở thì nhỏ.' }),
             ],
           },
+          {
+            text_vi:
+              '**derjenige, der** … (người/cái mà …) giống **wer**, nhưng nhấn mạnh hơn và đi được với danh từ: **Diejenigen**, die mehr verdienen, zahlen mehr Steuern. Chia hai phần: **der-** như mạo từ, **-jenige** như đuôi tính từ sau der: derjenige, **denjenigen**, **demjenigen**, diejenigen. Cùng kiểu là **derselbe** (cùng một): Wir arbeiten in **derselben** Firma.',
+            examples: [
+              ['Diejenigen, die früh investieren, haben oft mehr Erfolg.', 'Những ai đầu tư sớm thường thành công hơn.'],
+              ['Die beiden Firmen haben denselben Lieferanten.', 'Hai công ty có cùng một nhà cung cấp.'],
+            ],
+            exercises: [
+              choose('___, die zu spät bestellen, bekommen keinen Rabatt.', ['Diejenigen', 'Derjenige', 'Dieselben'], 'Diejenigen', { vi: 'Những ai đặt hàng muộn không được giảm giá.' }),
+              fill('Wir arbeiten seit Jahren in {derselben} Branche. (derselbe, Dativ)', 'Chúng tôi làm cùng một ngành nhiều năm nay.'),
+              choose('Der Bonus geht an ___, der den Vertrag abschließt.', ['denjenigen', 'derjenige', 'demjenigen'], 'denjenigen', { vi: 'Tiền thưởng dành cho người ký được hợp đồng.' }),
+            ],
+          },
         ],
         mixed: [
           choose('Der Umsatz stieg um 20 Prozent, ___ die Aktionäre freute.', ['was', 'das', 'der'], 'was', { vi: 'Doanh thu tăng 20%, điều làm các cổ đông vui mừng.' }),
