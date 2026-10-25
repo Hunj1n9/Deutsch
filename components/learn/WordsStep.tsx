@@ -10,6 +10,7 @@ import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
 import { reportTarget } from '@/lib/course/report';
+import { letterHint, wordChoices } from '@/lib/course/words';
 import { ContentReport } from './ContentReport';
 import { answerInputClass, FLAG_VI } from './ExerciseCard';
 
@@ -33,11 +34,14 @@ function full(w: WordView) {
   return w.article ? `${w.article} ${w.german}` : w.german;
 }
 
-type Result = { key: string; correct: boolean; flags: AnswerFlag[]; responseMs: number; answer: string };
+type Result = { key: string; correct: boolean; flags: AnswerFlag[]; responseMs: number; answer: string; usedHint: boolean };
+type Phase = 'intro' | 'overview' | 'choose' | 'type';
+
+const PHASE_VI: Record<Phase, string> = { intro: '', overview: 'xem lại', choose: 'chọn từ', type: 'gõ từ' };
 
 /**
- * Bước Từ mới (SPEC F11): nhóm 5 mục, thẻ giới thiệu từng mục, rồi lượt gợi nhớ ngay (gõ Việt → Đức).
- * Xong mỗi nhóm thì lưu: nhập mục vào kho, lần gõ đầu là lần ôn đầu của thẻ vi_de.
+ * Bước Từ mới (SPEC F11): nhóm 5 mục, thẻ giới thiệu từng mục, xem lại cả nhóm, chọn từ đúng (Việt → Đức),
+ * rồi mới gõ (Việt → Đức, có gợi ý chữ đầu). Xong mỗi nhóm thì lưu: nhập mục vào kho, lần gõ đầu là lần ôn đầu của thẻ vi_de.
  */
 export function WordsStep({
   lessonId,
@@ -59,20 +63,27 @@ export function WordsStep({
     return out;
   }, [words]);
   const [group, setGroup] = useState(0);
-  const [phase, setPhase] = useState<'intro' | 'recall'>('intro');
+  const [phase, setPhase] = useState<Phase>('intro');
   const [intro, setIntro] = useState(0);
   const [queue, setQueue] = useState<{ word: WordView; tries: number }[]>([]);
   const [input, setInput] = useState('');
+  const [hinted, setHinted] = useState(false);
   const [answered, setAnswered] = useState<{ result: CheckResult; given: string } | null>(null);
+  const [picked, setPicked] = useState<string | null>(null);
   const [pending, setPending] = useState(0);
   const results = useRef(new Map<string, Result>());
   const shownAt = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
 
-  const current = groups[group] ?? [];
+  const current = useMemo(() => groups[group] ?? [], [groups, group]);
   const introWord = phase === 'intro' ? current[intro] : null;
-  const recall = phase === 'recall' ? queue[0] : null;
+  const choice = phase === 'choose' ? queue[0] : null;
+  const recall = phase === 'type' ? queue[0] : null;
+  const options = useMemo(
+    () => (choice ? wordChoices(choice.word, current, words, hashSeed(`${lessonId}:${choice.word.key}:${choice.tries}`)) : []),
+    [choice, current, words, lessonId],
+  );
 
   useEffect(() => {
     if (introWord) speakGerman(full(introWord));
@@ -85,8 +96,8 @@ export function WordsStep({
   }, [recall]);
 
   useEffect(() => {
-    if (answered) nextRef.current?.focus({ preventScroll: true });
-  }, [answered]);
+    if (answered || picked) nextRef.current?.focus({ preventScroll: true });
+  }, [answered, picked]);
 
   if (words.length === 0) {
     return (
@@ -99,11 +110,29 @@ export function WordsStep({
     );
   }
 
-  function startRecall() {
-    setQueue(shuffled(current, hashSeed(`${lessonId}:${group}`)).map((word) => ({ word, tries: 0 })));
-    setPhase('recall');
+  function startPhase(next: 'choose' | 'type') {
+    setQueue(shuffled(current, hashSeed(`${lessonId}:${group}:${next}`)).map((word) => ({ word, tries: 0 })));
+    setPhase(next);
     setInput('');
+    setHinted(false);
     setAnswered(null);
+    setPicked(null);
+  }
+
+  /** Bậc chọn từ chỉ để luyện: không tính điểm, không ghi lần ôn. Sai thì hỏi lại cuối lượt. */
+  function pick(key: string) {
+    if (!choice || picked) return;
+    setPicked(key);
+    speakGerman(full(choice.word));
+  }
+
+  function nextChoice() {
+    if (!choice || !picked) return;
+    const rest = queue.slice(1);
+    if (picked !== choice.word.key && choice.tries + 1 < MAX_TRIES) rest.push({ word: choice.word, tries: choice.tries + 1 });
+    setPicked(null);
+    if (rest.length > 0) setQueue(rest);
+    else startPhase('type');
   }
 
   function check(giveUp = false) {
@@ -118,8 +147,9 @@ export function WordsStep({
         flags: result.flags,
         responseMs: Math.round(performance.now() - shownAt.current),
         answer: given,
+        usedHint: hinted,
       });
-      onScore(result.correct && result.flags.length === 0);
+      onScore(result.correct && result.flags.length === 0 && !hinted);
     }
     setAnswered({ result, given });
     if (!result.correct || result.flags.length > 0) speakGerman(full(w));
@@ -146,6 +176,7 @@ export function WordsStep({
     if (!answered.result.correct && recall.tries + 1 < MAX_TRIES) rest.push({ word: recall.word, tries: recall.tries + 1 });
     setAnswered(null);
     setInput('');
+    setHinted(false);
     if (rest.length > 0) {
       setQueue(rest);
       return;
@@ -164,7 +195,7 @@ export function WordsStep({
 
   const progress = (
     <p className="px-1 text-[13px] font-semibold text-muted">
-      Nhóm {group + 1}/{groups.length} · {phase === 'intro' ? `từ ${intro + 1}/${current.length}` : 'gợi nhớ'}
+      Nhóm {group + 1}/{groups.length} · {phase === 'intro' ? `từ ${intro + 1}/${current.length}` : PHASE_VI[phase]}
       {pending > 0 && ' · đang lưu…'}
     </p>
   );
@@ -213,13 +244,107 @@ export function WordsStep({
             .filter(Boolean)
             .join(' · ')}
         />
-        <button
-          type="button"
-          onClick={() => (intro + 1 < current.length ? setIntro(intro + 1) : startRecall())}
-          className={primaryClass}
-        >
-          {intro + 1 < current.length ? 'Từ tiếp' : 'Tự kiểm tra nhóm này'}
-        </button>
+        <div className="flex gap-2">
+          {intro > 0 && (
+            <button type="button" onClick={() => setIntro(intro - 1)} className={`${secondaryClass} flex-1`}>
+              ← Từ trước
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => (intro + 1 < current.length ? setIntro(intro + 1) : setPhase('overview'))}
+            className={`${primaryClass} flex-[2]`}
+          >
+            {intro + 1 < current.length ? 'Từ tiếp' : 'Xem lại cả nhóm'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === 'overview') {
+    return (
+      <div className="flex flex-col gap-3">
+        {progress}
+        <section className="scribble rounded-block bg-pastel-sky p-5">
+          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Xem lại nhóm này</p>
+          <p className="mt-1 text-[14px] opacity-80">Đọc lại một lượt, chạm một dòng để nghe. Sau đó chọn từ đúng, rồi mới gõ.</p>
+          <ul className="mt-3 flex flex-col gap-2">
+            {current.map((w) => (
+              <li key={w.key}>
+                <button
+                  type="button"
+                  onClick={() => speakGerman(full(w))}
+                  className="w-full rounded-[16px] bg-surface px-4 py-3 text-left"
+                >
+                  <span className="block text-[20px] font-semibold leading-tight" lang="de">
+                    {w.article && <ArticleChip article={w.article} />} {w.german}
+                  </span>
+                  <span className="block text-[15px] opacity-80">{w.vietnamese}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => {
+              setIntro(0);
+              setPhase('intro');
+            }}
+            className={`${secondaryClass} flex-1`}
+          >
+            Xem lại thẻ
+          </button>
+          <button type="button" onClick={() => startPhase(current.length > 1 || words.length > 1 ? 'choose' : 'type')} className={`${primaryClass} flex-[2]`}>
+            Luyện nhóm này
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (choice) {
+    const cw = choice.word;
+    return (
+      <div className="flex flex-col gap-3">
+        {progress}
+        <section className="scribble rounded-block bg-pastel-yellow p-5">
+          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+            Chọn từ tiếng Đức{choice.tries > 0 && ' · làm lại'}
+          </p>
+          <p className="mt-1 text-[28px] font-bold leading-tight">{cw.vietnamese}</p>
+          {cw.posLabel && <p className="text-[14px] opacity-80">{cw.posLabel}</p>}
+        </section>
+        <div className="flex flex-col gap-2" role="group" aria-label="Các phương án">
+          {options.map((o) => {
+            const state = !picked ? 'idle' : o.key === cw.key ? 'right' : o.key === picked ? 'wrong' : 'idle';
+            const bg = state === 'right' ? 'bg-pastel-sage' : state === 'wrong' ? 'bg-pastel-pink' : 'bg-surface';
+            return (
+              <button
+                key={o.key}
+                type="button"
+                disabled={picked !== null}
+                onClick={() => pick(o.key)}
+                className={`min-h-14 w-full rounded-[20px] px-4 py-3 text-left text-[20px] font-semibold outline-2 outline-line ${bg}`}
+                lang="de"
+              >
+                {o.article && <ArticleChip article={o.article} />} {o.german}
+              </button>
+            );
+          })}
+        </div>
+        {picked && (
+          <>
+            <p className="px-1 text-[15px]" role="status">
+              {picked === cw.key ? 'Đúng.' : choice.tries + 1 < MAX_TRIES ? 'Chưa đúng. Từ này sẽ được hỏi lại cuối lượt.' : 'Chưa đúng.'}
+            </p>
+            <button ref={nextRef} type="button" onClick={nextChoice} className={primaryClass}>
+              Tiếp
+            </button>
+          </>
+        )}
       </div>
     );
   }
@@ -231,13 +356,31 @@ export function WordsStep({
       {progress}
       <section className="scribble rounded-block bg-pastel-yellow p-5">
         <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
-          Việt → Đức{recall.tries > 0 && ' · làm lại'}
+          Gõ tiếng Đức{recall.tries > 0 && ' · làm lại'}
         </p>
         <p className="mt-1 text-[28px] font-bold leading-tight">{w.vietnamese}</p>
         <p className="text-[14px] opacity-80">
           {w.posLabel}
           {w.article && ' · gõ kèm mạo từ'}
         </p>
+        {hinted ? (
+          <p className="mt-2 font-mono text-[20px] tracking-wide" lang="de" aria-label="Gợi ý chữ đầu">
+            {letterHint(w.german)}
+          </p>
+        ) : (
+          !answered && (
+            <button
+              type="button"
+              onClick={() => {
+                setHinted(true);
+                inputRef.current?.focus({ preventScroll: true });
+              }}
+              className="mt-2 text-[14px] font-semibold underline underline-offset-2"
+            >
+              Gợi ý chữ đầu
+            </button>
+          )
+        )}
       </section>
       {!answered ? (
         <form
@@ -267,6 +410,7 @@ export function WordsStep({
             <button type="button" onClick={() => check(true)} className={`${secondaryClass} flex-1`}>
               Không nhớ
             </button>
+
             <button type="submit" disabled={!input.trim()} className={`${primaryClass} flex-[2]`}>
               Kiểm tra
             </button>

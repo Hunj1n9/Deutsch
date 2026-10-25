@@ -61,7 +61,7 @@ const FLAGS = ['umlaut_fallback', 'eszett_fallback', 'capitalization', 'wrong_ar
 /** Xong lượt gợi nhớ một nhóm từ: nhập mục, ghi lần ôn đầu của thẻ vi_de; sai mạo từ thì ghi sổ lỗi như F3. */
 export async function learnWordsAction(input: {
   lessonId: string;
-  results: { key: string; correct: boolean; flags: string[]; responseMs: number; answer: string }[];
+  results: { key: string; correct: boolean; flags: string[]; responseMs: number; answer: string; usedHint?: boolean }[];
 }): Promise<ActionResponse<{ added: number; reviewed: number }>> {
   const parsed = z
     .object({
@@ -74,6 +74,7 @@ export async function learnWordsAction(input: {
             flags: z.array(z.enum(FLAGS)).max(5),
             responseMs: z.number().int().min(0).max(3_600_000),
             answer: z.string().max(300),
+            usedHint: z.boolean().optional(),
           }),
         )
         .min(1)

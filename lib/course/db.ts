@@ -89,7 +89,7 @@ function stageOf(lesson: Lesson) {
   return stage;
 }
 
-export type RecallResult = { key: string; correct: boolean; flags: AnswerFlag[]; responseMs: number };
+export type RecallResult = { key: string; correct: boolean; flags: AnswerFlag[]; responseMs: number; usedHint?: boolean };
 
 const CARD_COLUMNS =
   'id, kind, due, stability, difficulty, elapsed_days, scheduled_days, learning_steps, reps, lapses, state, last_review';
@@ -148,7 +148,7 @@ export async function learnWords(
           suggested_rating: rating,
           answer_given: '',
           correct: r.correct,
-          flags: [...r.flags, LESSON_FLAG],
+          flags: [...r.flags, ...(r.usedHint ? ['used_hint'] : []), LESSON_FLAG],
           response_ms: Math.min(r.responseMs, 3_600_000),
           state_before: before.state,
           due_before: before.due,

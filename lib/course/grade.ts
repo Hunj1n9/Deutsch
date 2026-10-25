@@ -78,8 +78,8 @@ export function gradeExercise(ex: Exercise, given: string): ExerciseResult {
 }
 
 /** Rating cho lần ôn đầu của thẻ vi_de từ lượt gợi nhớ ở bài học (luật đề xuất của F3, thẻ đang New). */
-export function recallRating(input: { correct: boolean; flags: readonly AnswerFlag[]; responseMs: number }): 1 | 2 | 3 | 4 {
-  return suggestRating({ ...input, usedHint: false, state: 0 });
+export function recallRating(input: { correct: boolean; flags: readonly AnswerFlag[]; responseMs: number; usedHint?: boolean }): 1 | 2 | 3 | 4 {
+  return suggestRating({ ...input, usedHint: input.usedHint ?? false, state: 0 });
 }
 
 /** Thứ tự xáo trộn ổn định theo hạt giống (để test được và không đổi khi render lại). */

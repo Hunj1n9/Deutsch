@@ -76,6 +76,7 @@ describe('recallRating (lần ôn đầu của thẻ vi_de)', () => {
     expect(recallRating({ correct: true, flags: ['umlaut_fallback'], responseMs: 2000 })).toBe(2);
     expect(recallRating({ correct: true, flags: [], responseMs: 20_000 })).toBe(2);
     expect(recallRating({ correct: true, flags: [], responseMs: 2000 })).toBe(3);
+    expect(recallRating({ correct: true, flags: [], responseMs: 2000, usedHint: true })).toBe(2);
   });
 });
 
