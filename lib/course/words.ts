@@ -45,3 +45,53 @@ export function letterHint(german: string): string {
     })
     .join('   ');
 }
+
+/** Các kiểu luyện giữa xem lại nhóm và lượt gõ, xếp từ dễ đến khó. */
+export type DrillKind = 'listen' | 'meaning' | 'article' | 'choose' | 'spell';
+export type DrillTask = { kind: DrillKind; key: string };
+
+type DrillWord = { key: string; german: string; article: string | null };
+
+const MAX_SPELL = 12;
+
+/** Xếp chữ cái chỉ hợp với từ ngắn (đếm ký tự không phải khoảng trắng). */
+export function spellable(german: string): boolean {
+  const n = german.replace(/\s/g, '').length;
+  return n >= 2 && n <= MAX_SPELL;
+}
+
+/** Các mảnh chữ để xếp: mọi ký tự không phải khoảng trắng, xáo theo `seed`, tránh trùng thứ tự đúng nếu được. */
+export function spellTiles(german: string, seed: number): string[] {
+  const chars = [...german.replace(/\s/g, '')];
+  for (let k = 0; k < 10; k++) {
+    const out = shuffled(chars, seed + k);
+    if (out.join('') !== chars.join('')) return out;
+  }
+  return chars;
+}
+
+/** Ghép các chữ đã chọn vào khuôn của từ (giữ khoảng trắng), chỗ chưa có thành `_`. */
+export function spellPreview(german: string, picked: readonly string[]): string {
+  let i = 0;
+  return [...german].map((ch) => (/\s/.test(ch) ? ' ' : (picked[i++] ?? '_'))).join('');
+}
+
+/** Chữ cần chạm tiếp theo (null khi đã xếp xong). */
+export function spellNext(german: string, picked: readonly string[]): string | null {
+  return [...german.replace(/\s/g, '')][picked.length] ?? null;
+}
+
+/**
+ * Lượt luyện của một nhóm: (1) nhận ra nghĩa (nghe nếu trình duyệt đọc được, không thì nhìn chữ),
+ * (2) chọn mạo từ (chỉ danh từ), (3) Việt → chọn từ Đức, (4) xếp chữ cái (từ ngắn).
+ * Mỗi vòng xáo thứ tự riêng để các từ xen nhau.
+ */
+export function buildDrill(group: readonly DrillWord[], seed: number, { listen }: { listen: boolean }): DrillTask[] {
+  const rounds: DrillTask[][] = [
+    group.map((w) => ({ kind: listen ? 'listen' : 'meaning', key: w.key })),
+    group.filter((w) => w.article).map((w) => ({ kind: 'article', key: w.key })),
+    group.map((w) => ({ kind: 'choose', key: w.key })),
+    group.filter((w) => spellable(w.german)).map((w) => ({ kind: 'spell', key: w.key })),
+  ];
+  return rounds.flatMap((round, i) => shuffled(round, seed + i));
+}

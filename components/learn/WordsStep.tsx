@@ -10,9 +10,10 @@ import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
 import { reportTarget } from '@/lib/course/report';
-import { letterHint, wordChoices } from '@/lib/course/words';
+import { buildDrill, letterHint, type DrillTask } from '@/lib/course/words';
 import { ContentReport } from './ContentReport';
 import { answerInputClass, FLAG_VI } from './ExerciseCard';
+import { ChoiceTask, full, MatchBoard, SpellTask } from './WordDrills';
 
 /** Một mục từ mới, đã chuẩn bị ở server. */
 export type WordView = {
@@ -30,18 +31,15 @@ export type WordView = {
 export const GROUP_SIZE = 5;
 const MAX_TRIES = 3;
 
-function full(w: WordView) {
-  return w.article ? `${w.article} ${w.german}` : w.german;
-}
-
 type Result = { key: string; correct: boolean; flags: AnswerFlag[]; responseMs: number; answer: string; usedHint: boolean };
-type Phase = 'intro' | 'overview' | 'choose' | 'type';
+type Phase = 'intro' | 'overview' | 'match' | 'drill' | 'type';
 
-const PHASE_VI: Record<Phase, string> = { intro: '', overview: 'xem lại', choose: 'chọn từ', type: 'gõ từ' };
+const PHASE_VI: Record<Phase, string> = { intro: '', overview: 'xem lại', match: 'ghép cặp', drill: 'luyện', type: 'gõ từ' };
 
 /**
- * Bước Từ mới (SPEC F11): nhóm 5 mục, thẻ giới thiệu từng mục, xem lại cả nhóm, chọn từ đúng (Việt → Đức),
- * rồi mới gõ (Việt → Đức, có gợi ý chữ đầu). Xong mỗi nhóm thì lưu: nhập mục vào kho, lần gõ đầu là lần ôn đầu của thẻ vi_de.
+ * Bước Từ mới (SPEC F11): nhóm 5 mục, thẻ giới thiệu từng mục, xem lại cả nhóm, ghép cặp, lượt luyện nhiều kiểu
+ * (nghe chọn nghĩa, chọn mạo từ, chọn từ, xếp chữ), rồi mới gõ (Việt → Đức, có gợi ý chữ đầu).
+ * Xong mỗi nhóm thì lưu: nhập mục vào kho, lần gõ đầu là lần ôn đầu của thẻ vi_de.
  */
 export function WordsStep({
   lessonId,
@@ -69,7 +67,9 @@ export function WordsStep({
   const [input, setInput] = useState('');
   const [hinted, setHinted] = useState(false);
   const [answered, setAnswered] = useState<{ result: CheckResult; given: string } | null>(null);
-  const [picked, setPicked] = useState<string | null>(null);
+  const [drill, setDrill] = useState<{ task: DrillTask; tries: number }[]>([]);
+  const [drillDone, setDrillDone] = useState(0);
+  const drillCorrect = useRef(false);
   const [pending, setPending] = useState(0);
   const results = useRef(new Map<string, Result>());
   const shownAt = useRef(0);
@@ -78,12 +78,8 @@ export function WordsStep({
 
   const current = useMemo(() => groups[group] ?? [], [groups, group]);
   const introWord = phase === 'intro' ? current[intro] : null;
-  const choice = phase === 'choose' ? queue[0] : null;
+  const task = phase === 'drill' ? drill[0] : null;
   const recall = phase === 'type' ? queue[0] : null;
-  const options = useMemo(
-    () => (choice ? wordChoices(choice.word, current, words, hashSeed(`${lessonId}:${choice.word.key}:${choice.tries}`)) : []),
-    [choice, current, words, lessonId],
-  );
 
   useEffect(() => {
     if (introWord) speakGerman(full(introWord));
@@ -96,8 +92,8 @@ export function WordsStep({
   }, [recall]);
 
   useEffect(() => {
-    if (answered || picked) nextRef.current?.focus({ preventScroll: true });
-  }, [answered, picked]);
+    if (answered) nextRef.current?.focus({ preventScroll: true });
+  }, [answered]);
 
   if (words.length === 0) {
     return (
@@ -110,29 +106,37 @@ export function WordsStep({
     );
   }
 
-  function startPhase(next: 'choose' | 'type') {
-    setQueue(shuffled(current, hashSeed(`${lessonId}:${group}:${next}`)).map((word) => ({ word, tries: 0 })));
-    setPhase(next);
+  function startType() {
+    setQueue(shuffled(current, hashSeed(`${lessonId}:${group}:type`)).map((word) => ({ word, tries: 0 })));
+    setPhase('type');
     setInput('');
     setHinted(false);
     setAnswered(null);
-    setPicked(null);
   }
 
-  /** Bậc chọn từ chỉ để luyện: không tính điểm, không ghi lần ôn. Sai thì hỏi lại cuối lượt. */
-  function pick(key: string) {
-    if (!choice || picked) return;
-    setPicked(key);
-    speakGerman(full(choice.word));
+  function startDrill() {
+    // Câu chọn nghĩa/chọn từ cần ít nhất 2 phương án.
+    const tasks = buildDrill(current, hashSeed(`${lessonId}:${group}:drill`), { listen: canSpeak() }).filter(
+      (t) => words.length > 1 || t.kind === 'article' || t.kind === 'spell',
+    );
+    if (tasks.length === 0) return startType();
+    setDrill(tasks.map((t) => ({ task: t, tries: 0 })));
+    setDrillDone(0);
+    setPhase('drill');
   }
 
-  function nextChoice() {
-    if (!choice || !picked) return;
-    const rest = queue.slice(1);
-    if (picked !== choice.word.key && choice.tries + 1 < MAX_TRIES) rest.push({ word: choice.word, tries: choice.tries + 1 });
-    setPicked(null);
-    if (rest.length > 0) setQueue(rest);
-    else startPhase('type');
+  /** Lượt luyện chỉ để luyện: không tính điểm, không ghi lần ôn. Sai thì hỏi lại cuối lượt. */
+  function nextDrill() {
+    if (!task) return;
+    const rest = drill.slice(1);
+    if (!drillCorrect.current && task.tries + 1 < MAX_TRIES) rest.push({ task: task.task, tries: task.tries + 1 });
+    drillCorrect.current = false;
+    setDrillDone((n) => n + 1);
+    if (rest.length > 0) setDrill(rest);
+    else {
+      setDrill([]);
+      startType();
+    }
   }
 
   function check(giveUp = false) {
@@ -195,7 +199,8 @@ export function WordsStep({
 
   const progress = (
     <p className="px-1 text-[13px] font-semibold text-muted">
-      Nhóm {group + 1}/{groups.length} · {phase === 'intro' ? `từ ${intro + 1}/${current.length}` : PHASE_VI[phase]}
+      Nhóm {group + 1}/{groups.length} ·{' '}
+      {phase === 'intro' ? `từ ${intro + 1}/${current.length}` : phase === 'drill' ? `luyện ${drillDone + 1}/${drillDone + drill.length}` : PHASE_VI[phase]}
       {pending > 0 && ' · đang lưu…'}
     </p>
   );
@@ -268,7 +273,7 @@ export function WordsStep({
         {progress}
         <section className="scribble rounded-block bg-pastel-sky p-5">
           <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Xem lại nhóm này</p>
-          <p className="mt-1 text-[14px] opacity-80">Đọc lại một lượt, chạm một dòng để nghe. Sau đó chọn từ đúng, rồi mới gõ.</p>
+          <p className="mt-1 text-[14px] opacity-80">Đọc lại một lượt, chạm một dòng để nghe. Sau đó luyện vài kiểu, rồi mới gõ.</p>
           <ul className="mt-3 flex flex-col gap-2">
             {current.map((w) => (
               <li key={w.key}>
@@ -297,7 +302,7 @@ export function WordsStep({
           >
             Xem lại thẻ
           </button>
-          <button type="button" onClick={() => startPhase(current.length > 1 || words.length > 1 ? 'choose' : 'type')} className={`${primaryClass} flex-[2]`}>
+          <button type="button" onClick={() => (current.length > 1 ? setPhase('match') : startDrill())} className={`${primaryClass} flex-[2]`}>
             Luyện nhóm này
           </button>
         </div>
@@ -305,46 +310,43 @@ export function WordsStep({
     );
   }
 
-  if (choice) {
-    const cw = choice.word;
+  const skip = (
+    <button type="button" onClick={startType} className="self-center px-2 py-1 text-[14px] font-semibold text-muted underline underline-offset-2">
+      Đã nhớ nhóm này, sang gõ luôn
+    </button>
+  );
+
+  if (phase === 'match') {
     return (
       <div className="flex flex-col gap-3">
         {progress}
-        <section className="scribble rounded-block bg-pastel-yellow p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
-            Chọn từ tiếng Đức{choice.tries > 0 && ' · làm lại'}
-          </p>
-          <p className="mt-1 text-[28px] font-bold leading-tight">{cw.vietnamese}</p>
-          {cw.posLabel && <p className="text-[14px] opacity-80">{cw.posLabel}</p>}
-        </section>
-        <div className="flex flex-col gap-2" role="group" aria-label="Các phương án">
-          {options.map((o) => {
-            const state = !picked ? 'idle' : o.key === cw.key ? 'right' : o.key === picked ? 'wrong' : 'idle';
-            const bg = state === 'right' ? 'bg-pastel-sage' : state === 'wrong' ? 'bg-pastel-pink' : 'bg-surface';
-            return (
-              <button
-                key={o.key}
-                type="button"
-                disabled={picked !== null}
-                onClick={() => pick(o.key)}
-                className={`min-h-14 w-full rounded-[20px] px-4 py-3 text-left text-[20px] font-semibold outline-2 outline-line ${bg}`}
-                lang="de"
-              >
-                {o.article && <ArticleChip article={o.article} />} {o.german}
-              </button>
-            );
-          })}
-        </div>
-        {picked && (
-          <>
-            <p className="px-1 text-[15px]" role="status">
-              {picked === cw.key ? 'Đúng.' : choice.tries + 1 < MAX_TRIES ? 'Chưa đúng. Từ này sẽ được hỏi lại cuối lượt.' : 'Chưa đúng.'}
-            </p>
-            <button ref={nextRef} type="button" onClick={nextChoice} className={primaryClass}>
-              Tiếp
-            </button>
-          </>
+        <MatchBoard words={current} seed={hashSeed(`${lessonId}:${group}:match`)} onDone={startDrill} />
+        {skip}
+      </div>
+    );
+  }
+
+  if (task) {
+    const word = current.find((x) => x.key === task.task.key)!;
+    const props = {
+      word,
+      lessonId,
+      tries: task.tries,
+      retry: task.tries + 1 < MAX_TRIES,
+      onAnswer: (correct: boolean) => {
+        drillCorrect.current = correct;
+      },
+      onNext: nextDrill,
+    };
+    return (
+      <div className="flex flex-col gap-3">
+        {progress}
+        {task.task.kind === 'spell' ? (
+          <SpellTask key={drillDone} {...props} />
+        ) : (
+          <ChoiceTask key={drillDone} kind={task.task.kind} group={current} lesson={words} {...props} />
         )}
+        {skip}
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { letterHint, wordChoices } from '@/lib/course/words';
+import { buildDrill, letterHint, spellable, spellNext, spellPreview, spellTiles, wordChoices } from '@/lib/course/words';
 
 const w = (key: string, vietnamese = key) => ({ key, vietnamese });
 
@@ -40,5 +40,44 @@ describe('letterHint', () => {
     expect(letterHint('E-Mail')).toBe('E - _ _ _ _');
     expect(letterHint('(sich) waschen')).toBe('( s _ _ _ )   w _ _ _ _ _ _');
     expect(letterHint('Äpfel')).toBe('Ä _ _ _ _');
+  });
+});
+
+describe('buildDrill', () => {
+  const group = [
+    { key: 'der Tisch', german: 'Tisch', article: 'der' },
+    { key: 'gehen', german: 'gehen', article: null },
+    { key: 'sich freuen auf', german: 'sich freuen auf etwas', article: null },
+  ];
+
+  it('đi từ nhận ra nghĩa → mạo từ → chọn từ → xếp chữ; mạo từ chỉ cho danh từ, xếp chữ chỉ cho từ ngắn', () => {
+    const out = buildDrill(group, 5, { listen: true });
+    expect(out.map((t) => t.kind)).toEqual(['listen', 'listen', 'listen', 'article', 'choose', 'choose', 'choose', 'spell', 'spell']);
+    expect(out.filter((t) => t.kind === 'article').map((t) => t.key)).toEqual(['der Tisch']);
+    expect(out.filter((t) => t.kind === 'spell').map((t) => t.key).sort()).toEqual(['der Tisch', 'gehen']);
+  });
+
+  it('không nghe được thì nhận nghĩa bằng chữ', () => {
+    expect(buildDrill(group, 5, { listen: false }).filter((t) => t.kind === 'meaning')).toHaveLength(3);
+  });
+});
+
+describe('xếp chữ cái', () => {
+  it('mảnh chữ là các ký tự của từ, đã xáo', () => {
+    const tiles = spellTiles('Tisch', 3);
+    expect([...tiles].sort()).toEqual([...'Tisch'].sort());
+    expect(tiles.join('')).not.toBe('Tisch');
+  });
+
+  it('khuôn giữ khoảng trắng; chữ tiếp theo bỏ qua khoảng trắng', () => {
+    expect(spellPreview('zu Hause', ['z', 'u', 'H'])).toBe('zu H____');
+    expect(spellNext('zu Hause', ['z', 'u'])).toBe('H');
+    expect(spellNext('zu Hause', [...'zuHause'])).toBeNull();
+  });
+
+  it('chỉ xếp từ 2–12 ký tự', () => {
+    expect(spellable('Tisch')).toBe(true);
+    expect(spellable('a')).toBe(false);
+    expect(spellable('Krankenversicherung')).toBe(false);
   });
 });
