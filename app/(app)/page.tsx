@@ -74,11 +74,14 @@ async function ReviewBlocks({ session, settings }: { session: Session; settings:
           <Icon name="arrow" />
         </Link>
       </section>
-      <Link href="/errors" className="scribble mb-3 block rounded-block bg-pastel-pink p-5">
-        <p className={blockLabel}>Sổ lỗi</p>
-        <p className="mt-1 text-[15px]">
-          <span className="text-[22px] font-bold">{counts.errorFixDue}</span> thẻ sửa lỗi đến hạn (nằm trong phiên ôn)
-        </p>
+      {/* Sổ lỗi (F7 mục 2): thẻ sửa lỗi đã nằm trong phiên ôn, nên chỉ là một hàng gọn để nhấn mạnh, không chiếm cả khối. */}
+      <Link href="/errors" className="mb-3 flex min-h-14 items-center gap-3 rounded-[20px] bg-pastel-pink px-5 py-3">
+        <span className="text-[22px] font-bold leading-none">{counts.errorFixDue}</span>
+        <span className="min-w-0 flex-1 text-[14px] leading-snug">
+          <b className="block text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Sổ lỗi</b>
+          thẻ sửa lỗi đến hạn, nằm trong phiên ôn
+        </span>
+        <Icon name="back" className="rotate-180 opacity-60" />
       </Link>
     </>
   );

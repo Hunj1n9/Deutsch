@@ -9,6 +9,7 @@ import { LESSONS_BY_STAGE, STAGE_LESSONS } from '@/data/lessons';
 import { roadmapStage, vocabEntries } from '@/lib/course/catalog';
 import { drawStageTest, PASS_RATIO, randomSeed, testView } from '@/lib/course/stage-test';
 import { getPageSession } from '@/lib/supabase/session';
+import { learnHref } from '@/lib/course/position';
 
 export const metadata: Metadata = { title: 'Kiểm tra chặng' };
 
@@ -39,7 +40,7 @@ async function TestContent({ params }: { params: PageProps<'/learn/test/[stageId
   return (
     <>
       <header className="mb-4 mt-2 flex items-center gap-3">
-        <Link href="/learn" aria-label="Thoát kiểm tra" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
+        <Link href={learnHref(stageId)} aria-label="Thoát kiểm tra" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
           <Icon name="x" />
         </Link>
         <div className="min-w-0">

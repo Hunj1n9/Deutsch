@@ -10,6 +10,7 @@ import { WritingChecker } from '../write/WritingChecker';
 import { DialogueStep } from './DialogueStep';
 import { GrammarStep } from './GrammarStep';
 import { WordsStep, type WordView } from './WordsStep';
+import { learnHref } from '@/lib/course/position';
 
 const REDO_BELOW = 0.7;
 
@@ -69,7 +70,7 @@ export function LessonPlayer({
   return (
     <>
       <header className="mb-3 mt-2 flex items-center gap-3">
-        <Link href="/learn" aria-label="Thoát bài (đã lưu bước đang làm)" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
+        <Link href={learnHref(lesson.id)} aria-label="Thoát bài (đã lưu bước đang làm)" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
           <Icon name="x" />
         </Link>
         <div className="min-w-0">

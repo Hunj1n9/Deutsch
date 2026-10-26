@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: 'Thêm nội dung' };
 export default function Page({ searchParams }: PageProps<'/add'>) {
   return (
     <>
-      <PageHeader title="Thêm nội dung" />
+      <PageHeader title="Thêm nội dung" back={{ href: '/', label: 'Về Hôm nay' }} />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <AddContent searchParams={searchParams} />
       </Suspense>

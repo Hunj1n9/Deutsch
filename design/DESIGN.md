@@ -44,7 +44,9 @@ Chế độ tối theo hệ thống (`prefers-color-scheme`).
 - Không đổ bóng; tách lớp bằng màu nền.
 
 ## Thành phần
-- **Thanh điều hướng dưới:** viên thuốc trắng nổi, 5 nút tròn 52px: Hôm nay · Ôn · Thêm · Viết · Gia sư. Nút đang chọn nền đen. Ẩn trong phiên ôn để tập trung.
+- **Thanh điều hướng dưới:** khối trắng bo 26px nổi, rộng gần hết màn, 5 ô biểu tượng + nhãn chữ 11px: Hôm nay · Học · Ôn · Viết · Gia sư. Ô đang chọn nền đen. Ẩn trong phiên ôn, bài học và kiểm tra để tập trung.
+- **Tiêu đề trang:** trang vào từ menu (Thêm, Danh sách mục, Sổ lỗi, Tiến độ, Cài đặt, Lịch sử bài viết) có nút quay lại bên trái; nút menu luôn ở bên phải.
+- **Danh sách dài:** chia bằng tab (vd. trang Học chia theo cấp A1–B2) và thu gọn từng mục, chỉ mở sẵn mục đang làm.
 - **Tab dạng viên thuốc:** đang chọn nền đen chữ trắng, còn lại nền trắng chữ xám.
 - **Hàng phím umlaut:** 7 phím `ä ö ü ß Ä Ö Ü` cao 40px ngay trên mọi ô gõ tiếng Đức; chạm chèn tại con trỏ, không làm mất focus.
 - **Chip mạo từ:** chữ màu mạo từ + nền cùng màu độ mờ 12%.

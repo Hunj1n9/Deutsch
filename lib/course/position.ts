@@ -75,3 +75,12 @@ export function stepLabel(state: LessonState | null | undefined): string | null 
 export function courseHref(next: CourseNext): string {
   return next.kind === 'lesson' ? `/learn/${next.lesson.id}` : `/learn/test/${next.stage.stage_id}`;
 }
+
+/**
+ * Trang Học mở đúng cấp và cuộn tới chặng (vd. `a1-03` hoặc mã bài `a1-03-2`), để thoát bài hay kiểm tra
+ * thì quay về chỗ vừa học chứ không về cấp của bài kế tiếp.
+ */
+export function learnHref(id: string): string {
+  const stageId = id.slice(0, 5).toLowerCase();
+  return `/learn?level=${stageId.slice(0, 2).toUpperCase()}#${stageId}`;
+}

@@ -6,7 +6,8 @@ import { addManualErrorAction, type ManualErrorInput } from '@/app/(app)/errors/
 import { CATEGORY_VI, ERROR_CATEGORIES, normalizeRuleKey } from '@/lib/errors';
 import { GermanField } from '../GermanField';
 import { SOURCE_KIND_VI } from '../SourcePicker';
-import { errorBoxClass, fieldClass, labelClass, noticeBoxClass, primaryClass, textareaClass } from '../ui';
+import { Icon } from '../Icon';
+import { errorBoxClass, fieldClass, labelClass, noticeBoxClass, primaryClass, secondaryClass, textareaClass } from '../ui';
 
 const EMPTY: ManualErrorInput = {
   text_wrong: '',
@@ -42,7 +43,8 @@ export function ManualErrorForm() {
 
   if (!open) {
     return (
-      <button type="button" onClick={() => setOpen(true)} className={`${primaryClass} mb-4`}>
+      <button type="button" onClick={() => setOpen(true)} className={`${secondaryClass} mb-4 w-full`}>
+        <Icon name="plus" />
         Thêm lỗi tay
       </button>
     );

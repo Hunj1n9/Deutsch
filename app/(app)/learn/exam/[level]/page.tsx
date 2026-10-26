@@ -41,7 +41,7 @@ async function ExamContent({ params }: { params: PageProps<'/learn/exam/[level]'
   return (
     <>
       <header className="mb-4 mt-2 flex items-center gap-3">
-        <Link href="/learn" aria-label="Thoát thi thử" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
+        <Link href={`/learn?level=${level}`} aria-label="Thoát thi thử" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
           <Icon name="x" />
         </Link>
         <div className="min-w-0">
