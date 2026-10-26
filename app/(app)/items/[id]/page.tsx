@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { Icon } from '@/components/Icon';
+import { PageHeader } from '@/components/PageHeader';
 import { ItemEditForm, type EditableCard } from '@/components/items/ItemEditForm';
 import { ADDABLE_TYPES, isArticle, posFromTags, type AddableType, type ItemDraft, type Level } from '@/lib/items/types';
 import { uuidSchema } from '@/lib/items/input';
@@ -14,12 +13,7 @@ export const metadata: Metadata = { title: 'Sửa mục' };
 export default function Page({ params }: PageProps<'/items/[id]'>) {
   return (
     <>
-      <header className="mb-5 mt-2 flex items-center gap-3">
-        <Link href="/items" aria-label="Quay lại danh sách" className="grid size-11 place-items-center rounded-full bg-surface">
-          <Icon name="back" />
-        </Link>
-        <h1 className="text-[28px] font-bold leading-tight tracking-[-0.02em]">Sửa mục</h1>
-      </header>
+      <PageHeader title="Sửa mục" back={{ href: '/items', label: 'Quay lại danh sách' }} />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <EditContent params={params} />
       </Suspense>

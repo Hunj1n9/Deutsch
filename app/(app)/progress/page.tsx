@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: 'Tiến độ' };
 export default function Page() {
   return (
     <>
-      <PageHeader title="Tiến độ" />
+      <PageHeader title="Tiến độ" back={{ href: '/', label: 'Về Hôm nay' }} />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tính…</p>}>
         <Progress />
       </Suspense>

@@ -11,6 +11,7 @@ import { errorBoxClass, noticeBoxClass, primaryClass, secondaryClass } from '../
 import { reportTarget } from '@/lib/course/report';
 import { ContentReport } from './ContentReport';
 import { AnswerInput, answerInputClass, ExercisePrompt } from './ExerciseCard';
+import { learnHref } from '@/lib/course/position';
 
 export type Reading = { title_de: string; text_de: string; gloss: Record<string, string> };
 
@@ -192,7 +193,7 @@ export function StageTest({
           <a href={mode.kind === 'stage' ? `/learn/test/${mode.stageId}` : `/learn/exam/${mode.level}`} className={`${secondaryClass} flex-1`}>
             Làm đề khác
           </a>
-          <Link href="/learn" className={`${secondaryClass} flex-1`}>
+          <Link href={mode.kind === 'stage' ? learnHref(mode.stageId) : `/learn?level=${mode.level}`} className={`${secondaryClass} flex-1`}>
             Về trang Học
           </Link>
         </div>

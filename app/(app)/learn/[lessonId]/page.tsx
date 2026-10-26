@@ -10,7 +10,7 @@ import { primaryClass, secondaryClass } from '@/components/ui';
 import { STAGE_LESSONS } from '@/data/lessons';
 import { findLesson, grammarPoint, lessonDrafts } from '@/lib/course/catalog';
 import { loadCourseState } from '@/lib/course/db';
-import { unfinishedBefore } from '@/lib/course/position';
+import { learnHref, unfinishedBefore } from '@/lib/course/position';
 import { SUMMARY_STEP } from '@/lib/course/types';
 import { stripCloze } from '@/lib/items/cloze';
 import { POS_LABEL_VI, isArticle } from '@/lib/items/types';
@@ -50,7 +50,7 @@ async function LessonContent({
     return (
       <div className="mt-4 flex flex-col gap-3">
         <header className="flex items-center gap-3">
-          <Link href="/learn" aria-label="Quay lại trang Học" className="grid size-11 place-items-center rounded-full bg-surface">
+          <Link href={learnHref(lesson.id)} aria-label="Quay lại trang Học" className="grid size-11 place-items-center rounded-full bg-surface">
             <Icon name="back" />
           </Link>
           <h1 className="text-[22px] font-bold">{lesson.title_vi}</h1>

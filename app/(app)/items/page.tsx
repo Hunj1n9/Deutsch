@@ -15,7 +15,7 @@ const PAGE_SIZE = 50;
 export default function Page({ searchParams }: PageProps<'/items'>) {
   return (
     <>
-      <PageHeader title="Danh sách mục" />
+      <PageHeader title="Danh sách mục" back={{ href: '/', label: 'Về Hôm nay' }} />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <ItemsContent searchParams={searchParams} />
       </Suspense>

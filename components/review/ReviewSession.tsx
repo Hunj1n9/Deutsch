@@ -458,8 +458,11 @@ function SessionEnd({
       {empty ? (
         <>
           <p className="text-[22px] font-bold">Không còn thẻ đến hạn</p>
-          <p className="text-[15px] opacity-80">Thêm mục mới hoặc quay lại sau.</p>
-          <Link href="/add" className={primaryClass}>
+          <p className="text-[15px] opacity-80">Học bài mới để có thêm từ, hoặc quay lại sau.</p>
+          <Link href="/learn" className={primaryClass}>
+            Học bài mới
+          </Link>
+          <Link href="/add" className={secondaryClass}>
             Thêm mục
           </Link>
         </>

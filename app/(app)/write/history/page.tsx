@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: 'Lịch sử bài viết' };
 export default function Page() {
   return (
     <>
-      <PageHeader title="Lịch sử bài viết" />
+      <PageHeader title="Lịch sử bài viết" back={{ href: '/write', label: 'Về Viết' }} />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <History />
       </Suspense>

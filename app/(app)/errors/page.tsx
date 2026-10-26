@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: 'Sổ lỗi' };
 export default function Page({ searchParams }: PageProps<'/errors'>) {
   return (
     <>
-      <PageHeader title="Sổ lỗi" />
+      <PageHeader title="Sổ lỗi" back={{ href: '/', label: 'Về Hôm nay' }} />
       <ManualErrorForm />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <ErrorList searchParams={searchParams} />
@@ -71,10 +71,6 @@ async function ErrorList({ searchParams }: { searchParams: PageProps<'/errors'>[
 
   return (
     <>
-      <div className="mb-3">
-        <WeeklyBars title="Số lỗi đang mở (8 tuần)" labels={weeks.map((w) => `${w.slice(8)}/${w.slice(5, 7)}`)} values={counts} />
-      </div>
-
       <nav className="-mx-5 mb-2 flex gap-2 overflow-x-auto px-5 pb-1" aria-label="Lọc theo trạng thái">
         {(['', 'open', 'resolved'] as const).map((s) => (
           <Link key={s || 'all'} href={filterHref(current, 'status', s)} className={chip(status === s)}>
@@ -130,6 +126,12 @@ async function ErrorList({ searchParams }: { searchParams: PageProps<'/errors'>[
             );
           })}
         </ul>
+      )}
+
+      {all.length > 0 && (
+        <div className="mt-3">
+          <WeeklyBars title="Số lỗi đang mở (8 tuần)" labels={weeks.map((w) => `${w.slice(8)}/${w.slice(5, 7)}`)} values={counts} />
+        </div>
       )}
     </>
   );

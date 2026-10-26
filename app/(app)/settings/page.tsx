@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: 'Cài đặt' };
 export default function Page() {
   return (
     <>
-      <PageHeader title="Cài đặt" />
+      <PageHeader title="Cài đặt" back={{ href: '/', label: 'Về Hôm nay' }} />
       <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang tải…</p>}>
         <Settings />
       </Suspense>

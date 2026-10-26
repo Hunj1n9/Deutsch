@@ -4,7 +4,7 @@ import { STAGES } from '@/data/roadmap';
 import { packDrafts, vocabEntries } from '@/lib/course/catalog';
 import { choose, defineStage, fill, listen, mc, order, tf, transform, translate } from '@/lib/course/define';
 import { fullSentence, gradeExercise, recallRating, shuffledChunks } from '@/lib/course/grade';
-import { coursePosition, lessonDone, stageStatus, unfinishedBefore, type LessonState } from '@/lib/course/position';
+import { coursePosition, learnHref, lessonDone, stageStatus, unfinishedBefore, type LessonState } from '@/lib/course/position';
 import {
   drawStageTest,
   findTestQuestion,
@@ -222,5 +222,16 @@ describe('dữ liệu bài học (TCHT F11)', () => {
     for (const needle of ['không có trong gói', 'rule_key sai', 'cần đúng một {…}', 'không nằm trong lựa chọn', 'chép chính tả', 'chưa học', 'kho kiểm tra', 'cần 3 điểm']) {
       expect(text).toContain(needle);
     }
+  });
+});
+
+describe('learnHref', () => {
+  it('mở đúng cấp và chặng từ mã chặng hoặc mã bài', () => {
+    expect(learnHref('a1-03')).toBe('/learn?level=A1#a1-03');
+    expect(learnHref('b2-11-4')).toBe('/learn?level=B2#b2-11');
+  });
+
+  it('mã chặng nào cũng thuộc một cấp có tab trên trang Học', () => {
+    for (const s of STAGES) expect(learnHref(s.id)).toBe(`/learn?level=${s.level}#${s.id}`);
   });
 });
