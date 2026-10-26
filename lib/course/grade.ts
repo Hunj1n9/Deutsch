@@ -44,7 +44,7 @@ export function expectedAnswer(ex: Exercise): string {
 
 /** Bỏ dấu câu (giữ chữ, số, dấu nháy trong từ như geht's). */
 export function stripPunctuation(text: string): string {
-  return text.replace(/[.,!?;:…–—"„“”«»()]/g, ' ').replace(/s+/g, ' ').trim();
+  return text.replace(/[.,!?;:…–—"„“”«»()]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 /** So câu ghép từ mảnh: bỏ khoảng trắng thừa và dấu câu cuối, phân biệt hoa thường. */

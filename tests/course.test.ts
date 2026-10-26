@@ -64,6 +64,12 @@ describe('gradeExercise', () => {
     expect(gradeExercise(e, 'Freut mich, Ana').correct).toBe(false);
   });
 
+  it('listen: phân biệt das với dass', () => {
+    const e = ex(listen('Ich weiß, dass er kommt.'));
+    expect(gradeExercise(e, 'Ich weiß, das er kommt.').correct).toBe(false);
+    expect(gradeExercise(e, 'Ich weiß dass er kommt').correct).toBe(true);
+  });
+
   it('xáo mảnh câu không trùng thứ tự đúng', () => {
     const chunks = ['Wo', 'wohnst', 'du?'];
     for (let seed = 1; seed < 50; seed++) expect(shuffledChunks(chunks, seed)).not.toEqual(chunks);
