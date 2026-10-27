@@ -66,7 +66,7 @@ export function ReminderPanel({ initial, vapidKey }: { initial: Initial; vapidKe
     setMessage(null);
     startTransition(async () => {
       if (!vapidKey) {
-        setMessage({ ok: false, text: 'Server chưa có khóa VAPID (xem docs/nhac-hoc.md).' });
+        setMessage({ ok: false, text: 'Server chưa có khóa VAPID: thêm NEXT_PUBLIC_VAPID_PUBLIC_KEY và VAPID_PRIVATE_KEY trên Vercel rồi Redeploy (xem docs/nhac-hoc.md).' });
         return;
       }
       const permission = await Notification.requestPermission();

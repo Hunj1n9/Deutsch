@@ -8,6 +8,14 @@ import { getSession, SESSION_EXPIRED_VI } from '@/lib/supabase/session';
 
 export type SettingsResponse = { ok: true } | { ok: false; error: string };
 
+/** CSDL chưa có cột/bảng mới (chưa chạy migration) thì nói rõ, thay vì báo lỗi chung. */
+function dbError(error: { code?: string; message?: string }, fallback: string): string {
+  console.error('[settings]', error.code, error.message);
+  return ['PGRST204', 'PGRST205', '42703', '42P01'].includes(error.code ?? '')
+    ? 'CSDL chưa được cập nhật cho bản mới: chạy `npx supabase db push` (xem docs/nhac-hoc.md) rồi thử lại.'
+    : fallback;
+}
+
 const settingsSchema = z.object({
   current_level: z.enum(LEVELS),
   current_source_id: z.uuid().nullable(),
@@ -32,7 +40,7 @@ export async function saveSettingsAction(input: SettingsInput): Promise<Settings
   const { error } = await session.supabase
     .from('settings')
     .upsert({ user_id: session.userId, ...parsed.data, next_exam_name: parsed.data.next_exam_name || null });
-  if (error) return { ok: false, error: 'Không lưu được cài đặt.' };
+  if (error) return { ok: false, error: dbError(error, 'Không lưu được cài đặt.') };
   return { ok: true };
 }
 
@@ -97,7 +105,7 @@ export async function saveReminderAction(input: z.input<typeof reminderSchema>):
   const session = await getSession();
   if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
   const { error } = await session.supabase.from('settings').upsert({ user_id: session.userId, ...parsed.data });
-  return error ? { ok: false, error: 'Không lưu được giờ nhắc.' } : { ok: true };
+  return error ? { ok: false, error: dbError(error, 'Không lưu được giờ nhắc.') } : { ok: true };
 }
 
 const subscriptionSchema = z.object({
@@ -115,7 +123,7 @@ export async function savePushSubscriptionAction(input: z.input<typeof subscript
   const { error } = await session.supabase
     .from('push_subscriptions')
     .upsert({ user_id: session.userId, endpoint, p256dh: keys.p256dh, auth: keys.auth }, { onConflict: 'endpoint' });
-  return error ? { ok: false, error: 'Không lưu được đăng ký thông báo.' } : { ok: true };
+  return error ? { ok: false, error: dbError(error, 'Không lưu được đăng ký thông báo.') } : { ok: true };
 }
 
 export async function removePushSubscriptionAction(endpoint: string): Promise<SettingsResponse> {
@@ -129,7 +137,7 @@ export async function removePushSubscriptionAction(endpoint: string): Promise<Se
 export async function testPushAction(): Promise<SettingsResponse> {
   const session = await getSession();
   if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
-  if (!pushConfigured()) return { ok: false, error: 'Server chưa có khóa VAPID (xem docs/nhac-hoc.md).' };
+  if (!pushConfigured()) return { ok: false, error: 'Server chưa có khóa VAPID: thêm VAPID_PRIVATE_KEY và NEXT_PUBLIC_VAPID_PUBLIC_KEY trên Vercel rồi Redeploy (xem docs/nhac-hoc.md).' };
   try {
     const n = await sendPush(session.supabase, session.userId, {
       title: 'Thử thông báo',
