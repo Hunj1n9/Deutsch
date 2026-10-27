@@ -49,3 +49,8 @@ export function weekStart(date: string): string {
   const dow = new Date(Date.UTC(y, m - 1, d)).getUTCDay(); // 0 = Chủ nhật
   return addDays(date, dow === 0 ? -6 : 1 - dow);
 }
+
+/** 'HH:MM' của thời điểm `now` theo múi giờ `tz`. */
+export function localTime(now: Date, tz: string = APP_TIME_ZONE): string {
+  return new Intl.DateTimeFormat('en-GB', { timeZone: tz, hourCycle: 'h23', hour: '2-digit', minute: '2-digit' }).format(now);
+}

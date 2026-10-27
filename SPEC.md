@@ -32,6 +32,7 @@
 - F13 Báo nội dung sai (thêm 2026-10-25)
 - F14 Thi thử cuối cấp (thêm 2026-10-25)
 - F15 Nói theo có ghi âm, không chấm (thêm 2026-10-25)
+- F16 Chỉ tiêu hôm nay theo ngày thi và nhắc học bằng thông báo đẩy (thêm 2026-10-27)
 
 ### Ngoài phạm vi (KHÔNG làm ở giai đoạn 1)
 - Chấm phát âm đến âm vị (giai đoạn A1–A2, dùng Azure Pronunciation Assessment de-DE)
@@ -294,6 +295,24 @@ create table level_tests (
   taken_at timestamptz not null default now()
 );
 create index on level_tests (user_id, level, taken_at desc);
+
+-- Chỉ tiêu hôm nay và nhắc học (F16; thêm ở M20)
+alter table settings
+  add column exam_level cefr_level not null default 'B2',  -- học xong bài tới hết cấp này trước ngày thi
+  add column reminder_enabled boolean not null default false,
+  add column reminder_time time not null default '19:00',  -- giờ Việt Nam
+  add column nag_time time default '21:30',                -- nhắc lần hai nếu chưa đạt; null = tắt
+  add column last_reminder_date date,
+  add column last_nag_date date;
+
+create table push_subscriptions (           -- mỗi trình duyệt đã bật thông báo một dòng; không sao lưu
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null,
+  endpoint text not null unique,
+  p256dh text not null,
+  auth text not null,
+  created_at timestamptz not null default now()
+);
 ```
 
 ## 5. Tính năng
@@ -421,7 +440,7 @@ TCHT:
 - Câu trả lời mặc định dưới 200 từ, trừ khi người dùng xin giải thích chi tiết.
 
 ### F7. Trang "Hôm nay" (trang chủ)
-Thứ tự hiển thị, mỗi phần là một khối có nút bắt đầu:
+Thứ tự hiển thị, mỗi phần là một khối có nút bắt đầu (từ M20 có khối Chỉ tiêu hôm nay của F16 đứng đầu):
 1. **Ôn thẻ:** số thẻ đến hạn + số thẻ mới → bắt đầu F3.
 2. **Sổ lỗi:** số thẻ `error_fix` đến hạn (đã nằm trong F3, hiện riêng để nhấn mạnh).
 3. **Bài mới hôm nay:** checklist `daily_tasks`. Người dùng tự thêm việc (vd "eDeutsch A1 buổi 12"). Mặc định gợi ý chép lại việc chưa xong của hôm qua. Khi tick xong thì nhập số phút đã học.
@@ -614,6 +633,21 @@ TCHT:
 - Ghi và nghe lại một dòng ở 375px (Chrome Android, Safari iOS); từ chối quyền micro thì vẫn sang được bước Vận dụng.
 - Không có request mạng nào mang dữ liệu âm thanh.
 
+### F16. Chỉ tiêu hôm nay và nhắc học (thêm 2026-10-27)
+Đặt ngày thi, app tính mỗi ngày phải xong bao nhiêu, nhắc đúng giờ và giục khi chưa xong.
+- **Cài đặt, khối Kỳ thi kế tiếp:** tên, ngày thi (đã có) và **"Học xong tới cấp"** (`exam_level`, A1–B2, mặc định B2).
+- **Chỉ tiêu bài:** phần còn lại = bài chưa xong + kiểm tra chặng chưa qua, của các chặng tới hết `exam_level` (chặng đã qua kiểm tra coi như xong). Ngày học còn lại = số ngày từ hôm nay tới trước ngày thi × `weekly_days_target` / 7, làm tròn xuống, tối thiểu 1. Chỉ tiêu hôm nay = (phần còn lại + phần đã xong hôm nay) ÷ ngày học còn lại, làm tròn lên, nên không đổi trong ngày khi học xong từng bài. Phần đã xong hôm nay: bài có `completed_at` hôm nay, chặng qua kiểm tra lần đầu hôm nay. Quá 4 phần/ngày thì cảnh báo khó kịp. Chưa có ngày thi hoặc ngày thi đã qua thì không có chỉ tiêu bài, chỉ nhắc đặt ngày thi.
+- **Đạt chỉ tiêu hôm nay** khi đủ cả ba: xong số phần ở trên, không còn thẻ đến hạn (trừ thẻ mới), phút học ≥ `daily_minutes_target`.
+- **Trang Hôm nay:** khối **Chỉ tiêu hôm nay** ở đầu trang: đếm ngược ngày thi, ba dòng có dấu ✓ (bài x/y, thẻ đến hạn còn lại, phút x/y), câu "Còn thiếu: …" hoặc "Đã đạt chỉ tiêu hôm nay".
+- **Nhắc học (Cài đặt, khối Nhắc học hằng ngày):** "Bật nhắc trên máy này" (xin quyền, đăng ký Web Push, lưu `push_subscriptions`), giờ nhắc, giờ nhắc lần hai (bật/tắt), "Gửi thử", "Tắt nhắc". iPhone chưa thêm vào Màn hình chính thì hướng dẫn cách thêm.
+- **Gửi:** Supabase `pg_cron` gọi `POST /api/cron/remind` mỗi 15 phút, kèm `CRON_SECRET`. Trong 60 phút sau giờ nhắc mà hôm nay chưa gửi thì gửi "Đến giờ học" kèm việc cần làm hôm nay; trong 60 phút sau giờ nhắc lần hai, nếu chưa đạt chỉ tiêu thì gửi phần còn thiếu, đã đạt thì không gửi. Mỗi loại tối đa một lần/ngày. Chạm thông báo mở trang Hôm nay. Đăng ký hết hạn (404/410) thì xóa.
+- Khóa VAPID riêng và `SUPABASE_SERVICE_ROLE_KEY` chỉ ở server. Cài đặt một lần: `docs/nhac-hoc.md`.
+
+TCHT:
+- Unit test chỉ tiêu (đếm phần còn lại theo cấp, ngày học còn lại, không giảm trong ngày, cảnh báo) và chọn lúc gửi (đúng giờ, cửa sổ 60 phút, không gửi trùng, nhắc lần hai chỉ khi chưa đạt).
+- Đặt ngày thi ở 375px thì trang Hôm nay hiện chỉ tiêu; bật nhắc trên điện thoại, "Gửi thử" thì nhận được thông báo.
+- Gọi `/api/cron/remind` không có khóa đúng → 401.
+
 ## 6. AI: prompt và schema
 
 Quy định chung:
@@ -689,12 +723,13 @@ Chỉ tính đúng khi cả hai là `true`. AI lỗi thì tính là sai, hiện 
 | `/write` | Kiểm tra câu (F5); `/write/history` lịch sử |
 | `/tutor` | Gia sư (F6) |
 | `/progress` | Tiến độ, dự báo, báo cáo tuần (F8) |
-| `/settings` | Cài đặt, nguồn, sao lưu, nội dung đã báo sai (F8, F9, F13) |
+| `/settings` | Cài đặt, nhắc học, nguồn, sao lưu, nội dung đã báo sai (F8, F9, F13, F16) |
 | `/roadmap` | Lộ trình A1 → B2 (F10); từ M11 chuyển hướng về `/learn` |
 | `/learn` | Học: bài kế tiếp, các chặng, bài và kiểm tra chặng (F11, F12) |
 | `/learn/[lessonId]` | Làm một bài (F11) |
 | `/learn/test/[stageId]` | Kiểm tra chặng (F12) |
 | `/learn/exam/[level]` | Thi thử cuối cấp (F14) |
+| `POST /api/cron/remind` | Gửi nhắc học, do `pg_cron` gọi mỗi 15 phút (F16) |
 
 Điều hướng: thanh dưới trên điện thoại gồm 5 mục: Hôm nay · Học · Ôn · Viết · Gia sư (từ M11; trước đó "Thêm" thay cho "Học"). "Thêm" và các trang còn lại vào từ menu.
 
@@ -736,6 +771,7 @@ Làm tuần tự, mỗi mốc kết thúc bằng: test xanh, chạy thử trên 
 | M17 | Bổ sung từ đời sống A2 (phát hiện 3 ở `docs/doi-chieu-goethe.md`), gán vào bài | thêm 2026-10-25 |
 | M18 | F14 thi thử cuối cấp: migration, rút đề + test, `/learn/exam/[level]`, thẻ ở `/learn`, sao lưu | thêm 2026-10-25 |
 | M19 | F15 nói theo trong bước Hội thoại | thêm 2026-10-25 |
+| M20 | F16 chỉ tiêu hôm nay + nhắc học: migration, logic + test, khối ở Hôm nay, khối ở `/settings`, service worker, `/api/cron/remind`, pg_cron | thêm 2026-10-27 |
 
 Thứ tự làm từ 2026-10-25 (người dùng duyệt): M16 → M15 → M17 → M18 → M19.
 

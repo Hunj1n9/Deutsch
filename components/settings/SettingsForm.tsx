@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { saveSettingsAction, type SettingsInput } from '@/app/(app)/settings/actions';
+import { EXAM_LEVELS } from '@/lib/daily-goal';
 import { LEVELS, type Level } from '@/lib/items/types';
 import { sourceLabel, type SourceOption } from '../SourcePicker';
 import { errorBoxClass, fieldClass, labelClass, noticeBoxClass, primaryClass } from '../ui';
@@ -27,6 +28,7 @@ export function SettingsForm({ initial, sources }: { initial: SettingsInput; sou
         current_source_id: form.current_source_id || null,
         next_exam_name: form.next_exam_name,
         next_exam_date: form.next_exam_date || null,
+        exam_level: form.exam_level,
         daily_minutes_target: num(String(form.daily_minutes_target)),
         weekly_days_target: num(String(form.weekly_days_target)),
         new_cards_per_day: num(String(form.new_cards_per_day)),
@@ -96,7 +98,22 @@ export function SettingsForm({ initial, sources }: { initial: SettingsInput; sou
       </div>
       <h2 className="mt-2 text-[18px] font-bold">Kỳ thi kế tiếp</h2>
       {field('next_exam_name', 'Tên kỳ thi', {})}
-      {field('next_exam_date', 'Ngày thi', { type: 'date' })}
+      <div className="grid grid-cols-2 gap-3">
+        {field('next_exam_date', 'Ngày thi', { type: 'date' })}
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="set-exam-level" className={labelClass}>
+            Học xong tới cấp
+          </label>
+          <select id="set-exam-level" value={form.exam_level} onChange={(e) => set('exam_level', e.target.value)} className={fieldClass}>
+            {EXAM_LEVELS.map((l) => (
+              <option key={l}>{l}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <p className="ml-1 text-[13px] leading-snug text-muted">
+        Trang Hôm nay chia số bài và kiểm tra chặng còn lại tới hết cấp này cho số ngày học trước ngày thi.
+      </p>
       {message && <p className={message.ok ? noticeBoxClass : errorBoxClass}>{message.text}</p>}
       <button type="submit" disabled={pending} className={primaryClass}>
         {pending ? 'Đang lưu…' : 'Lưu cài đặt'}

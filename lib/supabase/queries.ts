@@ -14,6 +14,10 @@ export type UserSettings = {
   next_exam_name: string | null;
   next_exam_date: string | null;
   hours_offset: number;
+  exam_level: string;
+  reminder_enabled: boolean;
+  reminder_time: string;
+  nag_time: string | null;
 };
 
 const DEFAULT_SETTINGS: UserSettings = {
@@ -26,6 +30,10 @@ const DEFAULT_SETTINGS: UserSettings = {
   next_exam_name: 'Goethe-Zertifikat B2',
   next_exam_date: null,
   hours_offset: 0,
+  exam_level: 'B2',
+  reminder_enabled: false,
+  reminder_time: '19:00',
+  nag_time: '21:30',
 };
 
 export async function loadSettings({ supabase, userId }: Session): Promise<UserSettings> {

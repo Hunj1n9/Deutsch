@@ -1,7 +1,10 @@
 // Quy tắc truy cập một người dùng (SPEC F1). Hàm thuần, không phụ thuộc Next hay Supabase.
 
-/** Trang mở được khi chưa đăng nhập. `/auth/confirm` là đích của link trong email. */
-export const PUBLIC_PATHS: readonly string[] = ['/login', '/auth/confirm'];
+/**
+ * Trang mở được khi chưa đăng nhập. `/auth/confirm` là đích của link trong email.
+ * `/api/cron/remind` do Supabase gọi định kỳ, tự kiểm khóa CRON_SECRET.
+ */
+export const PUBLIC_PATHS: readonly string[] = ['/login', '/auth/confirm', '/api/cron/remind'];
 
 /** Tuổi cookie phiên. TCHT F1 yêu cầu ≥ 30 ngày; refresh token Supabase tự gia hạn khi app được mở. */
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 400;

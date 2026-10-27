@@ -39,10 +39,13 @@ describe('isAllowedEmail', () => {
 });
 
 describe('isPublicPath', () => {
-  it('chỉ mở /login và /auth/confirm', () => {
+  it('chỉ mở /login, /auth/confirm và API nhắc học (tự kiểm khóa)', () => {
     expect(isPublicPath('/login')).toBe(true);
     expect(isPublicPath('/login/')).toBe(true);
     expect(isPublicPath('/auth/confirm')).toBe(true);
+    expect(isPublicPath('/api/cron/remind')).toBe(true);
+    expect(isPublicPath('/api/cron')).toBe(false);
+    expect(isPublicPath('/api/backup')).toBe(false);
   });
 
   it('mọi route khác đều bị chặn', () => {

@@ -10,6 +10,8 @@ import { findLesson } from '@/lib/course/catalog';
 import { stageTestSize } from '@/lib/course/stage-test';
 import { loadCourseState } from '@/lib/course/db';
 import { courseHref, coursePosition, lessonDone, stepLabel } from '@/lib/course/position';
+import { goalMet, shortfall, shortfallText } from '@/lib/daily-goal';
+import { loadTodayStatus } from '@/lib/daily-goal-db';
 import { loadProgress } from '@/lib/progress';
 import { loadReviewCounts } from '@/lib/review/load';
 import { daysUntil } from '@/lib/stats';
@@ -35,6 +37,9 @@ async function Today() {
   const settings = await loadSettings(session);
   return (
     <>
+      <Suspense fallback={<div className="mb-3 h-36 rounded-block bg-surface" />}>
+        <GoalBlock session={session} settings={settings} />
+      </Suspense>
       <ReviewBlocks session={session} settings={settings} />
       <Suspense fallback={<div className="mb-3 h-36 rounded-block bg-pastel-sky" />}>
         <LessonBlock session={session} settings={settings} />
@@ -53,6 +58,61 @@ async function Today() {
 }
 
 const blockLabel = 'text-[13px] font-semibold uppercase tracking-[.06em] opacity-70';
+
+/** Chỉ tiêu hôm nay (SPEC F16): số bài cần xong để kịp ngày thi, thẻ đến hạn, phút học; giục phần còn thiếu. */
+async function GoalBlock({ session, settings }: { session: Session; settings: UserSettings }) {
+  const status = await loadTodayStatus(session, settings);
+  const today = localDate(new Date());
+  const countdown = daysUntil(settings.next_exam_date, today);
+  const left = shortfall(status);
+  const met = goalMet(status);
+  const minutes = Math.round(status.minutesToday);
+  const row = (done: boolean, label: string, value: string) => (
+    <li className="flex items-center gap-3 py-1.5">
+      <span
+        aria-hidden
+        className={`flex size-6 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${done ? 'bg-ok text-on-primary' : 'outline-2 outline-line'}`}
+      >
+        {done ? '✓' : ''}
+      </span>
+      <span className="flex-1 text-[15px]">{label}</span>
+      <span className="text-[15px] font-semibold tabular-nums">{value}</span>
+      <span className="sr-only">{done ? 'đã xong' : 'chưa xong'}</span>
+    </li>
+  );
+  return (
+    <section className="mb-3 rounded-block bg-surface p-5 outline-2 outline-line">
+      <p className={blockLabel}>
+        Chỉ tiêu hôm nay
+        {countdown !== null && countdown >= 0 && ` · ${settings.next_exam_name ?? 'Kỳ thi'} còn ${countdown} ngày`}
+      </p>
+      <p className="mt-1 text-[18px] font-bold leading-snug">
+        {met ? 'Đã đạt chỉ tiêu hôm nay. Giỏi lắm!' : `Còn thiếu: ${shortfallText(left)}`}
+      </p>
+      <ul className="mt-2">
+        {status.lesson &&
+          row(
+            left.units === 0,
+            `Bài mới / kiểm tra (tới hết ${settings.exam_level})`,
+            `${Math.min(status.lesson.doneToday, status.lesson.target)}/${status.lesson.target}`,
+          )}
+        {row(left.cards === 0, 'Ôn hết thẻ đến hạn', left.cards === 0 ? 'xong' : `còn ${left.cards}`)}
+        {row(left.minutes === 0, 'Phút học', `${minutes}/${status.minutesTarget}`)}
+      </ul>
+      {status.lesson?.heavy && (
+        <p className="mt-2 rounded-[16px] bg-pastel-pink p-3 text-[14px] leading-snug">
+          Còn {status.lesson.remaining} phần trong {status.lesson.studyDays} ngày học: cần {status.lesson.target} phần mỗi ngày, rất khó
+          kịp. Cân nhắc học thêm ngày trong tuần hoặc dời ngày thi.
+        </p>
+      )}
+      {!status.lesson && (
+        <Link href="/settings" className="mt-2 block text-[14px] font-semibold underline">
+          {settings.next_exam_date ? 'Ngày thi đã qua: đặt kỳ thi mới' : 'Đặt ngày thi để biết mỗi ngày cần học mấy bài'} →
+        </Link>
+      )}
+    </section>
+  );
+}
 
 async function ReviewBlocks({ session, settings }: { session: Session; settings: UserSettings }) {
   const counts = await loadReviewCounts(session, settings.new_cards_per_day);
