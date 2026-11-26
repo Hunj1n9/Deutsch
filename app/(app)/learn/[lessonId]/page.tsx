@@ -55,7 +55,7 @@ async function LessonContent({
           </Link>
           <h1 className="text-[22px] font-bold">{lesson.title_vi}</h1>
         </header>
-        <p className="rounded-[20px] bg-pastel-yellow p-4 text-[15px] leading-relaxed">
+        <p className="rounded-2xl bg-pastel-yellow p-4 text-[15px] leading-relaxed">
           Bạn chưa xong bài <b>{before.title_vi}</b> ({before.id.toUpperCase()}). Học theo thứ tự sẽ dễ hơn, nhưng nếu đã học phần này ở
           giáo trình thì cứ học tiếp.
         </p>

@@ -154,7 +154,7 @@ export function BulkImport({
           multiline
           placeholder={EXAMPLE}
         />
-        <div className="rounded-[20px] bg-surface p-4 text-[13px] leading-relaxed text-muted">
+        <div className="rounded-2xl bg-surface p-4 text-[13px] leading-relaxed text-muted">
           <p className="font-semibold text-ink">Dạng nhận được</p>
           <p lang="de">der Tisch, -e = cái bàn</p>
           <p>
@@ -261,7 +261,7 @@ function BulkRowCard({
   const kinds = cardKindsFor(normalized);
 
   return (
-    <li className={`rounded-[20px] bg-surface p-3 ${skipped ? 'opacity-50' : ''} ${issues.length && !skipped ? 'outline-2 outline-bad' : ''}`}>
+    <li className={`rounded-2xl bg-surface p-3 ${skipped ? 'opacity-50' : ''} ${issues.length && !skipped ? 'outline-2 outline-bad' : ''}`}>
       <div className="flex items-start gap-2">
         <span className="mt-0.5 w-7 shrink-0 text-[12px] text-muted">{row.line}</span>
         <div className="min-w-0 flex-1">

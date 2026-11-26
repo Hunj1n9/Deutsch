@@ -33,13 +33,14 @@
 - F14 Thi thử cuối cấp (thêm 2026-10-25)
 - F15 Nói theo có ghi âm, không chấm (thêm 2026-10-25)
 - F16 Chỉ tiêu hôm nay theo ngày thi và nhắc học bằng thông báo đẩy (thêm 2026-10-27)
+- F17 Linh vật Bello và tủ đồ mở theo mốc học (thêm 2026-11-26)
 
 ### Ngoài phạm vi (KHÔNG làm ở giai đoạn 1)
 - Chấm phát âm đến âm vị (giai đoạn A1–A2, dùng Azure Pronunciation Assessment de-DE)
 - Chấm bài viết dài theo thang Goethe/TestDaF, đề thi thử theo đúng định dạng Goethe/TestDaF, mô phỏng TestDaF (giai đoạn B1–C1). Kiểm tra chặng (F12) chỉ kiểm nội dung của một chặng; thi thử cuối cấp (F14) chỉ trộn câu từ kho của các chặng trong cấp, không theo định dạng đề thi thật.
 - Bài học C1 (lộ trình F10 dừng ở B2)
 - Luyện nói có chấm (chấm phát âm, chấm câu nói). Bài học chỉ có nghe bằng giọng đọc của trình duyệt và nói theo có ghi âm để tự nghe lại (F15); bản ghi không lưu, không gửi đi, không chấm
-- Chạy offline, app di động gốc, nhiều người dùng, thanh toán, mạng xã hội, xếp hạng, huy hiệu, trò chơi
+- Chạy offline, app di động gốc, nhiều người dùng, thanh toán, mạng xã hội, xếp hạng, huy hiệu, trò chơi (riêng vật phẩm trang trí cho Bello ở F17 thì có, chỉ mở bằng mốc học)
 
 ## 3. Công nghệ
 
@@ -648,6 +649,41 @@ TCHT:
 - Đặt ngày thi ở 375px thì trang Hôm nay hiện chỉ tiêu; bật nhắc trên điện thoại, "Gửi thử" thì nhận được thông báo.
 - Gọi `/api/cron/remind` không có khóa đúng → 401.
 
+### F17. Linh vật Bello và tủ đồ (thêm 2026-11-26)
+Chú chó Dackel tên Bello phản ứng theo việc học để app bớt khô; vật phẩm trang trí cho Bello chỉ mở bằng mốc học thật. Không có điểm thưởng, tiền ảo, cửa hàng hay xếp hạng.
+- **Hình và chuyển động:** SVG tự viết, không thêm thư viện. Thân dựng từ các khớp nối nhau; nét cọ đen chỉ ở chỗ một bộ phận đè lên bộ phận khác (tai nằm trên mặt thì không viền); rung nét bằng bộ lọc SVG; hiện ở 8 khung/giây. Bản chuẩn: `design/bello/bello-lab.html`. Cách thêm trạng thái hay vật phẩm: skill `.claude/skills/bello/`.
+- **6 trạng thái và chỗ hiện:**
+
+  | Trạng thái | Hiện khi |
+  | --- | --- |
+  | Đứng chờ | mặc định ở Hôm nay |
+  | Hăng hái | Hôm nay khi chưa học phút nào trong ngày; bước Mục tiêu đầu bài học |
+  | Vui | dải phản hồi khi trả lời đúng; màn chúc mừng (xong bài, qua kiểm tra chặng, qua thi thử); Hôm nay khi đã đạt chỉ tiêu (F16) |
+  | Tò mò | khi mở gợi ý trong bài tập |
+  | Buồn | dải phản hồi khi trả lời sai; kết quả kiểm tra hoặc thi thử chưa đạt |
+  | Ngủ | phiên ôn hết thẻ đến hạn |
+
+  Đổi trạng thái thì chuyển tư thế trong 0,6 giây. Bello thay minh họa hình học ở các chỗ trên. Bật giảm chuyển động (`prefers-reduced-motion`) thì Bello đứng yên ở tư thế của trạng thái, không rung nét.
+- **Vật phẩm:** danh sách cố định trong `lib/bello-items.ts`. Mỗi món thuộc một chỗ mặc: `neck` (cổ), `head` (đầu), `face` (mặt) hoặc `coat` (màu lông); mỗi chỗ mặc tối đa một món, các chỗ khác nhau mặc cùng lúc được.
+
+  | Món | Chỗ mặc | Mở khi |
+  | --- | --- | --- |
+  | Khăn đỏ chấm bi | neck | xong bài học đầu tiên (`lesson_progress.completed_at`, không tính bài `skipped`) |
+  | Kính tròn | face | qua kiểm tra chặng đầu tiên (`stage_tests.passed`) |
+  | Mũ Tirol | head | qua thi thử A1 (`level_tests.passed`) |
+  | Lông đen – đỏ – vàng | coat | qua thi thử A2 |
+  | Khăn len sọc | neck | qua thi thử B1 |
+  | Mũ tốt nghiệp | head | qua thi thử B2 |
+
+- **Mở khóa** tính lại mỗi lần từ `lesson_progress`, `stage_tests`, `level_tests` bằng hàm thuần; không thêm bảng hay cột, nên sao lưu (F9) không đổi. Màn chúc mừng của đúng lần làm vừa mở món mới hiện "Bello có đồ mới: <tên món>" kèm nút "Mặc thử".
+- **Tủ đồ:** chạm Bello ở Hôm nay mở bảng trượt "Tủ đồ của Bello" (không thêm route): Bello lớn mặc bộ đang chọn, các món chia theo chỗ mặc; món đã mở chạm để mặc hoặc bỏ; món chưa mở hiện bóng mờ kèm điều kiện, vd "Qua thi thử A1 để mở".
+- **Đồ đang mặc** lưu ở `localStorage` của trình duyệt (như công tắc âm thanh), không vào CSDL hay sao lưu; đổi máy thì chọn lại.
+
+TCHT:
+- Unit test `lib/bello-items.ts`: chưa học gì thì không mở món nào; bài `skipped` không mở khăn đỏ; qua thi thử A1 mở mũ Tirol; tìm đúng món vừa mở bởi một lần làm; mặc món cùng chỗ thì thay món cũ.
+- Ở 375px: trả lời đúng/sai thì Bello đổi Vui/Buồn trong dải phản hồi; mở tủ đồ từ Hôm nay, mặc một món đã mở, tải lại trang vẫn mặc; món chưa mở không chọn được.
+- Bật giảm chuyển động thì Bello không chuyển động. Trang Hôm nay vẫn tải dưới 1,5 giây trên 4G.
+
 ## 6. AI: prompt và schema
 
 Quy định chung:
@@ -715,7 +751,7 @@ Chỉ tính đúng khi cả hai là `true`. AI lỗi thì tính là sai, hiện 
 | Route | Nội dung |
 | --- | --- |
 | `/login` | Đăng nhập magic link |
-| `/` | Hôm nay (F7) |
+| `/` | Hôm nay (F7); chạm Bello mở tủ đồ (F17) |
 | `/review` | Phiên ôn (F3) |
 | `/add` | Thêm một mục / nhập hàng loạt (F2) |
 | `/items` | Danh sách mục: tìm, lọc theo nguồn/cấp/loại, sửa, treo thẻ |
@@ -772,6 +808,7 @@ Làm tuần tự, mỗi mốc kết thúc bằng: test xanh, chạy thử trên 
 | M18 | F14 thi thử cuối cấp: migration, rút đề + test, `/learn/exam/[level]`, thẻ ở `/learn`, sao lưu | thêm 2026-10-25 |
 | M19 | F15 nói theo trong bước Hội thoại | thêm 2026-10-25 |
 | M20 | F16 chỉ tiêu hôm nay + nhắc học: migration, logic + test, khối ở Hôm nay, khối ở `/settings`, service worker, `/api/cron/remind`, pg_cron | thêm 2026-10-27 |
+| M21 | F17 Bello: chuyển `design/bello/bello-lab.html` thành component trong `components/mascot/` (thay bản cũ), `lib/bello-items.ts` + test, gắn trạng thái vào Hôm nay, dải phản hồi, gợi ý, phiên ôn hết thẻ, màn chúc mừng; tủ đồ (cả 6 món đã vẽ trong phòng thử) | thêm 2026-11-26 |
 
 Thứ tự làm từ 2026-10-25 (người dùng duyệt): M16 → M15 → M17 → M18 → M19.
 

@@ -124,7 +124,7 @@ export function WritingChecker({ initialPrompt }: { initialPrompt: string }) {
   return (
     <div className="flex flex-col gap-4">
       <section className="rounded-block bg-pastel-lilac p-5">
-        <p className="mb-2 text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+        <p className="mb-2 text-[13px] font-semibold opacity-70">
           {feedback.errors.length} chỗ cần sửa
         </p>
         <AnnotatedText text={checked.text} errors={feedback.errors} />
@@ -133,7 +133,7 @@ export function WritingChecker({ initialPrompt }: { initialPrompt: string }) {
 
       <ol className="flex flex-col gap-2">
         {feedback.errors.map((e, i) => (
-          <li key={i} className="rounded-[20px] bg-surface p-4">
+          <li key={i} className="rounded-2xl bg-surface p-4">
             <p className="text-[13px] font-semibold text-muted">
               {i + 1} · {CATEGORY_VI[e.category]}
             </p>
@@ -154,7 +154,7 @@ export function WritingChecker({ initialPrompt }: { initialPrompt: string }) {
       <GermanField id="write-revised" label="Tự sửa bài ở đây" value={revised} onChange={setRevised} multiline alwaysShowBar />
 
       {recheck && (
-        <section className="rounded-[20px] bg-surface p-4">
+        <section className="rounded-2xl bg-surface p-4">
           <p className="mb-1 text-[15px] font-bold">Kết quả kiểm lại</p>
           {recheck.feedback.fixed.map((k) => (
             <p key={`f-${k}`} className="text-[15px] text-ok">
@@ -202,7 +202,7 @@ export function WritingChecker({ initialPrompt }: { initialPrompt: string }) {
 
       {showAnswer && (
         <section className="rounded-block bg-surface p-5">
-          <p className="mb-1 text-[13px] font-semibold uppercase tracking-[.06em] text-muted">Đáp án</p>
+          <p className="mb-1 text-[13px] font-semibold text-muted">Đáp án</p>
           <p className="whitespace-pre-wrap text-[18px] leading-relaxed" lang="de">
             {feedback.corrected_text}
           </p>
@@ -236,7 +236,7 @@ function MakeCards({ text }: { text: string }) {
           </span>
           <Link
             href={`/add?type=phrase&german=${encodeURIComponent(s)}`}
-            className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-[12px] font-semibold text-on-primary"
+            className="shrink-0 rounded-2xl bg-primary px-3 py-1.5 text-[12px] font-semibold text-on-primary"
           >
             Tạo thẻ
           </Link>

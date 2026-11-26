@@ -1,58 +1,68 @@
 # DESIGN — Hệ thống giao diện
 
-Phong cách lấy từ ảnh tham khảo (app học pastel, bo tròn lớn, nút đen), áp vào đúng các màn hình ở `SPEC.md` mục 7. Mockup chạy được: `design/mockup.html` (mở thẳng bằng trình duyệt).
+Phong cách lấy theo app học **Brilliant** (từ 2026-11-26, thay bản pastel cũ): nền trắng ngà, chữ đen đậm, nút đen, thẻ viền mảnh có "đáy" bấm được, minh họa hình học nhiều màu, phản hồi đúng/sai bằng dải màu nhạt. Áp vào đúng các màn hình ở `SPEC.md` mục 7, không đổi route hay luồng. `design/mockup.html` là mockup của bản cũ, chỉ để tham khảo lịch sử.
 
-Những gì trong ảnh tham khảo **không** đưa vào vì ngoài phạm vi SPEC: avatar/tên người dùng, chuông thông báo, tab Forum, màn hỏi tuổi khi onboarding, nút "yêu thích" (ngôi sao).
+Token nằm ở `app/globals.css`; lớp dùng chung ở `components/ui.ts`.
 
 ## Nguyên tắc
-1. **Một việc chính mỗi màn.** Hôm nay: một chạm vào "Bắt đầu ôn". Ôn: một ô nhập + một nút.
-2. **Màu pastel = loại khối, không phải trang trí.** Mỗi khối chức năng có một màu cố định, dùng lại ở mọi nơi khối đó xuất hiện.
-3. **Đen là hành động.** Nút chính luôn nền đen (chế độ tối: nền trắng). Không có màu nhấn thứ hai.
+1. **Một việc chính mỗi màn.** Hôm nay: một chạm vào "Học tiếp"/"Bắt đầu ôn". Ôn: một ô nhập + một nút.
+2. **Đen là hành động.** Nút chính nền đen (chế độ tối: nền trắng). Nút phụ nền trắng viền mảnh.
+3. **Màu là nội dung, không phải khung.** Khung luôn trắng/xám trung tính; màu chỉ ở minh họa, biểu tượng khối, thanh tiến độ và phản hồi đúng/sai.
 4. **Màu mạo từ luôn kèm chữ** (der/die/das), không bao giờ chỉ là chấm màu.
+5. **Chữ thường câu**, không viết hoa toàn bộ nhãn hay nút.
 
 ## Token màu
 
 | Token | Sáng | Tối | Dùng cho |
 | --- | --- | --- | --- |
-| `--bg` | `#F2F3F7` | `#111216` | nền trang |
-| `--surface` | `#FFFFFF` | `#1C1D22` | thẻ trắng, ô nhập, thanh điều hướng |
-| `--ink` | `#0E0E10` | `#F4F4F6` | chữ chính |
-| `--muted` | `#6B6E77` | `#9A9CA6` | chữ phụ |
-| `--line` | `#E6E7EC` | `#2C2D33` | viền |
-| `--primary` / `--on-primary` | `#0E0E10` / `#FFF` | `#F4F4F6` / `#0E0E10` | nút chính |
-| `--yellow` | `#FCE8A6` | `#4A4127` | **Ôn thẻ** (F3) |
-| `--pink` | `#F8D2E2` | `#47293A` | **Sổ lỗi** (F4) |
-| `--lilac` | `#DDD2EF` | `#362E47` | **Viết** (F5) |
-| `--sage` | `#D5E6DF` | `#2A3B35` | **Tiến độ / Gia sư** (F6, F8) |
-| `--sky` | `#DCE6FB` | `#26304A` | **Thêm nội dung** (F2) |
-| `--der` | `#2F6FEB` | `#6E9BFF` | mạo từ der (xanh dương) |
-| `--die` | `#E5484D` | `#FF7B7F` | mạo từ die (đỏ) |
-| `--das` | `#2E9E5B` | `#5FCB8A` | mạo từ das (xanh lá) |
-| `--ok` / `--bad` | `#2E9E5B` / `#E5484D` | như der/das | đúng / sai |
+| `--bg` | `#F6F6F3` | `#0F0F10` | nền trang |
+| `--surface` | `#FFFFFF` | `#1B1B1D` | thẻ, ô nhập, thanh điều hướng |
+| `--ink` / `--muted` | `#151515` / `#6D6D72` | `#F3F3F1` / `#9C9CA2` | chữ chính / phụ |
+| `--line` / `--line-strong` | `#E5E5E1` / `#D3D3CE` | `#2B2B2F` / `#3A3A3F` | viền, đáy thẻ |
+| `--primary` / `--on-primary` | `#151515` / `#FFF` | `#F3F3F1` / `#121212` | nút chính |
+| `--green --blue --gold --red --purple --orange --pink` | màu tươi | sáng hơn | minh họa, biểu tượng, tiến độ |
+| `--yellow --pinkish --lilac --sage --sky` (lớp `bg-pastel-*`) | sắc rất nhạt | sắc tối | nền minh họa, khối nhấn |
+| `--ok` / `--ok-soft` | `#0B8A4F` / `#E3F8EC` | | dải "đúng" |
+| `--bad` / `--bad-soft` | `#D4351F` / `#FFF0EA` | | dải "chưa đúng" (cam nhạt) |
+| `--der` / `--die` / `--das` | xanh dương / đỏ / xanh lá | sáng hơn | mạo từ |
 
 Chế độ tối theo hệ thống (`prefers-color-scheme`).
 
 ## Chữ
-- Font: **Be Vietnam Pro** (có đủ bộ dấu tiếng Việt và ä ö ü ß). Next.js: `next/font/google`, subsets `latin`, `latin-ext`, `vietnamese`.
-- Thang: 34 / 28 / 22 / 18 / 15 / 13 px. Đậm: 700 tiêu đề, 600 nhãn, 400 thân.
-- Chữ tiếng Đức trên thẻ ôn: **≥ 28px** (SPEC yêu cầu ≥ 18px). Ô nhập tiếng Đức: 20px (≥ 16px để iOS không tự phóng to).
+- Font **Be Vietnam Pro** (hình học, đủ dấu tiếng Việt và ä ö ü ß), weight 400–800. Tiêu đề 800, chữ khít `-0.025em`.
+- Tiêu đề trang 30px; tiêu đề thẻ 20–22px; thân 15–17px; nhãn 13px màu `--muted`.
+- Chữ tiếng Đức trên thẻ ôn ≥ 26px; ô nhập tiếng Đức 20px (≥ 16px để iOS không tự phóng to).
 
 ## Hình khối
-- Bo góc: khối lớn 28px, thẻ con 20px, nút/chip tròn hẳn (999px).
-- Khối pastel có **nét vẽ nguệch ngoạc** trắng mờ (SVG) làm nền, như ảnh tham khảo.
-- **Nút mũi tên khoét góc:** vòng tròn đen 44px, viền 6px cùng màu nền trang → tạo cảm giác khối bị khoét.
-- Không đổ bóng; tách lớp bằng màu nền.
+- Bo góc: khối lớn 20px (`rounded-block`), thẻ con 16px, nút 12px, chip/nút tròn 999px.
+- Khối lớn: viền 1.5px, đáy 3px (trông bấm được). Khối `bg-pastel-*` có viền nhuộm nhẹ cùng màu.
+- Nút trắng (`a/button.bg-surface`) có đáy xám, bấm thì lún xuống; nút đen phẳng, bấm thì thu nhỏ 2%.
+
+## Minh họa
+- `components/art/GeoArt.tsx`: khối cầu, khối vuông, kim tự tháp có đổ bóng, chọn theo `seed` (mã chặng/bài) nên mỗi chặng luôn một hình; trôi nhẹ.
+- Dùng ở: thẻ "Học tiếp" (Hôm nay), thẻ cấp (Học), mở bài, màn chúc mừng, phiên ôn trống, đăng nhập.
+- **Linh vật Bello (SPEC F17):** chó Dackel kiểu nét cọ, thân tô phẳng không viền, nét đen chỉ ở chỗ bộ phận đè lên nhau, rung nét, 8 khung/giây; 6 trạng thái và 6 vật phẩm mở theo mốc học. Bản chuẩn và phòng thử: `design/bello/bello-lab.html`. Thêm trạng thái hay vật phẩm theo skill `.claude/skills/bello/`. Trong app: `components/mascot/` (M21); Bello thay minh họa hình học ở dải phản hồi, ô gợi ý, màn chúc mừng, bước Mục tiêu, phiên ôn hết thẻ và đầu trang Hôm nay. `GeoArt` vẫn dùng cho ảnh chặng, `/learn` và trang đăng nhập.
+
+## Chuyển động
+- Chỉ animate `transform`/`opacity`. Đường cong `--ease-out-soft` (cubic-bezier(.23,1,.32,1)), 150–450ms.
+- Khối xuất hiện lần lượt (`stagger`), thẻ câu hỏi bật vào (`animate-pop-in`), sai thì rung (`animate-shake`), dải phản hồi trượt lên (`animate-slide-up`).
+- Xong bài/phiên đạt: pháo giấy (`components/fx/Confetti.tsx`, canvas, không thư viện).
+- Âm thanh đúng/sai/xong bài tổng hợp bằng Web Audio (`components/fx/sfx.ts`), bật/tắt trong menu, lưu ở trình duyệt.
+- Tôn trọng `prefers-reduced-motion`: tắt hết chuyển động và pháo giấy.
 
 ## Thành phần
-- **Thanh điều hướng dưới:** khối trắng bo 26px nổi, rộng gần hết màn, 5 ô biểu tượng + nhãn chữ 11px: Hôm nay · Học · Ôn · Viết · Gia sư. Ô đang chọn nền đen. Ẩn trong phiên ôn, bài học và kiểm tra để tập trung.
-- **Tiêu đề trang:** trang vào từ menu (Thêm, Danh sách mục, Sổ lỗi, Tiến độ, Cài đặt, Lịch sử bài viết) có nút quay lại bên trái; nút menu luôn ở bên phải.
-- **Danh sách dài:** chia bằng tab (vd. trang Học chia theo cấp A1–B2) và thu gọn từng mục, chỉ mở sẵn mục đang làm.
-- **Tab dạng viên thuốc:** đang chọn nền đen chữ trắng, còn lại nền trắng chữ xám.
+- **Điều hướng:** điện thoại là thanh tab dưới đáy đơn sắc (mục đang chọn: biểu tượng đậm trong viên xám); máy tính (≥ 1024px) là cột trái 256px có logo, 5 mục chính, các trang trong menu, công tắc âm thanh, đăng xuất. Ẩn trong phiên ôn, bài học và kiểm tra để tập trung.
+- **Tiêu đề trang:** trang vào từ menu có nút quay lại tròn bên trái; nút menu tròn bên phải (ẩn trên máy tính vì đã có cột trái).
+- **Đường học (`/learn`):** chặng là nút vuông bo 26px xếp lượn sóng: đã qua xanh lá có dấu ✓, đang học đen có nhãn "Bắt đầu/Học tiếp" nhún nhẹ, chưa học trắng viền. Chạm nút mở bảng bài học ngay dưới.
+- **Thanh bước bài học:** 6 đoạn, đoạn xong tô xanh, đoạn đang làm tô một phần.
+- **Phản hồi:** dải xanh nhạt "Super!/Toll!…" (lời khen tiếng Đức) hoặc cam nhạt "Chưa đúng", đáp án đúng bên dưới, nút "Tiếp tục" đen.
+- **Nút chấm điểm:** 4 nút Lại / Khó / Được / Dễ kèm khoảng ôn; nút đề xuất nền đen, còn lại chữ màu; Enter = xác nhận.
+- **Màn chúc mừng:** minh họa, tiêu đề lớn, 2–3 thẻ chỉ số.
 - **Hàng phím umlaut:** 7 phím `ä ö ü ß Ä Ö Ü` cao 40px ngay trên mọi ô gõ tiếng Đức; chạm chèn tại con trỏ, không làm mất focus.
 - **Chip mạo từ:** chữ màu mạo từ + nền cùng màu độ mờ 12%.
-- **Nút chấm điểm:** 4 nút Lại / Khó / Được / Dễ kèm khoảng ôn kế tiếp; nút được đề xuất nền đen, Enter = xác nhận.
 - Vùng chạm tối thiểu 44×44px.
 
-## Bố cục di động
-- Thiết kế ở 375px, lề ngang 20px, khoảng giữa khối 12px.
+## Bố cục
+- Điện thoại: thiết kế ở 375px, lề ngang 20px, khoảng giữa khối 12px.
+- Máy tính: cột nội dung tối đa 640px, căn giữa phần còn lại bên phải cột điều hướng.
 - Ô nhập trong phiên ôn đặt ở nửa trên màn hình để bàn phím ảo không che.

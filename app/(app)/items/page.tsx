@@ -78,7 +78,7 @@ async function ItemsContent({ searchParams }: { searchParams: PageProps<'/items'
   return (
     <>
       <ItemFilters sources={sources} />
-      {error && <p className="rounded-[20px] bg-pastel-pink p-4 text-[15px]">Không tải được danh sách. Thử lại sau.</p>}
+      {error && <p className="rounded-2xl bg-pastel-pink p-4 text-[15px]">Không tải được danh sách. Thử lại sau.</p>}
       <p className="mb-2 px-1 text-[13px] text-muted">{total} mục</p>
       {items.length === 0 ? (
         <div className="rounded-block bg-surface p-5 text-[15px] text-muted">
@@ -93,7 +93,7 @@ async function ItemsContent({ searchParams }: { searchParams: PageProps<'/items'
             const suspended = item.cards.filter((c) => c.suspended).length;
             return (
               <li key={item.id}>
-                <Link href={`/items/${item.id}`} className="block rounded-[20px] bg-surface p-4 active:opacity-70">
+                <Link href={`/items/${item.id}`} className="block rounded-2xl bg-surface p-4 active:opacity-70">
                   <p className="text-[18px] font-semibold leading-snug" lang="de">
                     {item.article && isArticle(item.article) && <ArticleChip article={item.article} />} {item.german}
                     {item.plural && <span className="text-[14px] font-normal text-muted">, {item.plural}</span>}

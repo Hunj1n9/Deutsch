@@ -84,7 +84,7 @@ export function BackupPanel() {
             <button type="button" onClick={() => setParsed(null)} className="h-11 flex-1 rounded-full text-[14px] font-semibold">
               Hủy
             </button>
-            <button type="button" disabled={pending} onClick={restore} className="h-11 flex-1 rounded-full bg-primary text-[14px] font-semibold text-on-primary">
+            <button type="button" disabled={pending} onClick={restore} className="h-11 flex-1 rounded-2xl bg-primary text-[14px] font-semibold text-on-primary">
               {pending ? 'Đang nhập…' : 'Xác nhận nhập'}
             </button>
           </div>

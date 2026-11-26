@@ -8,8 +8,15 @@ import type { SessionCard } from '@/lib/review/load';
 import { viewCard, viewErrorFix, type CardView } from '@/lib/review-card';
 import { formatInterval, previewIntervals, RATING_VI, type CardState, type Rating } from '@/lib/scheduler';
 import { ArticleChip } from '../ArticleChip';
+import { Celebration } from '../fx/Celebration';
+import { Feedback } from '../fx/Feedback';
+import { Icon } from '../Icon';
+import { listenButtonClass } from '../learn/ExerciseCard';
+import { Bello } from '../mascot/Bello';
+import { BelloHint } from '../mascot/BelloHint';
+import { ProgressBar } from '../ProgressBar';
 import { UmlautBar } from '../UmlautBar';
-import { errorBoxClass, primaryClass, secondaryClass } from '../ui';
+import { blockLabelClass, errorBoxClass, primaryClass, secondaryClass } from '../ui';
 import { canSpeak, speakGerman } from './speech';
 
 const FLAG_VI: Record<AnswerFlag, string> = {
@@ -18,6 +25,14 @@ const FLAG_VI: Record<AnswerFlag, string> = {
   capitalization: 'Sai chữ hoa/thường',
   wrong_article: 'Sai mạo từ',
   missing_article: 'Thiếu mạo từ',
+};
+
+/** Màu chữ nút chấm: Lại đỏ, Khó cam, Được xanh lá, Dễ xanh dương; nút đề xuất nền đen. */
+const RATE_TONE: Record<Rating, string> = {
+  1: 'text-bad',
+  2: 'text-orange-shade',
+  3: 'text-ok',
+  4: 'text-blue',
 };
 
 /** Thẻ trả lời sai quay lại sau ít nhất ngần này thẻ (SPEC F3: thẻ vừa sai được quay lại trong phiên). */
@@ -217,15 +232,16 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3 px-1">
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface" aria-hidden>
-          <div className="h-full rounded-full bg-primary" style={{ width: `${total ? (done.count / total) * 100 : 0}%` }} />
-        </div>
-        <span className="text-[13px] font-semibold text-muted">
+        <ProgressBar value={done.count} max={total} className="flex-1" />
+        <span className="text-[14px] font-extrabold tabular-nums text-muted">
           {done.count}/{total}
         </span>
       </div>
 
-      <section className="scribble rounded-block bg-pastel-yellow p-5">
+      <section
+        key={`${card.id}-${turn}-${answered ? (answered.result.correct ? 'ok' : 'bad') : 'ask'}`}
+        className={`rounded-block bg-surface p-5 ${answered && !answered.result.correct ? 'animate-shake' : 'animate-pop-in'}`}
+      >
         <CardFront
           view={view}
           isNew={(states[card.id] ?? card.state).state === 0}
@@ -256,13 +272,13 @@ export function ReviewSession({ initialCards, retention }: { initialCards: Sessi
             enterKeyHint="done"
             aria-label="Đáp án tiếng Đức"
             placeholder={view.article ? 'der/die/das + từ' : view.face.kind === 'error_fix' ? 'Gõ câu đã sửa' : 'Gõ đáp án'}
-            className="h-14 w-full rounded-[20px] bg-surface px-4 text-[22px] outline-2 outline-line focus:outline-ink"
+            className="h-15 w-full rounded-xl bg-surface px-4 text-[22px] font-medium outline-[1.5px] outline-line transition-[outline-color] placeholder:font-normal placeholder:text-muted/80"
           />
           <div className="flex gap-2">
             <button type="button" onClick={() => void check(true)} disabled={judging} className={`${secondaryClass} flex-1`}>
               Không nhớ
             </button>
-            <button type="submit" disabled={judging} className={`${primaryClass} flex-[2]`}>
+            <button type="submit" disabled={judging} className={`${primaryClass} flex-[1.5]`}>
               {judging ? 'AI đang phán…' : 'Kiểm tra'}
             </button>
           </div>
@@ -305,27 +321,23 @@ function CardFront({
   const face = view.face;
   return (
     <div className="flex min-h-[132px] flex-col justify-center gap-2">
-      <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+      <p className={`${blockLabelClass} flex items-center gap-2`}>
         {{ vi_de: 'Việt → Đức', audio_de: 'Nghe và viết', cloze: 'Điền chỗ trống', error_fix: 'Sửa câu sai' }[face.kind]}
-        {isNew && ' · thẻ mới'}
+        {isNew && <span className="rounded-full bg-pastel-lilac px-2 py-0.5 text-[11px] font-semibold text-purple">Thẻ mới</span>}
       </p>
       {face.kind === 'vi_de' && (
         <>
-          <p className="text-[28px] font-bold leading-tight">{face.vietnamese}</p>
-          <p className="text-[14px] opacity-80">
+          <p className="text-[30px] font-extrabold leading-tight">{face.vietnamese}</p>
+          <p className="text-[14px] text-muted">
             {[face.posLabel, face.level].filter(Boolean).join(' · ')}
             {view.article && ' · gõ kèm mạo từ'}
           </p>
         </>
       )}
       {face.kind === 'audio_de' && (
-        <button
-          type="button"
-          onClick={() => speakGerman(face.speak)}
-          disabled={!canSpeak()}
-          className="flex h-16 items-center justify-center gap-2 rounded-full bg-primary text-[18px] font-semibold text-on-primary"
-        >
-          ▶ Nghe lại
+        <button type="button" onClick={() => speakGerman(face.speak)} disabled={!canSpeak()} className={listenButtonClass}>
+          <Icon name="speaker" size={26} strokeWidth={2.6} />
+          Nghe lại
         </button>
       )}
       {face.kind === 'error_fix' && (
@@ -334,9 +346,14 @@ function CardFront({
             {face.wrong}
           </p>
           {hintShown ? (
-            <p className="text-[15px] font-semibold">Lỗi: {face.title}</p>
+            <BelloHint>Lỗi: {face.title}</BelloHint>
           ) : (
-            <button type="button" onClick={onHint} className="self-start rounded-full bg-surface px-4 py-2 text-[14px] font-semibold">
+            <button
+              type="button"
+              onClick={onHint}
+              className="flex items-center gap-1.5 self-start rounded-full bg-surface px-4 py-2 text-[14px] font-semibold outline-[1.5px] outline-line"
+            >
+              <Icon name="bulb" size={18} strokeWidth={2.2} className="text-gold-shade" />
               Gợi ý
             </button>
           )}
@@ -346,10 +363,10 @@ function CardFront({
         <>
           <p className="text-[28px] font-semibold leading-snug" lang="de">
             {face.before}
-            <span className="mx-1 inline-block min-w-16 border-b-4 border-ink align-baseline">&nbsp;</span>
+            <span className="mx-1 inline-block min-w-16 rounded-sm border-b-4 border-blue align-baseline">&nbsp;</span>
             {face.after}
           </p>
-          {face.translation && <p className="text-[15px] opacity-80">{face.translation}</p>}
+          {face.translation && <p className="text-[15px] text-muted">{face.translation}</p>}
         </>
       )}
     </div>
@@ -373,28 +390,27 @@ function ResultPanel({
   const isErrorFix = view.face.kind === 'error_fix';
   return (
     <div className="flex flex-col gap-3">
-      <div className={`rounded-[20px] p-4 ${result.correct ? 'bg-pastel-sage' : 'bg-pastel-pink'}`} role="status">
-        <p className="text-[15px] font-bold">{result.correct ? 'Đúng' : 'Chưa đúng'}</p>
+      <Feedback correct={result.correct} seed={card.id}>
         {given && !result.correct && (
-          <p className="text-[16px] line-through opacity-70" lang="de">
+          <p className="text-[16px] font-semibold line-through opacity-60" lang="de">
             {given}
           </p>
         )}
-        <p className="text-[26px] font-semibold leading-tight" lang="de">
+        <p className="text-[26px] font-bold leading-tight" lang="de">
           {view.article && <ArticleChip article={view.article} size="lg" />}{' '}
           {view.article ? view.answer.slice(view.article.length + 1) : view.answer}
         </p>
         {result.flags.length > 0 && (
-          <ul className="mt-1 text-[14px]">
+          <ul className="text-[14px] font-medium">
             {result.flags.map((f) => (
               <li key={f}>• {FLAG_VI[f]}</li>
             ))}
           </ul>
         )}
-        {note && <p className="mt-1 text-[14px]">{note}</p>}
-      </div>
+        {note && <p className="text-[14px] font-medium">{note}</p>}
+      </Feedback>
 
-      <div className="rounded-[20px] bg-surface p-4">
+      <div className="rounded-block bg-surface p-4">
         {card.item.plural && view.article && (
           <p className="text-[14px] text-muted" lang="de">
             Số nhiều: {card.item.plural}
@@ -411,7 +427,8 @@ function ResultPanel({
         <div className="mt-3 flex gap-2">
           {canSpeak() && (
             <button type="button" onClick={() => speakGerman(view.speak)} className={`${secondaryClass} flex-1`}>
-              ▶ Nghe
+              <Icon name="speaker" size={18} strokeWidth={2.6} />
+              Nghe
             </button>
           )}
           <Link href={`/tutor?card=${card.id}`} className={`${secondaryClass} flex-1`}>
@@ -426,16 +443,16 @@ function ResultPanel({
             key={r}
             type="button"
             onClick={() => onRate(r)}
-            className={`flex h-16 flex-col items-center justify-center rounded-[20px] text-[15px] font-semibold ${
-              r === suggested ? 'bg-primary text-on-primary' : 'bg-surface outline-1 outline-line'
+            className={`flex h-16 flex-col items-center justify-center rounded-xl text-[15px] font-bold ${
+              r === suggested ? 'bg-primary text-on-primary' : `bg-surface outline-[1.5px] outline-line ${RATE_TONE[r]}`
             }`}
           >
             {RATING_VI[r]}
-            <span className="text-[11px] font-normal opacity-80">{formatInterval(intervals[r])}</span>
+            <span className="text-[11px] font-medium opacity-75">{formatInterval(intervals[r])}</span>
           </button>
         ))}
       </div>
-      <p className="text-center text-[12px] text-muted">Enter để chọn mức đề xuất</p>
+      <p className="text-center text-[12px] text-muted">Enter để chọn mức đề xuất (nút màu đen)</p>
     </div>
   );
 }
@@ -454,25 +471,35 @@ function SessionEnd({
   empty: boolean;
 }) {
   return (
-    <section className="scribble flex flex-col gap-3 rounded-block bg-pastel-yellow p-6">
+    <>
       {empty ? (
-        <>
-          <p className="text-[22px] font-bold">Không còn thẻ đến hạn</p>
-          <p className="text-[15px] opacity-80">Học bài mới để có thêm từ, hoặc quay lại sau.</p>
-          <Link href="/learn" className={primaryClass}>
-            Học bài mới
-          </Link>
-          <Link href="/add" className={secondaryClass}>
-            Thêm mục
-          </Link>
-        </>
+        <section className="flex flex-col items-center gap-3 pt-6 text-center">
+          <div className="w-full rounded-block bg-pastel-sage px-6 pt-2">
+            <Bello state="sleep" className="mx-auto h-36 w-auto max-w-full" />
+          </div>
+          <p className="text-[24px] font-extrabold">Không còn thẻ đến hạn</p>
+          <p className="text-[15px] font-medium text-muted">Học bài mới để có thêm từ, hoặc quay lại sau.</p>
+          <div className="mt-2 flex w-full flex-col gap-3">
+            <Link href="/learn" className={primaryClass}>
+              Học bài mới
+            </Link>
+            <Link href="/add" className={secondaryClass}>
+              Thêm mục
+            </Link>
+          </div>
+        </section>
       ) : (
-        <>
-          <p className="text-[22px] font-bold">Xong phiên ôn</p>
-          <p className="text-[15px]">
-            {done.count} lần trả lời · đúng {done.count ? Math.round((done.correct / done.count) * 100) : 0}%
-          </p>
-          {saving > 0 && <p className="text-[14px] opacity-80">Đang lưu {saving} lần chấm…</p>}
+        <Celebration
+          title="Xong phiên ôn!"
+          party={done.count > 0}
+          bello="sleep"
+          subtitle={<span lang="de">Weiter so!</span>}
+          stats={[
+            { label: 'Lần trả lời', value: String(done.count), icon: 'cards', tone: 'gold' },
+            { label: 'Chính xác', value: `${done.count ? Math.round((done.correct / done.count) * 100) : 0}%`, icon: 'target', tone: 'green' },
+          ]}
+        >
+          {saving > 0 && <p className="text-center text-[14px] font-semibold text-muted">Đang lưu {saving} lần chấm…</p>}
           {error && <p className={errorBoxClass}>{error}</p>}
           {onUndo && (
             <button type="button" onClick={onUndo} className={secondaryClass}>
@@ -482,8 +509,8 @@ function SessionEnd({
           <Link href="/" className={primaryClass}>
             Về Hôm nay
           </Link>
-        </>
+        </Celebration>
       )}
-    </section>
+    </>
   );
 }

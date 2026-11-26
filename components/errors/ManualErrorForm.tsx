@@ -106,7 +106,7 @@ export function ManualErrorForm() {
         <button type="button" onClick={() => setOpen(false)} className="h-13 flex-1 rounded-full text-[15px] font-semibold text-muted">
           Đóng
         </button>
-        <button type="submit" disabled={pending} className={`${primaryClass} flex-[2]`}>
+        <button type="submit" disabled={pending} className={`${primaryClass} flex-[1.5]`}>
           {pending ? 'Đang lưu…' : 'Lưu lỗi'}
         </button>
       </div>

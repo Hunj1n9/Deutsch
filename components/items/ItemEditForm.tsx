@@ -100,7 +100,7 @@ export function ItemEditForm({
           </button>
         </form>
       ) : (
-        <p className="rounded-[20px] bg-surface p-4 text-[15px] text-muted">Mục sửa lỗi được quản lý trong Sổ lỗi.</p>
+        <p className="rounded-2xl bg-surface p-4 text-[15px] text-muted">Mục sửa lỗi được quản lý trong Sổ lỗi.</p>
       )}
 
       {message && (
@@ -114,7 +114,7 @@ export function ItemEditForm({
         <p className="mb-3 text-[13px] opacity-80">Thẻ treo không xuất hiện trong phiên ôn.</p>
         <ul className="flex flex-col gap-2">
           {cards.map((card) => (
-            <li key={card.id} className="flex items-center justify-between gap-3 rounded-[20px] bg-surface p-3">
+            <li key={card.id} className="flex items-center justify-between gap-3 rounded-2xl bg-surface p-3">
               <div>
                 <p className="text-[15px] font-semibold">{CARD_LABEL_VI[card.kind]}</p>
                 <p className="text-[12px] text-muted">

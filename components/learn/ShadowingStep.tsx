@@ -39,7 +39,7 @@ export function ShadowingStep({ title, lines, onDone }: { title: string; lines: 
         {title} · nói theo {index + 1}/{lines.length}
       </p>
       <section className="scribble rounded-block bg-pastel-sky p-5">
-        <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Nói theo · {line.speaker}</p>
+        <p className="text-[13px] font-semibold opacity-70">Nói theo · {line.speaker}</p>
         <p className="mt-2 text-[22px] font-semibold leading-snug" lang="de">
           {line.de}
         </p>

@@ -54,7 +54,7 @@ async function Progress() {
   return (
     <div className="flex flex-col gap-3">
       <section className="scribble rounded-block bg-pastel-sage p-5">
-        <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Dự báo</p>
+        <p className="text-[13px] font-semibold opacity-70">Dự báo</p>
         <p className="mt-1 text-[15px]">
           Đã học <b className="text-[22px]">{fmt1(p.hoursDone)}</b> giờ · tốc độ {fmt1(p.rate)} giờ/tuần (4 tuần gần nhất)
         </p>
@@ -83,16 +83,16 @@ async function Progress() {
       <WeeklyBars title="Số ngày học mỗi tuần" labels={labels} values={p.weeks.map((w) => w.days)} unit=" ngày" />
 
       <section className="grid grid-cols-2 gap-3">
-        <div className="rounded-[20px] bg-surface p-4">
+        <div className="rounded-2xl bg-surface p-4">
           <p className="text-[13px] font-semibold text-muted">Tỉ lệ nhớ (30 ngày)</p>
           <p className="text-[28px] font-bold">{retention === null ? '—' : `${Math.round(retention * 100)}%`}</p>
           <p className="text-[12px] text-muted">Mục tiêu {Math.round(settings.desired_retention * 100)}%</p>
         </div>
-        <div className="rounded-[20px] bg-surface p-4">
+        <div className="rounded-2xl bg-surface p-4">
           <p className="text-[13px] font-semibold text-muted">Lỗi đang mở</p>
           <p className="text-[28px] font-bold">{openErrors.count ?? 0}</p>
         </div>
-        <div className="col-span-2 rounded-[20px] bg-surface p-4">
+        <div className="col-span-2 rounded-2xl bg-surface p-4">
           <p className="mb-1 text-[13px] font-semibold text-muted">Thẻ theo trạng thái</p>
           <div className="grid grid-cols-4 text-center">
             {cardStates.map((r, i) => (

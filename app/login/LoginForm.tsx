@@ -13,9 +13,9 @@ const URL_ERRORS: Record<string, string> = {
 };
 
 const fieldClass =
-  'h-14 w-full rounded-[20px] bg-surface px-[18px] text-[18px] outline-2 outline-line focus:outline-ink';
+  'h-14 w-full rounded-xl bg-surface px-[18px] text-[18px] font-medium outline-[1.5px] outline-line placeholder:font-normal';
 const primaryClass =
-  'flex h-13 w-full items-center justify-center gap-2 rounded-full bg-primary text-[16px] font-semibold text-on-primary disabled:opacity-50';
+  'flex h-13 w-full items-center justify-center gap-2 rounded-xl bg-primary text-[16px] font-bold text-on-primary';
 
 export function LoginForm() {
   const params = useSearchParams();
@@ -56,7 +56,7 @@ export function LoginForm() {
         <>
           <input type="hidden" name="email" value={state.email} />
           {state.message && (
-            <p className="rounded-[20px] bg-pastel-sage p-4 text-[15px] leading-relaxed">
+            <p className="animate-pop-in rounded-xl border-[1.5px] bg-pastel-sage p-4 text-[15px] leading-relaxed">
               {state.message}
               <span className="mt-1 block font-semibold">{state.email}</span>
             </p>
@@ -88,7 +88,7 @@ export function LoginForm() {
             value="back"
             formNoValidate
             disabled={pending}
-            className="h-11 text-[14px] font-semibold text-muted"
+            className="h-11 text-[14px] font-semibold text-blue"
           >
             Đổi email hoặc gửi lại
           </button>
@@ -96,7 +96,7 @@ export function LoginForm() {
       )}
 
       {error && (
-        <p role="alert" className="rounded-[20px] bg-pastel-pink p-4 text-[15px] leading-relaxed">
+        <p role="alert" className="animate-shake rounded-xl border-[1.5px] bg-pastel-pink p-4 text-[15px] leading-relaxed">
           {error}
         </p>
       )}

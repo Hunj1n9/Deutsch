@@ -18,13 +18,13 @@ export function WeeklyBars({
   const max = Math.max(1, ...values);
   const last = values.length - 1;
   return (
-    <figure className="rounded-[20px] bg-surface p-4">
+    <figure className="rounded-2xl bg-surface p-4">
       <figcaption className="text-[13px] font-semibold text-muted">{title}</figcaption>
       <div className="mt-6 flex h-28 items-end gap-[2px] border-b border-line" aria-hidden>
         {values.map((v, i) => (
           <div key={i} className="group relative flex h-full flex-1 items-end justify-center" title={`${labels[i]}: ${format(v)}${unit}`}>
             <div
-              className={`w-full max-w-6 rounded-t-[4px] ${i === last ? 'bg-ink' : 'bg-ink/45'}`}
+              className={`w-full max-w-6 rounded-t-[4px] ${i === last ? 'bg-green' : 'bg-green/45'}`}
               style={{ height: `${(v / max) * 100}%`, minHeight: v > 0 ? 2 : 0 }}
             />
             {i === last && (

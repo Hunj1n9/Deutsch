@@ -3,14 +3,18 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { submitLevelTestAction, submitStageTestAction, type TestReview } from '@/app/(app)/learn/actions';
+import type { BelloItemId } from '@/lib/bello-items';
 import { questionStage, type SectionScore } from '@/lib/course/level-test';
 import type { TestOutcome, TestView } from '@/lib/course/stage-test';
+import { Celebration } from '../fx/Celebration';
+import { Icon } from '../Icon';
+import { ProgressBar } from '../ProgressBar';
 import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { errorBoxClass, noticeBoxClass, primaryClass, secondaryClass } from '../ui';
 import { reportTarget } from '@/lib/course/report';
 import { ContentReport } from './ContentReport';
-import { AnswerInput, answerInputClass, ExercisePrompt } from './ExerciseCard';
+import { AnswerInput, answerInputClass, ExercisePrompt, listenButtonClass } from './ExerciseCard';
 import { learnHref } from '@/lib/course/position';
 
 export type Reading = { title_de: string; text_de: string; gloss: Record<string, string> };
@@ -53,6 +57,7 @@ export function StageTest({
     outcome: TestOutcome & { sections?: Record<string, SectionScore> };
     review: TestReview[];
     skipped: boolean;
+    newItems: BelloItemId[];
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -84,7 +89,7 @@ export function StageTest({
         setError(res.error);
         return;
       }
-      setResult({ outcome: res.outcome, review: res.review, skipped: res.skipped });
+      setResult({ outcome: res.outcome, review: res.review, skipped: res.skipped, newItems: res.newItems });
       window.scrollTo({ top: 0 });
     });
   }
@@ -93,7 +98,7 @@ export function StageTest({
     return (
       <div className="flex flex-col gap-3">
         <section className="scribble rounded-block bg-pastel-yellow p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">{title}</p>
+          <p className="text-[13px] font-semibold opacity-70">{title}</p>
           <p className="mt-2 text-[17px] leading-relaxed">
             {questions.length} câu: từ vựng, ngữ pháp và đọc hiểu. Không có gợi ý, đáp án hiện sau khi nộp. Đạt khi đúng từ{' '}
             {Math.ceil(questions.length * passRatio)} câu. Đề được rút ngẫu nhiên mỗi lần làm.
@@ -115,18 +120,29 @@ export function StageTest({
   }
 
   if (result) {
-    const { outcome, review, skipped } = result;
+    const { outcome, review, skipped, newItems } = result;
     const wrong = review.filter((r) => !r.correct);
     return (
       <div className="flex flex-col gap-3">
-        <section className={`scribble rounded-block p-5 ${outcome.passed ? 'bg-pastel-sage' : 'bg-pastel-pink'}`} role="status">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">{outcome.passed ? 'Đạt' : 'Chưa đạt'}</p>
-          <p className="mt-1 text-[34px] font-bold leading-none">
-            {outcome.score}/{outcome.total}
-          </p>
-          {mode.kind === 'level' && <p className="mt-1 text-[15px]">Thời gian: {formatElapsed(elapsed)}</p>}
-          {skipped && <p className="mt-2 text-[15px]">Chặng được đánh dấu bỏ qua; từ của chặng đã vào kho để ôn.</p>}
-        </section>
+        <div role="status">
+          <Celebration
+            title={outcome.passed ? (mode.kind === 'level' ? 'Thi thử đạt!' : 'Qua chặng!') : 'Chưa đạt lần này'}
+            party={outcome.passed}
+            bello={outcome.passed ? 'happy' : 'sad'}
+            newItems={newItems}
+            subtitle={
+              <>
+                <span lang="de">{outcome.passed ? 'Herzlichen Glückwunsch!' : 'Kopf hoch, noch einmal!'}</span>
+                {skipped && <span className="mt-1 block">Chặng được đánh dấu bỏ qua; từ của chặng đã vào kho để ôn.</span>}
+              </>
+            }
+            stats={[
+              { label: 'Điểm', value: `${outcome.score}/${outcome.total}`, icon: 'star', tone: outcome.passed ? 'gold' : 'red' },
+              { label: 'Chính xác', value: `${outcome.total ? Math.round((outcome.score / outcome.total) * 100) : 0}%`, icon: 'target', tone: 'green' },
+              ...(mode.kind === 'level' ? [{ label: 'Thời gian', value: formatElapsed(elapsed), icon: 'clock' as const, tone: 'blue' as const }] : []),
+            ]}
+          />
+        </div>
         {outcome.sections && (
           <ul className="grid grid-cols-3 gap-2" aria-label="Điểm từng phần">
             {Object.entries(outcome.sections).map(([k, v]) => (
@@ -166,7 +182,7 @@ export function StageTest({
             {wrong.map((r) => {
               const q = questions.find((x) => x.id === r.id);
               return (
-                <div key={r.id} className="rounded-[20px] bg-surface p-4">
+                <div key={r.id} className="rounded-2xl bg-surface p-4">
                   {q && <QuestionLabel q={q} />}
                   <p className="text-[15px] line-through opacity-70" lang="de">
                     {r.answer || '(bỏ trống)'}
@@ -206,7 +222,7 @@ export function StageTest({
     const blank = questions.filter((q) => !answers[q.id]?.trim()).length;
     return (
       <div className="flex flex-col gap-3">
-        <p className="rounded-[20px] bg-surface p-4 text-[16px]">
+        <p className="rounded-2xl bg-surface p-4 text-[16px]">
           Đã trả lời {questions.length - blank}/{questions.length} câu.{blank > 0 && ` ${blank} câu bỏ trống tính là sai.`}
         </p>
         <button type="button" onClick={submit} disabled={pending} className={primaryClass}>
@@ -228,10 +244,8 @@ export function StageTest({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3 px-1">
-        <div className="h-2 flex-1 overflow-hidden rounded-full bg-surface" aria-hidden>
-          <div className="h-full rounded-full bg-primary" style={{ width: `${(index / questions.length) * 100}%` }} />
-        </div>
-        <span className="text-[13px] font-semibold text-muted">
+        <ProgressBar value={index} max={questions.length} className="flex-1" />
+        <span className="text-[14px] font-extrabold tabular-nums text-muted">
           {index + 1}/{questions.length}
           {mode.kind === 'level' && ` · ${formatElapsed(elapsed)}`}
         </span>
@@ -258,7 +272,7 @@ function QuestionLabel({ q }: { q: TestView }) {
 function ReadingText({ reading }: { reading: Reading }) {
   const [open, setOpen] = useState(true);
   return (
-    <section className="rounded-[20px] bg-surface p-4">
+    <section className="rounded-2xl bg-surface p-4">
       <button type="button" onClick={() => setOpen(!open)} className="flex w-full items-center justify-between text-left">
         <span className="text-[15px] font-bold" lang="de">
           {reading.title_de}
@@ -307,20 +321,21 @@ function TestQuestionView({ q, initial, onAnswer }: { q: TestView; initial: stri
       <section className="scribble rounded-block bg-pastel-yellow p-5">
         {q.mode === 'vi_de' ? (
           <>
-            <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Việt → Đức</p>
+            <p className="text-[13px] font-semibold opacity-70">Việt → Đức</p>
             <p className="mt-1 text-[28px] font-bold leading-tight">{q.vietnamese}</p>
             {q.needsArticle && <p className="text-[14px] opacity-80">gõ kèm mạo từ</p>}
           </>
         ) : (
           <>
-            <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Nghe và chép</p>
+            <p className="text-[13px] font-extrabold opacity-70">Nghe và chép</p>
             <button
               type="button"
               onClick={() => speakGerman(q.speak, 0.8)}
               disabled={!canSpeak()}
-              className="mt-2 flex h-16 w-full items-center justify-center rounded-full bg-primary text-[18px] font-semibold text-on-primary"
+              className={`${listenButtonClass} mt-2 w-full`}
             >
-              ▶ Nghe lại
+              <Icon name="speaker" size={26} strokeWidth={2.6} />
+              Nghe lại
             </button>
           </>
         )}

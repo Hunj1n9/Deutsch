@@ -17,7 +17,7 @@ export function full(w: WordView) {
   return w.article ? `${w.article} ${w.german}` : w.german;
 }
 
-const optionClass = 'min-h-14 w-full rounded-[20px] px-4 py-3 text-left outline-2 outline-line';
+const optionClass = 'min-h-14 w-full rounded-2xl px-4 py-3 text-left outline-2 outline-line';
 
 function optionBg(state: 'idle' | 'right' | 'wrong') {
   return state === 'right' ? 'bg-pastel-sage' : state === 'wrong' ? 'bg-pastel-pink' : 'bg-surface';
@@ -63,7 +63,7 @@ export function MatchBoard({ words, seed, onDone }: { words: WordView[]; seed: n
   return (
     <div className="flex flex-col gap-3">
       <section className="scribble rounded-block bg-pastel-yellow p-5">
-        <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Ghép cặp</p>
+        <p className="text-[13px] font-semibold opacity-70">Ghép cặp</p>
         <p className="mt-1 text-[15px]">Chạm một từ tiếng Đức, rồi chạm nghĩa của nó.</p>
       </section>
       <div className="grid grid-cols-2 gap-2">
@@ -81,7 +81,7 @@ export function MatchBoard({ words, seed, onDone }: { words: WordView[]; seed: n
                 }}
                 aria-pressed={selected === w.key}
                 className={`min-h-14 rounded-[16px] px-3 py-2 text-left text-[17px] font-semibold outline-2 ${
-                  isDone ? 'bg-pastel-sage opacity-60 outline-line' : selected === w.key ? 'bg-pastel-sky outline-ink' : 'bg-surface outline-line'
+                  isDone ? 'bg-pastel-sage opacity-60 outline-line' : selected === w.key ? 'bg-pastel-sky outline-blue' : 'bg-surface outline-line'
                 }`}
                 lang="de"
               >
@@ -164,7 +164,7 @@ export function ChoiceTask({ kind, word, group, lesson, lessonId, tries, retry, 
   return (
     <div className="flex flex-col gap-3">
       <section className="scribble rounded-block bg-pastel-yellow p-5">
-        <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+        <p className="text-[13px] font-semibold opacity-70">
           {CHOICE_TITLE[kind]}
           {tries > 0 && ' · làm lại'}
         </p>
@@ -263,7 +263,7 @@ export function SpellTask({
   return (
     <div className="flex flex-col gap-3">
       <section className="scribble rounded-block bg-pastel-yellow p-5">
-        <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+        <p className="text-[13px] font-semibold opacity-70">
           Xếp chữ cái{tries > 0 && ' · làm lại'}
         </p>
         <p className="mt-1 text-[28px] font-bold leading-tight">{word.vietnamese}</p>

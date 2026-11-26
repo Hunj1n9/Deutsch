@@ -15,13 +15,13 @@ export default function Page() {
   return (
     <>
       <header className="mb-4 mt-2 flex items-center gap-3">
-        <Link href="/" aria-label="Thoát phiên ôn" className="grid size-11 place-items-center rounded-full bg-surface">
-          <Icon name="x" />
+        <Link href="/" aria-label="Thoát phiên ôn" className="grid size-11 place-items-center rounded-full bg-surface outline-[1.5px] outline-line">
+          <Icon name="x" strokeWidth={2.4} />
         </Link>
-        <h1 className="text-[22px] font-bold">Ôn tập</h1>
+        <h1 className="text-[22px] font-extrabold">Ôn tập</h1>
       </header>
       <ActivityTracker activity="review" />
-      <Suspense fallback={<p className="px-1 text-[15px] text-muted">Đang lấy thẻ…</p>}>
+      <Suspense fallback={<p className="animate-pulse px-1 text-[15px] font-medium text-muted">Đang lấy thẻ…</p>}>
         <SessionContent />
       </Suspense>
     </>
