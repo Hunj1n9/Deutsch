@@ -24,7 +24,7 @@ export function Placeholder({
   return (
     <section className={`scribble mb-3 rounded-block p-5 ${tones[tone]}`}>
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">{label}</span>
+        <span className="text-[13px] font-semibold opacity-70">{label}</span>
         <span className="rounded-full bg-surface px-3 py-1 text-[12px] font-semibold">Làm ở {milestone}</span>
       </div>
       <p className="mt-2 text-[15px] leading-relaxed opacity-80">{children}</p>

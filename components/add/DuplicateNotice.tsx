@@ -27,7 +27,7 @@ export function DuplicateNotice({
   ];
 
   return (
-    <div className="rounded-[20px] bg-pastel-yellow p-3 text-[14px] leading-relaxed" role="status">
+    <div className="rounded-2xl bg-pastel-yellow p-3 text-[14px] leading-relaxed" role="status">
       {existing ? (
         <p>
           Đã có:{' '}

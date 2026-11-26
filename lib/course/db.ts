@@ -6,6 +6,7 @@ import { scheduleCard, type CardState } from '@/lib/scheduler';
 import { loadSettings } from '@/lib/supabase/queries';
 import type { Session } from '@/lib/supabase/session';
 import type { AnswerFlag } from '@/lib/answer-check';
+import type { BelloProgress } from '@/lib/bello-items';
 import { lessonDrafts, roadmapStage } from './catalog';
 import { recallRating } from './grade';
 import type { LessonState } from './position';
@@ -55,14 +56,15 @@ export async function loadCourseState({ supabase }: Session): Promise<CourseStat
   return { progress, passed, best };
 }
 
-/** Lưu bước đang làm và điểm tạm; tới bước Tổng kết thì ghi lần hoàn thành đầu tiên. */
+/** Lưu bước đang làm và điểm tạm; tới bước Tổng kết thì ghi lần hoàn thành đầu tiên. Trả về true nếu lần này là lần xong đầu. */
 export async function saveLessonStep(
   { supabase, userId }: Session,
   lessonId: string,
   input: { step: number; score: number; total: number },
-): Promise<void> {
+): Promise<boolean> {
   const { data: cur } = await supabase.from('lesson_progress').select('completed_at').eq('lesson_id', lessonId).maybeSingle();
   const done = input.step >= SUMMARY_STEP;
+  const firstDone = done && !cur?.completed_at;
   const completedAt = (cur?.completed_at as string | null | undefined) ?? (done ? new Date().toISOString() : null);
   const { error } = await supabase.from('lesson_progress').upsert(
     {
@@ -76,6 +78,7 @@ export async function saveLessonStep(
     { onConflict: 'user_id,lesson_id' },
   );
   if (error) throw error;
+  return firstDone;
 }
 
 /** Bắt đầu lại một bài đã xong (chỉ để luyện): về bước đầu, giữ ngày hoàn thành. */
@@ -199,4 +202,21 @@ export async function loadLevelTests({ supabase }: Session): Promise<LevelTestSt
     });
   }
   return out;
+}
+
+/** Tiến độ để tính món đồ của Bello đã mở (SPEC F17): chỉ đọc, không có bảng riêng. */
+export async function loadBelloProgress({ supabase }: Session): Promise<BelloProgress> {
+  const [lessons, stageTests, levelTests] = await Promise.all([
+    supabase.from('lesson_progress').select('completed_at, skipped'),
+    supabase.from('stage_tests').select('passed').eq('passed', true).limit(1),
+    supabase.from('level_tests').select('level, passed').eq('passed', true),
+  ]);
+  return {
+    lessons: ((lessons.data ?? []) as { completed_at: string | null; skipped: boolean }[]).map((r) => ({
+      completed: Boolean(r.completed_at),
+      skipped: r.skipped,
+    })),
+    stageTests: (stageTests.data ?? []) as { passed: boolean }[],
+    levelTests: (levelTests.data ?? []) as { level: string; passed: boolean }[],
+  };
 }

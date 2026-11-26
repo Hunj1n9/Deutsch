@@ -37,7 +37,7 @@ export function DailyTasks({
 
   return (
     <section className="mb-3 rounded-block bg-surface p-5">
-      <p className="mb-2 text-[13px] font-semibold uppercase tracking-[.06em] text-muted">Việc học khác</p>
+      <p className="mb-2 text-[13px] font-semibold text-muted">Việc học khác</p>
 
       {yesterdayLeft.length > 0 && (
         <div className="mb-3 rounded-[16px] bg-bg p-3 text-[14px]">
@@ -46,7 +46,7 @@ export function DailyTasks({
             type="button"
             disabled={pending}
             onClick={() => run(copyYesterdayAction)}
-            className="mt-2 rounded-full bg-primary px-3 py-1.5 text-[13px] font-semibold text-on-primary"
+            className="mt-2 rounded-2xl bg-primary px-3 py-1.5 text-[13px] font-semibold text-on-primary"
           >
             Chép sang hôm nay
           </button>
@@ -105,7 +105,7 @@ export function DailyTasks({
                   onChange={(e) => setMinutes(e.target.value.replace(/\D/g, ''))}
                   className={`${fieldClass} h-11 flex-1`}
                 />
-                <button type="submit" disabled={pending} className="h-11 rounded-full bg-primary px-4 text-[14px] font-semibold text-on-primary">
+                <button type="submit" disabled={pending} className="h-11 rounded-2xl bg-primary px-4 text-[14px] font-semibold text-on-primary">
                   Xong
                 </button>
               </form>
@@ -128,7 +128,7 @@ export function DailyTasks({
           placeholder="vd: eDeutsch A1 buổi 12"
           className={`${fieldClass} h-11 flex-1 text-[15px]`}
         />
-        <button type="submit" disabled={pending || !title.trim()} className="h-11 rounded-full bg-primary px-4 text-[14px] font-semibold text-on-primary disabled:opacity-50">
+        <button type="submit" disabled={pending || !title.trim()} className="h-11 rounded-2xl bg-primary px-4 text-[14px] font-semibold text-on-primary disabled:opacity-50">
           Thêm
         </button>
       </form>

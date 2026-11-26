@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { useRef, useState, useTransition } from 'react';
 import { restartLessonAction, saveStepAction } from '@/app/(app)/learn/actions';
 import { LESSON_STEPS, STEP_VI, SUMMARY_STEP, type GrammarPoint, type Lesson } from '@/lib/course/types';
+import type { BelloItemId } from '@/lib/bello-items';
+import { Celebration } from '../fx/Celebration';
 import { Icon } from '../Icon';
+import { Bello } from '../mascot/Bello';
 import { errorBoxClass, noticeBoxClass, primaryClass, secondaryClass } from '../ui';
 import { WritingChecker } from '../write/WritingChecker';
 import { DialogueStep } from './DialogueStep';
@@ -36,6 +39,7 @@ export function LessonPlayer({
   const [score, setScore] = useState({ right: initial.score, total: initial.total });
   const [errors, setErrors] = useState(0);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [newItems, setNewItems] = useState<BelloItemId[]>([]);
   const [pending, startTransition] = useTransition();
   // Điểm giữ ở ref để lưu được ngay khi chuyển bước; state chỉ để hiển thị.
   const scoreRef = useRef(score);
@@ -51,7 +55,10 @@ export function LessonPlayer({
     window.scrollTo({ top: 0 });
     const s = scoreRef.current;
     void saveStepAction({ lessonId: lesson.id, step: nextStep, score: s.right, total: s.total })
-      .then((r) => setSaveError(r.ok ? null : r.error))
+      .then((r) => {
+        setSaveError(r.ok ? null : r.error);
+        if (r.ok && r.newItems.length) setNewItems(r.newItems);
+      })
       .catch(() => setSaveError('Không lưu được tiến độ bài. Kiểm tra mạng.'));
   }
 
@@ -66,43 +73,71 @@ export function LessonPlayer({
   }
 
   const stepName = LESSON_STEPS[step];
+  const good = score.total === 0 || score.right / score.total >= REDO_BELOW;
 
   return (
     <>
       <header className="mb-3 mt-2 flex items-center gap-3">
-        <Link href={learnHref(lesson.id)} aria-label="Thoát bài (đã lưu bước đang làm)" className="grid size-11 shrink-0 place-items-center rounded-full bg-surface">
-          <Icon name="x" />
+        <Link
+          href={learnHref(lesson.id)}
+          aria-label="Thoát bài (đã lưu bước đang làm)"
+          className="grid size-11 shrink-0 place-items-center rounded-full bg-surface outline-[1.5px] outline-line"
+        >
+          <Icon name="x" strokeWidth={2.4} />
         </Link>
-        <div className="min-w-0">
-          <p className="text-[12px] font-semibold text-muted">
+        <div className="min-w-0 flex-1">
+          <p className="text-[12px] font-medium text-muted">
             {lesson.id.toUpperCase()} · {STEP_VI[stepName]}
           </p>
-          <h1 className="truncate text-[20px] font-bold leading-tight">{lesson.title_vi}</h1>
+          <h1 className="truncate text-[19px] font-extrabold leading-tight">{lesson.title_vi}</h1>
         </div>
       </header>
-      <ol className="mb-4 flex gap-1" aria-label="Các bước của bài">
+      {/* Thanh bước chia đoạn như Brilliant: đoạn xong tô xanh, đoạn đang làm tô một nửa. */}
+      <ol className="mb-1 flex gap-1.5" aria-label="Các bước của bài">
         {LESSON_STEPS.map((s, i) => (
-          <li
-            key={s}
-            aria-current={i === step ? 'step' : undefined}
-            title={STEP_VI[s]}
-            className={`h-2 flex-1 rounded-full ${i < step ? 'bg-primary' : i === step ? 'bg-ink/60' : 'bg-surface'}`}
-          />
+          <li key={s} aria-current={i === step ? 'step' : undefined} className="h-2 flex-1 overflow-hidden rounded-full bg-line">
+            <span
+              className="block h-full rounded-full bg-green transition-[width] duration-700 ease-[var(--ease-out-soft)]"
+              style={{ width: i < step ? '100%' : i === step ? '40%' : '0%' }}
+            />
+            <span className="sr-only">{STEP_VI[s]}</span>
+          </li>
         ))}
       </ol>
+      <p className="mb-4 text-[12px] font-medium text-muted">
+        Bước {step + 1}/{LESSON_STEPS.length}: {STEP_VI[stepName]}
+      </p>
 
       {stepName === 'goal' && (
         <div className="flex flex-col gap-3">
-          <section className="scribble rounded-block bg-pastel-sky p-5">
-            <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Mục tiêu</p>
-            <p className="mt-2 text-[20px] font-semibold leading-snug">Sau bài này bạn có thể: {lesson.goal_vi}</p>
-            <ul className="mt-3 flex flex-col gap-1 text-[15px]">
-              <li>• {words.length} từ và cụm từ mới</li>
-              <li>• Ngữ pháp: {point?.title_vi}</li>
-              <li>• Hội thoại „{lesson.dialogue.title_de}“, nghe, chép và nói theo</li>
-              <li>• Viết vài câu và được AI sửa</li>
+          <section className="overflow-hidden rounded-block bg-surface">
+            <div className="bg-pastel-sky px-6 pt-2">
+              <Bello state="energetic" className="mx-auto h-36 w-auto max-w-full" />
+            </div>
+            <div className="p-5">
+              <p className="text-[13px] font-semibold text-muted" lang="de">
+                Los geht&apos;s!
+              </p>
+              <p className="mt-1 text-[21px] font-extrabold leading-snug">Sau bài này bạn có thể: {lesson.goal_vi}</p>
+            </div>
+          </section>
+          <section className="rounded-block bg-surface p-5">
+            <p className="text-[13px] font-semibold text-muted">Trong bài này</p>
+            <ul className="stagger mt-3 flex flex-col gap-3 text-[15px] font-medium">
+              <GoalRow icon="cards" tone="bg-gold text-ink!">
+                {words.length} từ và cụm từ mới
+              </GoalRow>
+              <GoalRow icon="book" tone="bg-blue">
+                Ngữ pháp: {point?.title_vi}
+              </GoalRow>
+              <GoalRow icon="chat" tone="bg-green">
+                Hội thoại „{lesson.dialogue.title_de}“, nghe, chép và nói theo
+              </GoalRow>
+              <GoalRow icon="pen" tone="bg-purple">
+                Viết vài câu và được AI sửa
+              </GoalRow>
             </ul>
-            <p className="mt-3 text-[14px] opacity-80">Khoảng 25–40 phút. Thoát giữa chừng thì lần sau học tiếp từ đầu bước đang làm.</p>
+            <p className="mt-4 text-[14px] font-semibold text-muted">Khoảng 25–40 phút. Thoát giữa chừng thì lần sau học tiếp từ đầu bước đang làm.</p>
           </section>
           <button type="button" onClick={() => goTo(1)} className={primaryClass}>
             Bắt đầu
@@ -128,7 +163,7 @@ export function LessonPlayer({
             <button type="button" onClick={() => goTo(SUMMARY_STEP)} className={`${secondaryClass} flex-1`}>
               Bỏ qua
             </button>
-            <button type="button" onClick={() => goTo(SUMMARY_STEP)} className={`${primaryClass} flex-[2]`}>
+            <button type="button" onClick={() => goTo(SUMMARY_STEP)} className={`${primaryClass} flex-[1.5]`}>
               Xong, tổng kết
             </button>
           </div>
@@ -137,13 +172,19 @@ export function LessonPlayer({
 
       {stepName === 'summary' && (
         <div className="flex flex-col gap-3">
-          <section className="scribble rounded-block bg-pastel-sage p-5">
-            <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Tổng kết</p>
-            <p className="mt-1 text-[34px] font-bold leading-none">
-              {score.right}/{score.total}
-            </p>
-            <p className="mt-1 text-[15px]">bài tập đúng ngay lần đầu</p>
-            <ul className="mt-3 flex flex-col gap-1 text-[15px]">
+          <Celebration
+            title={good ? 'Bài học hoàn thành!' : 'Xong bài rồi!'}
+            party={good}
+            newItems={newItems}
+            subtitle={<span lang="de">{good ? 'Ausgezeichnet!' : 'Nicht aufgeben!'}</span>}
+            stats={[
+              { label: 'Đúng ngay', value: `${score.right}/${score.total}`, icon: 'check', tone: 'green' },
+              { label: 'Chính xác', value: `${score.total ? Math.round((score.right / score.total) * 100) : 100}%`, icon: 'target', tone: 'gold' },
+              { label: 'Mục mới', value: String(itemCount), icon: 'cards', tone: 'blue' },
+            ]}
+          />
+          <section className="rounded-block bg-surface p-4">
+            <ul className="flex flex-col gap-1 text-[14px] font-semibold">
               <li>• {itemCount} mục của bài đã vào kho; thẻ Việt→Đức đã vào lịch ôn, các thẻ nghe và điền chỗ trống vào dần theo giới hạn thẻ mới</li>
               {errors > 0 && <li>• {errors} lỗi mới vào sổ lỗi</li>}
             </ul>
@@ -154,7 +195,7 @@ export function LessonPlayer({
           {next && (
             <Link href={next.href} className={primaryClass}>
               {next.label}
-              <Icon name="arrow" />
+              <Icon name="arrow" strokeWidth={2.8} />
             </Link>
           )}
           <div className="flex gap-2">
@@ -174,5 +215,16 @@ export function LessonPlayer({
         </p>
       )}
     </>
+  );
+}
+
+function GoalRow({ icon, tone, children }: { icon: 'cards' | 'book' | 'chat' | 'pen'; tone: string; children: React.ReactNode }) {
+  return (
+    <li className="flex items-center gap-3">
+      <span aria-hidden className={`grid size-10 shrink-0 place-items-center rounded-xl text-white ${tone}`}>
+        <Icon name={icon} size={20} strokeWidth={2.2} />
+      </span>
+      <span>{children}</span>
+    </li>
   );
 }

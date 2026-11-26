@@ -1,4 +1,4 @@
-// Bộ icon nét mảnh dùng chung (đồng bộ với design/mockup.html).
+// Bộ icon nét tròn dùng chung.
 const paths = {
   home: <path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" />,
   cards: (
@@ -51,6 +51,40 @@ const paths = {
       <path d="M10 16l-4-4 4-4M6 12h10" />
     </>
   ),
+  check: <path d="M5 12.5l4.5 4.5L19 7.5" />,
+  star: <path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z" />,
+  trophy: (
+    <>
+      <path d="M8 4h8v5a4 4 0 0 1-8 0z" />
+      <path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M9.5 17h5" />
+    </>
+  ),
+  speaker: (
+    <>
+      <path d="M4 10v4h4l5 4V6L8 10z" />
+      <path d="M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11" />
+    </>
+  ),
+  bulb: (
+    <>
+      <path d="M9 18h6M10 21h4" />
+      <path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z" />
+    </>
+  ),
+  flame: <path d="M12 21c-3.9 0-7-2.8-7-6.6 0-3.4 2.4-5.4 4-7.9.5 1.6 1.4 2.6 2.6 3.2C11.8 6.9 13 4.5 15.5 3c-.3 2.6.6 4.4 2 6.3 1 1.4 1.5 3 1.5 5.1 0 3.8-3.1 6.6-7 6.6z" />,
+  target: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="12" cy="12" r=".6" />
+    </>
+  ),
+  lock: (
+    <>
+      <rect x="5" y="10.5" width="14" height="10" rx="2.5" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
+    </>
+  ),
   mail: (
     <>
       <rect x="3" y="5" width="18" height="14" rx="3" />
@@ -61,7 +95,17 @@ const paths = {
 
 export type IconName = keyof typeof paths;
 
-export function Icon({ name, size = 20, className }: { name: IconName; size?: number; className?: string }) {
+export function Icon({
+  name,
+  size = 20,
+  className,
+  strokeWidth = 2.2,
+}: {
+  name: IconName;
+  size?: number;
+  className?: string;
+  strokeWidth?: number;
+}) {
   return (
     <svg
       width={size}
@@ -69,7 +113,7 @@ export function Icon({ name, size = 20, className }: { name: IconName; size?: nu
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth={2}
+      strokeWidth={strokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"

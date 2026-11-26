@@ -6,7 +6,8 @@ import { isAcceptedAnswer, judgeExercise } from '@/lib/ai/p6-judge-exercise';
 import { AI_ERROR_VI } from '@/lib/ai/structured';
 import { LESSONS_BY_STAGE, STAGE_LESSONS } from '@/data/lessons';
 import { findLesson, findLessonExercise, grammarPoint, isMixedExercise, packDrafts, vocabEntries } from '@/lib/course/catalog';
-import { importGrammarItems, learnWords, loadCourseState, restartLesson, saveLessonStep, skipStage } from '@/lib/course/db';
+import { unlockedBy, type BelloItemId } from '@/lib/bello-items';
+import { importGrammarItems, learnWords, loadBelloProgress, loadCourseState, restartLesson, saveLessonStep, skipStage } from '@/lib/course/db';
 import { fullSentence } from '@/lib/course/grade';
 import { EXAM_LEVELS, findLevelQuestion, LEVEL_TOTAL, levelStages, questionStage, scoreLevelTest, type LevelOutcome } from '@/lib/course/level-test';
 import { cleanExcerpt, parseReportTarget, REPORT_NOTE_MAX, REPORT_TARGET_MAX } from '@/lib/course/report';
@@ -27,7 +28,13 @@ function logError(where: string, e: unknown) {
   console.error(`[learn] ${where} lỗi:`, (e as { code?: string }).code ?? (e as Error).message);
 }
 
-export async function saveStepAction(input: { lessonId: string; step: number; score: number; total: number }): Promise<ActionResponse> {
+/** Lưu bước của bài; xong bài lần đầu thì trả kèm món đồ Bello vừa mở (F17). */
+export async function saveStepAction(input: {
+  lessonId: string;
+  step: number;
+  score: number;
+  total: number;
+}): Promise<ActionResponse<{ newItems: BelloItemId[] }>> {
   const parsed = z
     .object({
       lessonId: lessonIdSchema,
@@ -40,8 +47,10 @@ export async function saveStepAction(input: { lessonId: string; step: number; sc
   const session = await getSession();
   if (!session) return { ok: false, error: SESSION_EXPIRED_VI };
   try {
-    await saveLessonStep(session, parsed.data.lessonId, parsed.data);
-    return { ok: true };
+    // Chỉ bước Tổng kết mới có thể mở đồ: đọc tiến độ trước khi ghi để biết món nào là mới.
+    const before = parsed.data.step >= SUMMARY_STEP ? await loadBelloProgress(session) : null;
+    const firstDone = await saveLessonStep(session, parsed.data.lessonId, parsed.data);
+    return { ok: true, newItems: before && firstDone ? unlockedBy(before, { kind: 'lesson' }) : [] };
   } catch (e) {
     logError('lưu bước', e);
     return { ok: false, error: 'Không lưu được tiến độ bài. Thử lại.' };
@@ -190,7 +199,7 @@ export type TestReview = { id: string; answer: string; correct: boolean; expecte
 export async function submitStageTestAction(input: {
   stageId: string;
   answers: { id: string; answer: string }[];
-}): Promise<ActionResponse<{ outcome: TestOutcome; review: TestReview[]; skipped: boolean }>> {
+}): Promise<ActionResponse<{ outcome: TestOutcome; review: TestReview[]; skipped: boolean; newItems: BelloItemId[] }>> {
   const parsed = z
     .object({
       stageId: stageIdSchema,
@@ -213,6 +222,7 @@ export async function submitStageTestAction(input: {
   if (graded.length !== parsed.data.answers.length) return { ok: false, error: 'Đề không khớp. Tải lại trang rồi làm lại.' };
   const outcome = scoreTest(graded);
   const review = graded.map((g) => ({ id: g.question.id, answer: g.answer, correct: g.correct, expected: g.expected }));
+  const before = await loadBelloProgress(session);
 
   const { error } = await session.supabase.from('stage_tests').insert({
     user_id: session.userId,
@@ -246,7 +256,7 @@ export async function submitStageTestAction(input: {
       }
     }
   }
-  return { ok: true, outcome, review, skipped };
+  return { ok: true, outcome, review, skipped, newItems: unlockedBy(before, { kind: 'stage_test', passed: outcome.passed }) };
 }
 
 /** Báo nội dung sai (F13): mỗi chỗ một dòng đang mở; báo lại thì cập nhật dòng đó. */
@@ -283,7 +293,7 @@ export async function reportContentAction(input: { target: string; excerpt: stri
 export async function submitLevelTestAction(input: {
   level: string;
   answers: { id: string; answer: string }[];
-}): Promise<ActionResponse<{ outcome: LevelOutcome; review: TestReview[]; skipped: boolean }>> {
+}): Promise<ActionResponse<{ outcome: LevelOutcome; review: TestReview[]; skipped: boolean; newItems: BelloItemId[] }>> {
   const parsed = z
     .object({
       level: z.enum(EXAM_LEVELS),
@@ -305,6 +315,7 @@ export async function submitLevelTestAction(input: {
   if (graded.length !== parsed.data.answers.length) return { ok: false, error: 'Đề không khớp. Tải lại trang rồi làm lại.' };
   const outcome = scoreLevelTest(graded);
   const review = graded.map((g) => ({ id: g.question.id, answer: g.answer, correct: g.correct, expected: g.expected }));
+  const before = await loadBelloProgress(session);
 
   const { error } = await session.supabase.from('level_tests').insert({
     user_id: session.userId,
@@ -326,5 +337,6 @@ export async function submitLevelTestAction(input: {
     return point ? [errorEntry(point, fullSentence(g.question.exercise, g.answer), fullSentence(g.question.exercise))] : [];
   });
   if (entries.length) await recordErrors(session, entries).catch((e) => logError('ghi lỗi thi thử', e));
-  return { ok: true, outcome, review, skipped: false };
+  const newItems = unlockedBy(before, { kind: 'level_test', level: parsed.data.level, passed: outcome.passed });
+  return { ok: true, outcome, review, skipped: false, newItems };
 }

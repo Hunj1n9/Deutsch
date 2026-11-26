@@ -6,6 +6,8 @@ import { checkAnswer, type AnswerFlag, type CheckResult } from '@/lib/answer-che
 import { hashSeed, shuffled } from '@/lib/course/grade';
 import type { Article } from '@/lib/items/types';
 import { ArticleChip } from '../ArticleChip';
+import { Feedback } from '../fx/Feedback';
+import { BelloHint } from '../mascot/BelloHint';
 import { canSpeak, speakGerman } from '../review/speech';
 import { UmlautBar } from '../UmlautBar';
 import { primaryClass, secondaryClass } from '../ui';
@@ -98,7 +100,7 @@ export function WordsStep({
   if (words.length === 0) {
     return (
       <div className="flex flex-col gap-3">
-        <p className="rounded-[20px] bg-surface p-4 text-[15px]">Bài này không có từ mới.</p>
+        <p className="rounded-2xl bg-surface p-4 text-[15px]">Bài này không có từ mới.</p>
         <button type="button" onClick={onDone} className={primaryClass}>
           Tiếp
         </button>
@@ -210,7 +212,7 @@ export function WordsStep({
       <div className="flex flex-col gap-3">
         {progress}
         <section className="scribble rounded-block bg-pastel-sky p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+          <p className="text-[13px] font-semibold opacity-70">
             Từ mới{introWord.posLabel && ` · ${introWord.posLabel}`}
           </p>
           <p className="mt-2 text-[30px] font-bold leading-tight" lang="de">
@@ -258,7 +260,7 @@ export function WordsStep({
           <button
             type="button"
             onClick={() => (intro + 1 < current.length ? setIntro(intro + 1) : setPhase('overview'))}
-            className={`${primaryClass} flex-[2]`}
+            className={`${primaryClass} flex-[1.5]`}
           >
             {intro + 1 < current.length ? 'Từ tiếp' : 'Xem lại cả nhóm'}
           </button>
@@ -272,7 +274,7 @@ export function WordsStep({
       <div className="flex flex-col gap-3">
         {progress}
         <section className="scribble rounded-block bg-pastel-sky p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Xem lại nhóm này</p>
+          <p className="text-[13px] font-semibold opacity-70">Xem lại nhóm này</p>
           <p className="mt-1 text-[14px] opacity-80">Đọc lại một lượt, chạm một dòng để nghe. Sau đó luyện vài kiểu, rồi mới gõ.</p>
           <ul className="mt-3 flex flex-col gap-2">
             {current.map((w) => (
@@ -302,7 +304,7 @@ export function WordsStep({
           >
             Xem lại thẻ
           </button>
-          <button type="button" onClick={() => (current.length > 1 ? setPhase('match') : startDrill())} className={`${primaryClass} flex-[2]`}>
+          <button type="button" onClick={() => (current.length > 1 ? setPhase('match') : startDrill())} className={`${primaryClass} flex-[1.5]`}>
             Luyện nhóm này
           </button>
         </div>
@@ -357,7 +359,7 @@ export function WordsStep({
     <div className="flex flex-col gap-3">
       {progress}
       <section className="scribble rounded-block bg-pastel-yellow p-5">
-        <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+        <p className="text-[13px] font-semibold opacity-70">
           Gõ tiếng Đức{recall.tries > 0 && ' · làm lại'}
         </p>
         <p className="mt-1 text-[28px] font-bold leading-tight">{w.vietnamese}</p>
@@ -366,9 +368,11 @@ export function WordsStep({
           {w.article && ' · gõ kèm mạo từ'}
         </p>
         {hinted ? (
-          <p className="mt-2 font-mono text-[20px] tracking-wide" lang="de" aria-label="Gợi ý chữ đầu">
-            {letterHint(w.german)}
-          </p>
+          <BelloHint tone="bg-surface/70" className="mt-2">
+            <p className="font-mono text-[20px] tracking-wide" lang="de" aria-label="Gợi ý chữ đầu">
+              {letterHint(w.german)}
+            </p>
+          </BelloHint>
         ) : (
           !answered && (
             <button
@@ -413,37 +417,41 @@ export function WordsStep({
               Không nhớ
             </button>
 
-            <button type="submit" disabled={!input.trim()} className={`${primaryClass} flex-[2]`}>
+            <button type="submit" disabled={!input.trim()} className={`${primaryClass} flex-[1.5]`}>
               Kiểm tra
             </button>
           </div>
         </form>
       ) : (
         <div className="flex flex-col gap-3">
-          <div className={`rounded-[20px] p-4 ${answered.result.correct ? 'bg-pastel-sage' : 'bg-pastel-pink'}`} role="status">
-            <p className="text-[15px] font-bold">{answered.result.correct ? 'Đúng' : 'Chưa đúng'}</p>
+          <Feedback
+            correct={answered.result.correct}
+            seed={`${w.german}-${recall.tries}`}
+            actions={
+              <button ref={nextRef} type="button" onClick={next} className={primaryClass}>
+                Tiếp tục
+              </button>
+            }
+          >
             {answered.given && !answered.result.correct && (
-              <p className="text-[16px] line-through opacity-70" lang="de">
+              <p className="text-[16px] font-semibold line-through opacity-60" lang="de">
                 {answered.given}
               </p>
             )}
-            <p className="text-[26px] font-semibold leading-tight" lang="de">
+            <p className={`text-[26px] font-extrabold leading-tight ${answered.result.correct ? 'text-ok' : 'text-bad'}`} lang="de">
               {w.article && <ArticleChip article={w.article} size="lg" />} {w.german}
             </p>
             {answered.result.flags.length > 0 && (
-              <ul className="mt-1 text-[14px]">
+              <ul className="text-[14px] font-semibold">
                 {answered.result.flags.map((f) => (
                   <li key={f}>• {FLAG_VI[f]}</li>
                 ))}
               </ul>
             )}
             {!answered.result.correct && recall.tries + 1 < MAX_TRIES && (
-              <p className="mt-1 text-[14px]">Từ này sẽ được hỏi lại cuối lượt.</p>
+              <p className="text-[14px] font-semibold">Từ này sẽ được hỏi lại cuối lượt.</p>
             )}
-          </div>
-          <button ref={nextRef} type="button" onClick={next} className={primaryClass}>
-            Tiếp
-          </button>
+          </Feedback>
         </div>
       )}
     </div>

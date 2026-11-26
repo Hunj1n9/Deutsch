@@ -101,14 +101,14 @@ export function TutorChat({
           ))}
         </select>
         {threadId && (
-          <Link href="/tutor" className="flex h-11 items-center rounded-full bg-primary px-4 text-[14px] font-semibold text-on-primary">
+          <Link href="/tutor" className="flex h-11 items-center rounded-2xl bg-primary px-4 text-[14px] font-semibold text-on-primary">
             Mới
           </Link>
         )}
       </div>
 
       {cardLabel && !threadId && (
-        <p className="rounded-[20px] bg-pastel-yellow p-3 text-[14px]">
+        <p className="rounded-2xl bg-pastel-yellow p-3 text-[14px]">
           {lessonRef ? 'Hỏi về bài: ' : 'Hỏi về thẻ: '}<span className="font-semibold" lang="de">{cardLabel}</span>
         </p>
       )}
@@ -171,7 +171,7 @@ function UserBubble({ text }: { text: string }) {
   }
   return (
     <div className="ml-8 flex flex-col items-end gap-1">
-      <p className="whitespace-pre-wrap rounded-[20px] rounded-br-md bg-primary px-4 py-3 text-[16px] text-on-primary">{text}</p>
+      <p className="whitespace-pre-wrap rounded-2xl rounded-br-md bg-primary px-4 py-3 text-[16px] text-on-primary">{text}</p>
       {GERMAN_HINT.test(text) && (
         <button type="button" onClick={saveError} disabled={state.pending} className="text-[13px] font-semibold text-muted underline">
           {state.pending ? 'Đang ghi…' : 'Lưu lỗi này'}
@@ -185,7 +185,7 @@ function UserBubble({ text }: { text: string }) {
 function AssistantBubble({ text, pending }: { text: string; pending: boolean }) {
   const segments = parseTutorReply(text);
   return (
-    <div className="mr-4 flex flex-col gap-2 rounded-[20px] rounded-bl-md bg-surface px-4 py-3 text-[16px] leading-relaxed">
+    <div className="mr-4 flex flex-col gap-2 rounded-2xl rounded-bl-md bg-surface px-4 py-3 text-[16px] leading-relaxed">
       {segments.length === 0 && pending && <p className="text-muted">…</p>}
       {segments.map((s, i) =>
         s.type === 'text' ? (
@@ -201,7 +201,7 @@ function AssistantBubble({ text, pending }: { text: string; pending: boolean }) 
             {!pending && (
               <Link
                 href={`/add?type=phrase&german=${encodeURIComponent(s.de)}`}
-                className="mt-1 inline-block rounded-full bg-primary px-3 py-1 text-[12px] font-semibold text-on-primary"
+                className="mt-1 inline-block rounded-2xl bg-primary px-3 py-1 text-[12px] font-semibold text-on-primary"
               >
                 Lưu thành thẻ
               </Link>

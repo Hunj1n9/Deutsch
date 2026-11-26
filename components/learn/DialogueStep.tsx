@@ -43,7 +43,7 @@ export function DialogueStep({
 
   const player = (
     <div className="flex gap-2">
-      <button type="button" onClick={playAll} disabled={!canSpeak()} className={`${primaryClass} flex-[2]`}>
+      <button type="button" onClick={playAll} disabled={!canSpeak()} className={`${primaryClass} flex-[1.5]`}>
         {speaking >= 0 ? `Đang đọc dòng ${speaking + 1}/${d.lines.length}…` : '▶ Nghe hội thoại'}
       </button>
       {speaking >= 0 && (
@@ -88,8 +88,8 @@ export function DialogueStep({
                   speakGerman(l.de);
                   setShown((s) => new Set(s).add(i));
                 }}
-                className={`w-full rounded-[20px] p-3 text-left ${l.speaker === 'A' ? 'bg-surface' : 'bg-pastel-sky'} ${
-                  speaking === i ? 'outline-2 outline-ink' : ''
+                className={`w-full rounded-2xl p-3 text-left ${l.speaker === 'A' ? 'bg-surface' : 'bg-pastel-sky'} ${
+                  speaking === i ? 'outline-2 outline-blue' : ''
                 }`}
               >
                 <span className="text-[12px] font-semibold text-muted">{l.speaker}</span>
@@ -103,7 +103,7 @@ export function DialogueStep({
           ))}
         </ul>
         {Object.keys(d.gloss).length > 0 && (
-          <div className="rounded-[20px] bg-surface p-4 text-[14px]">
+          <div className="rounded-2xl bg-surface p-4 text-[14px]">
             <p className="mb-1 font-semibold text-muted">Chú thích</p>
             <ul>
               {Object.entries(d.gloss).map(([de, vi]) => (

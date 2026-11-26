@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bello lab</title>
+<style>
+  :root { --bg:#f6f6f3; --ink:#151515; --muted:#6d6d72; --line:#e5e5e1; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,-apple-system,sans-serif; padding:20px 16px 40px; }
+  .wrap { max-width:760px; margin:0 auto; display:grid; gap:14px; }
+  h1 { font-size:22px; margin:0; letter-spacing:-.02em; }
+  p { margin:0; color:var(--muted); font-size:14px; line-height:1.5; }
+  .stage { background:#fff5d1; border:1.5px solid #f1e2a8; border-bottom-width:3px; border-radius:20px; padding:4px; }
+  .stage svg { width:100%; height:auto; display:block; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { height:40px; padding:0 14px; border-radius:999px; border:0; font:600 14px system-ui,sans-serif; background:#fff; color:var(--ink); outline:1.5px solid var(--line); cursor:pointer; }
+  .chip[aria-pressed=true] { background:var(--ink); color:#fff; outline:0; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  @media (max-width:540px) { .grid { grid-template-columns:repeat(2,1fr); } }
+  .cell { background:#fff; border:1.5px solid var(--line); border-bottom-width:3px; border-radius:16px; padding:2px 4px 10px; text-align:center; cursor:pointer; font:inherit; color:inherit; }
+  .cell svg { width:100%; height:auto; display:block; }
+  .cell b { display:block; font-size:14px; }
+  .cell span { font-size:12px; color:var(--muted); }
+  .ctrl { display:flex; flex-wrap:wrap; gap:14px; align-items:center; font-size:14px; background:#fff; border:1.5px solid var(--line); border-radius:16px; padding:10px 14px; }
+  label { display:flex; gap:6px; align-items:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bello – phòng thử (F17)</h1>
+  <p>Bấm một trạng thái để Bello chuyển tư thế. Chuyển động tính bằng đường cong mượt rồi hiện ở 8 khung/giây cho ra chất vẽ tay; nét đen nằm ở chỗ một bộ phận đè lên bộ phận khác (đầu, chân, gốc đuôi, tai khi rủ lên thân).</p>
+  <div class="stage" id="big"></div>
+  <div class="chips" id="chips"></div>
+  <p><b style="color:var(--ink)">Tủ đồ (thử)</b> – chạm để mặc hoặc bỏ; mỗi chỗ mặc một món, giữ chuột để xem điều kiện mở:</p>
+  <div class="chips" id="looks"></div>
+  <div class="ctrl">
+    <label><input type="checkbox" id="boil" checked> Rung nét</label>
+    <label><input type="checkbox" id="rough" checked> Mép cọ khô</label>
+    <label><input type="checkbox" id="toes" checked> Nét ngón chân</label>
+    <label>Độ rung <input type="range" id="amt" min="0" max="6" step="0.5" value="2.5"></label>
+    <label>Khung/giây <input type="range" id="fps" min="4" max="12" step="1" value="8"> <output id="fpsOut">8</output></label>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script>
+const C = { fur:'#E9A15B', dark:'#C67636', ink:'#1d1a17', red:'#E0373D', gold:'#FFC61A', tongue:'#FF7D8E' };
+const D2R = Math.PI / 180;
+let FPS = 8; // khung hình/giây hiển thị; chuyển động vẫn tính bằng đường cong mượt rồi lấy mẫu theo nhịp này
+
+/* ---------- hình học ---------- */
+const add = (a, b) => [a[0] + b[0], a[1] + b[1]];
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1]];
+const mul = (a, k) => [a[0] * k, a[1] * k];
+const norm = a => { const d = Math.hypot(a[0], a[1]) || 1; return [a[0] / d, a[1] / d]; };
+const lerp2 = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const poly = pts => 'M' + pts.map(q => q[0].toFixed(2) + ' ' + q[1].toFixed(2)).join('L') + 'Z';
+function rnd(seed) { let s = seed % 2147483647 || 1; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+function bez(p, t) { const u = 1 - t; return [0, 1].map(k => u*u*u*p[0][k] + 3*u*u*t*p[1][k] + 3*u*t*t*p[2][k] + t*t*t*p[3][k]); }
+
+// Hình viên nhộng nối hai vòng tròn [x,y,r]; mọi bộ phận thân/chân dựng từ đây nên khớp nhau ở khớp.
+function capsule(a, b, n = 12) {
+  const [x1, y1, r1] = a, [x2, y2, r2] = b, d = Math.hypot(x2 - x1, y2 - y1);
+  if (d <= Math.abs(r1 - r2) + .01) { const [x, y, r] = r1 > r2 ? a : b; return circle(x, y, r); }
+  const phi = Math.atan2(y2 - y1, x2 - x1), th = Math.acos((r1 - r2) / d), pts = [];
+  for (let i = 0; i <= n; i++) { const t = phi + th - 2 * th * i / n; pts.push([x2 + r2 * Math.cos(t), y2 + r2 * Math.sin(t)]); }
+  for (let i = 0; i <= 2 * n; i++) { const t = phi - th - (2 * Math.PI - 2 * th) * i / (2 * n); pts.push([x1 + r1 * Math.cos(t), y1 + r1 * Math.sin(t)]); }
+  return poly(pts);
+}
+function circle(x, y, r, n = 28) { const pts = []; for (let i = 0; i < n; i++) { const t = -2 * Math.PI * i / n; pts.push([x + r * Math.cos(t), y + r * Math.sin(t)]); } return poly(pts); }
+
+// Nét cọ dọc theo dãy điểm: dày giữa, thon hai đầu (hoặc thon về cuối).
+function strokePts(pts, w, { taper = 'both', seed = 1 } = {}) {
+  const r = rnd(seed * 9973 + 7), L = [], R = [], n = pts.length - 1;
+  for (let i = 0; i <= n; i++) {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(n, i + 1)], c = pts[i], t = i / n;
+    const dx = b[0] - a[0], dy = b[1] - a[1], d = Math.hypot(dx, dy) || 1;
+    const prof = taper === 'both' ? Math.pow(Math.sin(Math.PI * t), .5) : taper === 'end' ? Math.pow(1 - t, .55) : 1;
+    const hw = w / 2 * (.32 + .68 * prof) * (.9 + .2 * r());
+    L.push([c[0] - dy / d * hw, c[1] + dx / d * hw]);
+    R.push([c[0] + dy / d * hw, c[1] - dx / d * hw]);
+  }
+  return poly([...L, ...R.reverse()]);
+}
+function bezPts(p, n = 24) { if (p.length === 2) p = [p[0], lerp2(p[0], p[1], 1/3), lerp2(p[0], p[1], 2/3), p[1]]; const o = []; for (let i = 0; i <= n; i++) o.push(bez(p, i / n)); return o; }
+const brush = (p, w, o) => strokePts(bezPts(p), w, o);
+function resample(pts, step) {
+  const out = [pts[0]];
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1], b = pts[i], d = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(d / step));
+    for (let k = 1; k <= n; k++) out.push(lerp2(a, b, k / n));
+  }
+  return out;
+}
+function smooth(pts, pass = 3) {
+  for (let p = 0; p < pass; p++) pts = pts.map((q, i) => i === 0 || i === pts.length - 1 ? q : [(pts[i-1][0] + 2*q[0] + pts[i+1][0]) / 4, (pts[i-1][1] + 2*q[1] + pts[i+1][1]) / 4]);
+  return pts;
+}
+
+// Nét viền chân: ôm đầu khớp (đùi/vai) rồi chạy dọc mép chân; sau đó bị cắt theo thân nên chỉ hiện chỗ chân chồng lên thân.
+function contour(chain, side, sweep, seed) {
+  const [p0, p1, p2] = chain;
+  const d0 = norm(sub(p1, p0)), d1 = norm(sub(p2, p1));
+  const side0 = side === 'front' ? [d0[1], -d0[0]] : [-d0[1], d0[0]];
+  const side1 = side === 'front' ? [d1[1], -d1[0]] : [-d1[1], d1[0]];
+  const back = mul(d0, -1), s = Math.sign(side0[0] * back[1] - side0[1] * back[0]) || 1;
+  const a0 = Math.atan2(side0[1], side0[0]), pts = [];
+  for (let k = sweep; k >= 0; k -= 8) { const a = a0 + s * k * D2R; pts.push([p0[0] + p0[2] * Math.cos(a), p0[1] + p0[2] * Math.sin(a)]); }
+  pts.push(add(p1, mul(norm(add(side0, side1)), p1[2])));
+  pts.push(add(p2, mul(side1, p2[2])));
+  return strokePts(smooth(resample(pts, 2.5)), 2.5, { seed });
+}
+
+// Nét ngón chân: hai nét ngắn ở mũi bàn chân, bắt đầu từ mép (bàn chân chạm đất quay về bên phải);
+// chân giơ lên (không có bàn) thì nét chạy dọc mũi chân. Đây là nét duy nhất nằm ở mép mà không phải chỗ đè.
+function toeMarks(chain, foot, seed) {
+  const [, p1, p2] = chain;
+  if (foot[2] >= .5) {
+    const cx = p2[0] + foot[0], cy = p2[1] + foot[1], rx = foot[2], ry = foot[3];
+    return [.36, .7].map((k, i) => {
+      const x = cx + rx * k, top = cy - ry * Math.sqrt(1 - k * k);
+      return brush([[x - .5, top - .8], [x + .4, top + ry * .9]], 2, { seed: seed + i });
+    }).join('');
+  }
+  const d = norm(sub(p2, p1)), n = [-d[1], d[0]], r = p2[2];
+  return [-.36, .36].map((o, i) => {
+    const tip = add(add(p2, mul(d, r * 1.05)), mul(n, r * o));
+    return brush([tip, sub(tip, mul(d, r * .75))], 2, { seed: seed + i });
+  }).join('');
+}
+
+/* ---------- tư thế ---------- */
+// torso: mông, giữa, ngực · neck: 2 khớp · head: x, y, góc · tail: gốc x, y, góc, dài, cong
+// chân [hông/vai, gối/khuỷu, bàn] · feet: [dx, dy, rx, ry] (rx = 0: không có bàn chân chạm đất)
+const POSES = {
+  stand: {
+    torso: [[76,126,23],[128,129,24],[178,124,25]], neck: [[188,114,18],[196,98,16]], head: [196,72,0], ears: [0,0],
+    tail: [62,112,232,42,9],
+    hn: [[84,136,16],[84,148,10],[86,155,8.5]], hf: [[98,136,14],[99,148,9.5],[101,155,8]],
+    fn: [[180,134,14],[182,147,10],[184,155,8.5]], ff: [[166,134,13],[167,147,9.5],[169,155,8]],
+    feet: { hn:[5,3.5,10.5,5], hf:[5,3.5,10,4.8], fn:[5,3.5,10.5,5], ff:[5,3.5,10,4.8] },
+    face: { eyes:'open', mouth:'smile', brows:'none' }, contours: [['hn','front',115],['fn','back',105]], prop: 'none', upperLegs: false,
+  },
+  happy: {
+    torso: [[110,138,24],[114,114,21],[119,90,21]], neck: [[123,82,17],[128,70,15]], head: [130,42,-6], ears: [8,-8],
+    tail: [92,150,190,34,6],
+    hn: [[118,146,17],[126,156,8],[138,156,7.5]], hf: [[106,148,14],[112,157,7],[124,157,7]],
+    fn: [[127,96,10],[146,100,8],[149,111,7.5]], ff: [[116,97,9],[134,102,7.5],[137,113,7]],
+    feet: { hn:[4,1.5,9,4.5], hf:[4,1,8,4], fn:[0,0,0,0], ff:[0,0,0,0] },
+    face: { eyes:'happy', mouth:'open', brows:'none' }, contours: [['hn','front',150],['fn','front',90]], prop: 'none', upperLegs: true,
+  },
+  energetic: {
+    torso: [[82,104,23],[122,118,23],[160,134,23]], neck: [[172,130,17],[190,130,15]], head: [196,104,8], ears: [6,-6],
+    tail: [72,88,255,42,8],
+    hn: [[86,116,16],[88,138,10],[90,154,8.5]], hf: [[100,116,14],[102,138,9.5],[104,154,8]],
+    fn: [[166,146,11],[184,152,9],[202,155,8]], ff: [[154,146,10],[170,153,8.5],[188,156,7.5]],
+    feet: { hn:[5,3.5,10.5,5], hf:[5,3.5,10,4.8], fn:[4,2,9,5], ff:[4,1.5,8.5,4.5] },
+    face: { eyes:'wide', mouth:'open', brows:'none' }, contours: [['hn','front',120],['fn','front',40]], prop: 'none', upperLegs: false,
+  },
+  curious: {
+    torso: [[96,138,24],[114,119,22],[134,100,22]], neck: [[140,90,17],[148,78,15]], head: [154,52,12], ears: [30,4],
+    tail: [79,149,185,36,-6],
+    hn: [[102,140,19],[86,156,7],[108,157,7]], hf: [[114,142,15],[102,156,6.5],[122,157,6.5]],
+    fn: [[140,114,11],[142,136,9],[144,154,8]], ff: [[128,114,10],[130,136,8.5],[132,154,7.5]],
+    feet: { hn:[4,1,9,4.5], hf:[4,1,8,4], fn:[4,3.5,10,5], ff:[4,3.5,9,4.6] },
+    face: { eyes:'wide', mouth:'o', brows:'curious' }, contours: [['hn','front',160],['fn','back',110]], prop: 'q', upperLegs: false,
+  },
+  sad: {
+    torso: [[96,138,24],[117,124,22],[139,113,22]], neck: [[150,110,17],[162,108,15]], head: [162,82,-5], ears: [-5,5],
+    tail: [79,149,178,36,0],
+    hn: [[102,140,19],[86,156,7],[108,157,7]], hf: [[114,142,15],[102,156,6.5],[122,157,6.5]],
+    fn: [[145,126,11],[147,141,9],[148,154,8]], ff: [[133,126,10],[135,141,8.5],[136,154,7.5]],
+    feet: { hn:[4,1,9,4.5], hf:[4,1,8,4], fn:[4,3.5,10,5], ff:[4,3.5,9,4.6] },
+    face: { eyes:'halfsad', mouth:'frown', brows:'sad' }, contours: [['hn','front',160],['fn','back',110]], prop: 'none', upperLegs: false,
+  },
+  sleep: {
+    torso: [[78,142,20],[118,144,19],[158,142,20]], neck: [[168,140,15],[184,140,14]], head: [190,124,0], ears: [24,-24],
+    tail: [60,146,178,32,6],
+    hn: [[86,148,16],[98,157,6.5],[112,157,6]], hf: [[96,148,13],[106,157,6],[120,157,6]],
+    fn: [[164,150,10],[188,156,7.5],[212,156,7]], ff: [[154,150,9],[176,157,7],[200,157,6.5]],
+    feet: { hn:[3,1,7,4], hf:[3,1,7,4], fn:[3,1.5,8,4.5], ff:[3,1,7,4] },
+    face: { eyes:'closed', mouth:'smile', brows:'none' }, contours: [['hn','front',140]], prop: 'z', upperLegs: false,
+  },
+  // Vẫy chào: ngồi, chân trước gần đưa ra phía trước rồi vẫy lên xuống như đưa tay chào (life.waveFn xoay khuỷu và bàn quanh vai).
+  wave: {
+    torso: [[96,138,24],[114,119,22],[134,100,22]], neck: [[140,90,17],[148,78,15]], head: [152,54,2], ears: [6,-4],
+    tail: [79,149,190,36,6],
+    hn: [[102,140,19],[86,156,7],[108,157,7]], hf: [[114,142,15],[102,156,6.5],[122,157,6.5]],
+    fn: [[140,112,11],[160,108,9],[180,98,8]], ff: [[128,114,10],[130,136,8.5],[132,154,7.5]],
+    feet: { hn:[4,1,9,4.5], hf:[4,1,8,4], fn:[0,0,0,0], ff:[4,3.5,9,4.6] },
+    face: { eyes:'open', mouth:'open', brows:'none' }, contours: [['hn','front',160],['fn','front',70]], prop: 'none', upperLegs: false,
+  },
+  // Đánh hơi: đứng, cúi mũi về phía trước, đuôi dựng (đang chờ, đang tìm).
+  sniff: {
+    torso: [[76,124,23],[128,129,24],[178,128,25]], neck: [[190,124,18],[198,120,16]], head: [200,114,22], ears: [-4,4],
+    tail: [62,110,250,42,6],
+    hn: [[84,134,16],[84,148,10],[86,155,8.5]], hf: [[98,136,14],[99,148,9.5],[101,155,8]],
+    fn: [[180,138,14],[182,148,10],[184,155,8.5]], ff: [[166,138,13],[167,148,9.5],[169,155,8]],
+    feet: { hn:[5,3.5,10.5,5], hf:[5,3.5,10,4.8], fn:[5,3.5,10.5,5], ff:[5,3.5,10,4.8] },
+    face: { eyes:'half', mouth:'smile', brows:'none' }, contours: [['hn','front',115],['fn','back',105]], prop: 'none', upperLegs: false,
+  },
+  // Nằm chờ: nằm như ngủ nhưng ngẩng đầu, mắt mở, đuôi đập nhẹ xuống đất.
+  lie: {
+    torso: [[78,142,20],[118,144,19],[158,142,20]], neck: [[168,138,15],[178,124,14]], head: [184,104,-4], ears: [4,-4],
+    tail: [60,146,180,32,6],
+    hn: [[86,148,16],[98,157,6.5],[112,157,6]], hf: [[96,148,13],[106,157,6],[120,157,6]],
+    fn: [[164,150,10],[188,156,7.5],[212,156,7]], ff: [[154,150,9],[176,157,7],[200,157,6.5]],
+    feet: { hn:[3,1,7,4], hf:[3,1,7,4], fn:[3,1.5,8,4.5], ff:[3,1,7,4] },
+    face: { eyes:'open', mouth:'smile', brows:'none' }, contours: [['hn','front',140]], prop: 'none', upperLegs: false,
+  },
+  // Tự hào: đứng ưỡn ngực, ngẩng đầu, mắt híp cười, đuôi dựng cao.
+  proud: {
+    torso: [[78,126,23],[128,125,24],[176,114,26]], neck: [[186,102,18],[192,82,16]], head: [190,52,-14], ears: [-6,6],
+    tail: [64,112,252,42,8],
+    hn: [[84,136,16],[84,148,10],[86,155,8.5]], hf: [[98,136,14],[99,148,9.5],[101,155,8]],
+    fn: [[178,128,14],[181,144,10],[184,155,8.5]], ff: [[164,128,13],[166,144,9.5],[169,155,8]],
+    feet: { hn:[5,3.5,10.5,5], hf:[5,3.5,10,4.8], fn:[5,3.5,10.5,5], ff:[5,3.5,10,4.8] },
+    face: { eyes:'happy', mouth:'smile', brows:'none' }, contours: [['hn','front',115],['fn','back',105]], prop: 'none', upperLegs: false,
+  },
+  // Lăn ngửa: nằm ngửa, bốn chân co lên trời; đầu lật dọc theo thân (flip −1): đỉnh sọ chạm đất, cằm lên, tai gần (xoay 65°)
+  // nằm bẹt xuống đất; mũ đội đầu ẩn. Người dùng đã chê hai cách: đầu ngửa −100° (mõm chỉ trời) và đầu thẳng như nằm sấp.
+  roll: {
+    torso: [[82,144,20],[126,142,21],[170,140,21]], neck: [[178,138,16],[190,134,15]], head: [194,114,-14], ears: [65,10], flip: -1,
+    tail: [70,148,186,32,6],
+    hn: [[92,132,15],[100,116,9],[94,104,8]], hf: [[106,134,13],[114,120,8.5],[110,108,7.5]],
+    fn: [[162,128,12],[156,112,9],[164,102,8]], ff: [[150,130,11],[144,116,8.5],[152,106,7.5]],
+    feet: { hn:[0,0,0,0], hf:[0,0,0,0], fn:[0,0,0,0], ff:[0,0,0,0] },
+    face: { eyes:'happy', mouth:'open', brows:'none' }, contours: [['hn','back',140],['fn','back',140]], prop: 'none', upperLegs: false,
+  },
+  // ---- Trạng thái ngộ nghĩnh (lấy ý từ ảnh Dackel người dùng gửi) ----
+  // Cây xúc xích: ngồi trên mông, thân dài dựng đứng, hai chân trước co trước ngực.
+  upright: {
+    torso: [[112,142,23],[104,118,21],[112,94,20],[120,74,20]], neck: [[122,62,16],[124,52,15]], head: [126,34,0], ears: [6,-6],
+    tail: [92,150,190,34,6],
+    hn: [[118,146,17],[126,156,8],[138,156,7.5]], hf: [[106,148,14],[112,157,7],[124,157,7]],
+    fn: [[128,82,10],[144,90,8],[146,102,7.5]], ff: [[116,84,9],[132,92,7.5],[134,104,7]],
+    feet: { hn:[4,1.5,9,4.5], hf:[4,1,8,4], fn:[0,0,0,0], ff:[0,0,0,0] },
+    face: { eyes:'wide', mouth:'smile', brows:'none' }, contours: [['hn','front',150],['fn','front',90]], prop: 'none', upperLegs: true,
+  },
+  // Phóng bay: thân nằm ngang lơ lửng, chân trước duỗi tới, chân sau duỗi ra sau, tai bay ngược.
+  leap: {
+    torso: [[70,98,20],[120,94,21],[168,90,21]], neck: [[180,84,16],[190,74,15]], head: [196,58,-8], ears: [40,-14],
+    tail: [58,92,190,36,-4],
+    hn: [[78,106,15],[56,116,9],[36,120,8]], hf: [[90,104,13],[68,112,8.5],[48,115,7.5]],
+    fn: [[170,104,12],[190,116,9],[208,122,8]], ff: [[160,104,11],[180,114,8.5],[198,119,7.5]],
+    feet: { hn:[0,0,0,0], hf:[0,0,0,0], fn:[0,0,0,0], ff:[0,0,0,0] },
+    face: { eyes:'wide', mouth:'open', brows:'none' }, contours: [['hn','front',90],['fn','back',90]], prop: 'none', upperLegs: false,
+  },
+  // Lườm: đứng, đầu hơi cúi, mắt lườm xéo, miệng thẳng, đuôi thõng.
+  sideeye: {
+    torso: [[76,126,23],[128,129,24],[178,124,25]], neck: [[188,116,18],[196,102,16]], head: [194,78,10], ears: [-4,4],
+    tail: [62,114,205,40,4],
+    hn: [[84,136,16],[84,148,10],[86,155,8.5]], hf: [[98,136,14],[99,148,9.5],[101,155,8]],
+    fn: [[180,134,14],[182,147,10],[184,155,8.5]], ff: [[166,134,13],[167,147,9.5],[169,155,8]],
+    feet: { hn:[5,3.5,10.5,5], hf:[5,3.5,10,4.8], fn:[5,3.5,10.5,5], ff:[5,3.5,10,4.8] },
+    face: { eyes:'side', mouth:'flat', brows:'flat' }, contours: [['hn','front',115],['fn','back',105]], prop: 'none', upperLegs: false,
+  },
+  // Nằm ẹp: bụng sát đất, hai chân sau duỗi thẳng ra sau như con ếch.
+  sploot: {
+    torso: [[86,146,19],[126,145,19],[166,142,20]], neck: [[176,138,15],[186,124,14]], head: [192,104,-4], ears: [4,-4],
+    tail: [74,146,182,30,4],
+    hn: [[90,150,14],[66,155,8],[44,156,7]], hf: [[100,150,12],[78,155,7],[56,156,6.5]],
+    fn: [[164,150,10],[188,156,7.5],[212,156,7]], ff: [[154,150,9],[176,157,7],[200,157,6.5]],
+    feet: { hn:[0,0,0,0], hf:[0,0,0,0], fn:[3,1.5,8,4.5], ff:[3,1,7,4] },
+    face: { eyes:'happy', mouth:'smile', brows:'none' }, contours: [['hn','back',100]], prop: 'none', upperLegs: false,
+  },
+  // Ngoái lại: đứng, đầu quay ngược nhìn ra sau qua vai (flipX −1), mồm chữ O.
+  lookback: {
+    torso: [[76,126,23],[128,129,24],[178,124,25]], neck: [[184,112,18],[172,94,16]], head: [162,70,8], ears: [-6,6], flipX: -1,
+    tail: [62,112,240,42,10],
+    hn: [[84,136,16],[84,148,10],[86,155,8.5]], hf: [[98,136,14],[99,148,9.5],[101,155,8]],
+    fn: [[180,134,14],[182,147,10],[184,155,8.5]], ff: [[166,134,13],[167,147,9.5],[169,155,8]],
+    feet: { hn:[5,3.5,10.5,5], hf:[5,3.5,10,4.8], fn:[5,3.5,10.5,5], ff:[5,3.5,10,4.8] },
+    face: { eyes:'wide', mouth:'o', brows:'curious' }, contours: [['hn','front',115],['fn','back',105]], prop: 'none', upperLegs: false,
+  },
+  // ---- Dáng khoe thân dài (lấy ý từ ảnh Dackel uốn chữ của người dùng) ----
+  // Dài thượt: vươn dài hết khung, chân ở hai đầu, mõm ngẩng lên.
+  stretch: {
+    torso: [[30,124,21],[70,128,22],[112,130,22],[154,127,22],[190,120,23]], neck: [[200,110,17],[208,96,15]], head: [206,72,-16], ears: [-4,4],
+    tail: [18,112,232,34,8],
+    hn: [[36,134,15],[36,147,9.5],[38,155,8]], hf: [[48,134,13],[49,147,9],[51,155,7.5]],
+    fn: [[192,132,13],[194,146,9.5],[196,155,8]], ff: [[180,132,12],[181,146,9],[183,155,7.5]],
+    feet: { hn:[5,3.5,10,4.8], hf:[5,3.5,9.5,4.6], fn:[5,3.5,10,4.8], ff:[5,3.5,9.5,4.6] },
+    face: { eyes:'happy', mouth:'smile', brows:'none' }, contours: [['hn','front',110],['fn','back',100]], prop: 'none', upperLegs: false,
+  },
+  // Cầu vồng: mông ngồi bên trái, thân vồng lên thành vòm, đầu chúc xuống bên phải nhìn đất.
+  arch: {
+    torso: [[62,140,22],[56,108,21],[66,74,20],[94,52,20],[128,50,20],[154,66,20],[164,92,20]], neck: [[168,108,16],[172,120,15]], head: [176,132,72], ears: [10,-10],
+    tail: [44,146,185,30,6],
+    hn: [[70,146,16],[80,156,8],[92,156,7.5]], hf: [[58,148,13],[68,157,7],[80,157,7]],
+    fn: [[160,100,10],[166,114,8],[166,126,7.5]], ff: [[150,96,9],[154,110,7.5],[152,122,7]],
+    feet: { hn:[4,1.5,9,4.5], hf:[4,1,8,4], fn:[0,0,0,0], ff:[0,0,0,0] },
+    face: { eyes:'wide', mouth:'o', brows:'none' }, contours: [['hn','front',150]], prop: 'none', upperLegs: false,
+  },
+  // Cuộn tròn: thân cuộn thành vòng chữ C nằm trên đất, đầu gối vào giữa vòng, ngủ.
+  curl: {
+    torso: [[163,72,18],[128,54,19],[93,70,19],[82,100,19],[93,130,19],[128,146,19],[160,132,19]], neck: [[160,120,15],[154,112,14]], head: [150,104,-40], ears: [10,-10],
+    tail: [170,66,265,28,10],
+    hn: [[164,80,11],[178,86,7],[186,80,6]], hf: [[156,74,10],[170,78,6.5],[178,72,6]],
+    fn: [[164,138,9],[178,146,7],[188,144,6.5]], ff: [[154,142,8.5],[168,150,6.5],[178,149,6]],
+    feet: { hn:[0,0,0,0], hf:[0,0,0,0], fn:[0,0,0,0], ff:[0,0,0,0] },
+    face: { eyes:'closed', mouth:'smile', brows:'none' }, contours: [], prop: 'z', upperLegs: false,
+  },
+};
+// Mọi thân được chia lại thành SPINE khớp để các tư thế (3, 4 hay 7 khớp) trộn được với nhau khi chuyển; nhờ vậy
+// thân dài uốn cong được (vòm, cuộn tròn) mà vẫn chuyển mượt từ dáng thẳng. 3, 4, 5, 7 khớp đều đi qua đúng các khớp gốc.
+// Nội suy Catmull-Rom cho x, y để sống lưng cong mượt (không gãy góc ở khớp); bán kính nội suy thẳng.
+const SPINE = 13;
+function spine(pts) {
+  const m = pts.length - 1, P = i => pts[Math.max(0, Math.min(m, i))];
+  return Array.from({ length: SPINE }, (_, i) => {
+    const u = i * m / (SPINE - 1), k = Math.min(m - 1, Math.floor(u)), f = u - k;
+    const [p0, p1, p2, p3] = [P(k - 1), P(k), P(k + 1), P(k + 2)], f2 = f * f, f3 = f2 * f;
+    const cr = c => .5 * (2 * p1[c] + (-p0[c] + p2[c]) * f + (2 * p0[c] - 5 * p1[c] + 4 * p2[c] - p3[c]) * f2 + (-p0[c] + 3 * p1[c] - 3 * p2[c] + p3[c]) * f3);
+    return [cr(0), cr(1), p1[2] + (p2[2] - p1[2]) * f];
+  });
+}
+for (const k in POSES) POSES[k].torso = spine(POSES[k].torso);
+// Kéo dài lưng (người dùng: các dáng thường "chưa dài"): giữ ngực, cổ, đầu, chân trước; lùi mông, chân sau và đuôi
+// sang trái một đoạn, các khớp lưng ở giữa lùi theo tỉ lệ, nên lưng dài ra đều mà dáng giữ nguyên.
+// Dài thượt, Cầu vồng, Cuộn tròn, Cây xúc xích đã dài sẵn nên không kéo.
+const LENGTHEN = { stand:30, happy:20, energetic:32, curious:30, sad:30, sleep:28, wave:30, sniff:32, lie:28, proud:30, roll:28, sideeye:30, sploot:28, lookback:30, leap:28 };
+for (const [k, dx] of Object.entries(LENGTHEN)) {
+  const p = POSES[k], n = p.torso.length - 1;
+  p.torso.forEach((j, i) => { j[0] -= dx * (1 - i / n); });
+  for (const leg of ['hn', 'hf']) p[leg].forEach(j => { j[0] -= dx; });
+  p.tail[0] -= dx;
+}
+for (const k in POSES) { POSES[k].name = k; POSES[k].flip ??= 1; POSES[k].flipX ??= 1; }
+const STATES = [
+  ['stand', 'Đứng chờ', 'mặc định'],
+  ['happy', 'Vui', 'trả lời đúng, xong bài'],
+  ['energetic', 'Hăng hái', 'bắt đầu bài, giữ chuỗi'],
+  ['curious', 'Tò mò', 'gợi ý, đang nghĩ'],
+  ['sad', 'Buồn', 'trả lời sai'],
+  ['sleep', 'Ngủ', 'hết thẻ ôn hôm nay'],
+  ['wave', 'Vẫy chào', 'lời chào ở Hôm nay, đăng nhập'],
+  ['sniff', 'Đánh hơi', 'đang chờ AI chấm, đang tải'],
+  ['lie', 'Nằm chờ', 'danh sách trống, chưa có gì'],
+  ['proud', 'Tự hào', 'qua thi thử cuối cấp'],
+  ['roll', 'Lăn ngửa', 'xong cả chặng, đạt chỉ tiêu'],
+  ['upright', 'Cây xúc xích', 'đứng thẳng chờ, xin bắt đầu'],
+  ['leap', 'Phóng bay', 'lên cấp, chuyển chặng'],
+  ['sideeye', 'Lườm', 'bỏ qua bài, sai một câu nhiều lần'],
+  ['sploot', 'Nằm ẹp', 'nghỉ giữa bài'],
+  ['lookback', 'Ngoái lại', 'quay lại bài cũ, ôn lại'],
+  ['stretch', 'Dài thượt', 'vươn vai sau một phiên dài'],
+  ['arch', 'Cầu vồng', 'đang tải, chờ AI'],
+  ['curl', 'Cuộn tròn', 'nghỉ, tối rồi'],
+];
+
+/* ---------- chuyển động sống ---------- */
+const ss = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+const wave = (T, p, ph = 0) => Math.sin(2 * Math.PI * (T / p + ph));
+const mod = (a, n) => ((a % n) + n) % n;
+function env(T, period, start, dur, fade = .25) { const t = mod(T, period) - start; return t < 0 || t > dur ? 0 : ss(Math.min(t / fade, (dur - t) / fade, 1)); }
+function blinkAt(T, period, off = 0) { const f = Math.floor(mod(T + off, period) * FPS); return f === 0 ? 2 : f === 1 ? 1 : 0; }
+
+function life(state, T) {
+  const L = { upper:0, rear:0, headRot:0, headDy:0, earL:0, earR:0, tail:0, tailBend:0, paw:0, breath:0, blink:0, prop:0 };
+  if (state === 'stand') {
+    L.upper = -.9 * wave(T, 2.6); L.breath = .5 * wave(T, 2.6);
+    const w = env(T, 5, .4, 1.6); L.tail = 18 * w * Math.sin(2 * Math.PI * 3 * T); L.tailBend = -7 * w * Math.cos(2 * Math.PI * 3 * T);
+    L.headRot = 9 * env(T, 7, 3.2, 2.2, .5); L.blink = blinkAt(T, 3.7);
+  } else if (state === 'happy') {
+    L.upper = -4 * Math.abs(Math.sin(Math.PI * 1.8 * T)); L.paw = -2.5 * Math.sin(2 * Math.PI * 1.8 * T + 1);
+    L.tail = 20 * Math.sin(2 * Math.PI * 3.6 * T); L.tailBend = -8 * Math.cos(2 * Math.PI * 3.6 * T);
+    L.headRot = 5 * Math.sin(2 * Math.PI * .9 * T);
+    L.earL = 9 * Math.sin(2 * Math.PI * 1.8 * T - .8); L.earR = -L.earL;
+  } else if (state === 'energetic') {
+    L.rear = -3.5 * Math.abs(Math.sin(Math.PI * 2.4 * T)); L.upper = -.8 * wave(T, 1.3);
+    L.tail = 26 * Math.sin(2 * Math.PI * 4 * T); L.tailBend = -10 * Math.cos(2 * Math.PI * 4 * T);
+    L.headRot = 4 * Math.sin(2 * Math.PI * 1.2 * T); L.blink = blinkAt(T, 3.1, .7);
+  } else if (state === 'curious') {
+    const c = mod(T, 4.4), tilt = c < 2.2 ? ss(c / .5) : 1 - ss((c - 2.2) / .5);
+    L.headRot = -22 * tilt; L.upper = -.6 * wave(T, 2.6); L.tail = 8 * Math.sin(2 * Math.PI * .6 * T);
+    L.prop = -2.5 * Math.sin(2 * Math.PI * 1.2 * T); L.blink = blinkAt(T, 3.3, 1.1);
+  } else if (state === 'sad') {
+    const s = env(T, 5.5, 2.6, 1.6, .5);
+    L.upper = -.6 * wave(T, 3.4) + 1.5 * s; L.headDy = 3.5 * s; L.earL = -3 * s; L.earR = 3 * s; L.blink = blinkAt(T, 4.2, .3);
+  } else if (state === 'sleep') {
+    const b = wave(T, 3) * .5 + .5; L.breath = 1.3 * b; L.upper = -1.2 * b;
+    L.earR = -12 * env(T, 6.5, 4.2, .35, .05); L.prop = T;
+  }
+  else if (state === 'wave') {
+    L.waveFn = -10 + 14 * Math.sin(2 * Math.PI * 1.6 * T); L.upper = -.6 * wave(T, 2.6);
+    L.tail = 16 * Math.sin(2 * Math.PI * 2.4 * T); L.tailBend = -6 * Math.cos(2 * Math.PI * 2.4 * T);
+    L.headRot = 5 * Math.sin(2 * Math.PI * .8 * T); L.blink = blinkAt(T, 3.5, .4);
+  } else if (state === 'sniff') {
+    // Mũi hít từng nhịp ngắn, đầu dò qua lại chậm.
+    L.headRot = 4 * Math.sin(2 * Math.PI * .5 * T) + 1.5 * Math.sin(2 * Math.PI * 4 * T); L.headDy = 1.2 * Math.abs(Math.sin(Math.PI * 4 * T));
+    L.tail = 12 * Math.sin(2 * Math.PI * 2 * T); L.tailBend = -5 * Math.cos(2 * Math.PI * 2 * T); L.breath = .4 * wave(T, 1);
+  } else if (state === 'lie') {
+    const b = wave(T, 3.2) * .5 + .5; L.breath = .9 * b; L.upper = -.6 * b;
+    L.tail = 7 * Math.max(0, Math.sin(2 * Math.PI * .9 * T)); L.headRot = 6 * env(T, 6, 2.5, 2, .5); L.blink = blinkAt(T, 3.9, .2);
+  } else if (state === 'proud') {
+    L.breath = .8 * wave(T, 2.2); L.upper = -1.2 * Math.abs(wave(T, 2.2));
+    L.tail = 14 * Math.sin(2 * Math.PI * 2.8 * T); L.tailBend = -6 * Math.cos(2 * Math.PI * 2.8 * T);
+    L.headRot = -3 * env(T, 4, 1, 1.5, .4);
+  } else if (state === 'roll') {
+    L.swing = 14 * Math.sin(2 * Math.PI * 1.4 * T); L.rear = -1.2 * Math.sin(2 * Math.PI * 1.4 * T);
+    L.headRot = 4 * Math.sin(2 * Math.PI * .7 * T); L.tail = 10 * Math.sin(2 * Math.PI * 2.8 * T);
+    L.earL = 8 * Math.sin(2 * Math.PI * 1.4 * T); L.earR = -L.earL;
+  }
+  else if (state === 'upright') {
+    // Thân dài lắc lư như cây xúc xích dựng đứng.
+    L.headRot = 7 * Math.sin(2 * Math.PI * .7 * T); L.upper = -1.5 * Math.abs(Math.sin(Math.PI * 1.4 * T)); L.paw = -2 * Math.sin(2 * Math.PI * 1.4 * T);
+    L.tail = 14 * Math.sin(2 * Math.PI * 2.6 * T); L.tailBend = -6 * Math.cos(2 * Math.PI * 2.6 * T); L.blink = blinkAt(T, 3.4, .5);
+  } else if (state === 'leap') {
+    // Lơ lửng nhấp nhô, tai phấp phới, chân đạp nhẹ.
+    const b = 3 * Math.sin(2 * Math.PI * 1.2 * T); L.upper = b; L.rear = b; L.headDy = b * .5;
+    L.earL = 10 * Math.sin(2 * Math.PI * 3 * T); L.earR = -L.earL; L.swing = 6 * Math.sin(2 * Math.PI * 1.2 * T);
+    L.tail = 10 * Math.sin(2 * Math.PI * 3 * T);
+  } else if (state === 'sideeye') {
+    // Đứng im lườm, thỉnh thoảng nghiêng đầu chậm, đuôi giật một cái.
+    L.headRot = -5 * env(T, 5, 2, 2, .6); L.tail = 6 * env(T, 4.5, 1.2, .3, .08); L.breath = .4 * wave(T, 3); L.blink = blinkAt(T, 5.1, .9);
+  } else if (state === 'sploot') {
+    const b = wave(T, 3) * .5 + .5; L.breath = .9 * b; L.upper = -.5 * b;
+    L.tail = 9 * Math.sin(2 * Math.PI * 1.1 * T); L.headRot = 5 * Math.sin(2 * Math.PI * .4 * T); L.blink = blinkAt(T, 4, .2);
+  } else if (state === 'lookback') {
+    L.tail = 20 * Math.sin(2 * Math.PI * 3.2 * T); L.tailBend = -8 * Math.cos(2 * Math.PI * 3.2 * T);
+    L.headRot = 6 * Math.sin(2 * Math.PI * .9 * T); L.upper = -.8 * wave(T, 2.4); L.blink = blinkAt(T, 3.6, .3);
+  }
+  else if (state === 'stretch') {
+    // Vươn: thân võng xuống rồi kéo căng, mõm ngáp ngẩng.
+    const v = Math.sin(2 * Math.PI * .5 * T); L.upper = -1.5 * v; L.rear = -1.5 * v; L.breath = -1.2 * v; L.headRot = -4 * v;
+    L.tail = 10 * Math.sin(2 * Math.PI * 2 * T); L.blink = 0;
+  } else if (state === 'arch') {
+    L.breath = .6 * wave(T, 2); L.headRot = 6 * Math.sin(2 * Math.PI * .8 * T); L.headDy = 1.5 * Math.sin(2 * Math.PI * .8 * T);
+    L.tail = 8 * Math.sin(2 * Math.PI * 2.4 * T); L.blink = blinkAt(T, 3.2, .4);
+  } else if (state === 'curl') {
+    const b = wave(T, 3.2) * .5 + .5; L.breath = 1 * b; L.prop = T; L.tail = 4 * Math.sin(2 * Math.PI * .5 * T);
+  }
+  return L;
+}
+// Tai đi trễ đầu một chút (overlap) cho đỡ cứng.
+function lifeLag(state, T) {
+  const a = life(state, T), b = life(state, T - .17), dv = a.headRot - b.headRot;
+  a.earL -= dv * .9; a.earR -= dv * .9; return a;
+}
+function applyLife(p, L) {
+  const q = structuredClone(p);
+  // Thân là chuỗi SPINE khớp từ mông (t = 0) tới ngực (t = 1): nhún thân trên tăng dần về ngực, thở phình ở giữa.
+  const n = q.torso.length - 1;
+  q.torso.forEach((j, i) => { const t = i / n; j[1] += L.upper * t + L.rear * (1 - t); j[2] += L.breath * (t <= .5 ? 2 * t : 1 - .8 * (t - .5)); });
+  q.neck[0][1] += L.upper; q.neck[1][1] += L.upper + L.headDy * .7;
+  q.head[1] += L.upper + L.headDy; q.head[2] += L.headRot;
+  for (const k of ['fn', 'ff']) {
+    if (p.upperLegs) q[k].forEach(pt => { pt[1] += L.upper + L.paw; });
+    else { q[k][0][1] += L.upper; q[k][1][1] += L.upper * .5; }
+  }
+  for (const k of ['hn', 'hf']) { q[k][0][1] += L.rear; q[k][1][1] += L.rear * .5; }
+  q.tail[1] += L.rear; q.tail[2] += L.tail; q.tail[4] += L.tailBend;
+  q.ears[0] += L.earL; q.ears[1] += L.earR;
+  // Xoay khuỷu và bàn của một chân quanh vai/hông (vẫy, đạp chân).
+  const swingLeg = (leg, deg) => { const [cx, cy] = leg[0], a = deg * D2R, c = Math.cos(a), s = Math.sin(a);
+    for (const pt of leg.slice(1)) { const dx = pt[0] - cx, dy = pt[1] - cy; pt[0] = cx + dx * c - dy * s; pt[1] = cy + dx * s + dy * c; } };
+  if (L.waveFn) swingLeg(q.fn, L.waveFn);
+  if (L.swing) { swingLeg(q.fn, L.swing); swingLeg(q.ff, -L.swing * .8); swingLeg(q.hn, -L.swing); swingLeg(q.hf, L.swing * .8); }
+  q.blink = L.blink; q.propT = L.prop;
+  return q;
+}
+const DISCRETE = new Set(['name', 'face', 'contours', 'prop', 'upperLegs', 'blink']);
+function mix(a, b, e, key) {
+  if (DISCRETE.has(key)) return e < .5 ? a : b;
+  // Lật đầu chỉ diễn ra ở 40–60% chặng, không bẹp suốt cả lúc chuyển.
+  // Đầu chỉ bẹp tới 45% rồi nhảy sang mặt kia, để không có khung đầu mỏng như sợi chỉ.
+  if (key === 'flip' || key === 'flipX') { const f = Math.min(1, Math.max(0, (e - .4) / .2)), v = a + (b - a) * f; return Math.abs(v) < .45 ? (f < .5 ? Math.sign(a) : Math.sign(b)) * .45 : v; }
+  if (typeof a === 'number') return a + (b - a) * e;
+  if (Array.isArray(a)) return a.map((v, i) => mix(v, b[i], e));
+  if (a && typeof a === 'object') { const o = {}; for (const k in b) o[k] = k in a ? mix(a[k], b[k], e, k) : b[k]; return o; }
+  return e < .5 ? a : b;
+}
+const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+/* ---------- dựng SVG ---------- */
+const ink = (d, extra = '') => `<path d="${d}" fill="${C.ink}" stroke="${C.ink}" stroke-width=".5" stroke-linejoin="round" ${extra}/>`;
+const lid = d => `<path d="${d}" style="fill:var(--lid,${C.ink});stroke:var(--lid,${C.ink})" stroke-width=".5" stroke-linejoin="round"/>`;
+const mirror = p => p.map(([x, y]) => [-x, y]);
+const EYE_SETS = {
+  open: `<ellipse cx="-10" cy="-3" rx="3.3" ry="3.9" fill="${C.ink}"/><ellipse cx="10" cy="-3" rx="3.3" ry="3.9" fill="${C.ink}"/>`
+      + `<circle cx="-8.9" cy="-4.6" r="1.1" style="fill:var(--glint,none)"/><circle cx="11.1" cy="-4.6" r="1.1" style="fill:var(--glint,none)"/>`, // đốm sáng chỉ hiện trên lông tối
+  wide: `<ellipse cx="-10" cy="-3" rx="3.8" ry="4.6" fill="${C.ink}"/><ellipse cx="10" cy="-3" rx="3.8" ry="4.6" fill="${C.ink}"/><circle cx="-8.8" cy="-4.8" r="1.1" fill="#fff"/><circle cx="11.2" cy="-4.8" r="1.1" fill="#fff"/>`,
+  half: `<path d="M-13.4 -3A3.4 3.4 0 0 0 -6.6 -3Z M6.6 -3A3.4 3.4 0 0 0 13.4 -3Z" fill="${C.ink}"/>`
+      + lid(brush([[-14.6,-3.3],[-11.5,-3.6],[-8.5,-3.6],[-5.4,-3.3]], 2.1, { taper:'none', seed:31 }))
+      + lid(brush(mirror([[-14.6,-3.3],[-11.5,-3.6],[-8.5,-3.6],[-5.4,-3.3]]), 2.1, { taper:'none', seed:32 })),
+  halfsad: `<path d="M-13.4 -2.6A3.4 3.4 0 0 0 -6.6 -3.4Z M6.6 -3.4A3.4 3.4 0 0 0 13.4 -2.6Z" fill="${C.ink}"/>`
+      + lid(brush([[-14.6,-2.2],[-11.5,-3],[-8.5,-3.6],[-5.4,-4.2]], 2.1, { taper:'none', seed:33 }))
+      + lid(brush(mirror([[-14.6,-2.2],[-11.5,-3],[-8.5,-3.6],[-5.4,-4.2]]), 2.1, { taper:'none', seed:34 })),
+  closed: lid(brush([[-14,-4],[-12.5,-.4],[-7.5,-.4],[-6,-4]], 2.3, { seed:35 })) + lid(brush(mirror([[-14,-4],[-12.5,-.4],[-7.5,-.4],[-6,-4]]), 2.3, { seed:36 })),
+  happy: lid(brush([[-14,-1],[-12.5,-6.4],[-7.5,-6.4],[-6,-1]], 2.4, { seed:37 })) + lid(brush(mirror([[-14,-1],[-12.5,-6.4],[-7.5,-6.4],[-6,-1]]), 2.4, { seed:38 })),
+  // Lườm: mí trên kéo ngang nửa mắt, tròng dồn sang phải (nhìn xéo).
+  side: `<path d="M-11.4 -3.2A3.4 3.4 0 0 0 -4.6 -3.2Z M8.6 -3.2A3.4 3.4 0 0 0 15.4 -3.2Z" fill="${C.ink}"/>`
+      + lid(brush([[-14.8,-3.6],[-11.5,-3.9],[-8,-3.9],[-5,-3.4]], 2.2, { taper:'none', seed:39 }))
+      + lid(brush([[5,-3.4],[8,-3.9],[11.5,-3.9],[14.8,-3.6]], 2.2, { taper:'none', seed:40 })),
+};
+const NOSE = `<ellipse cx="45.5" cy="3" rx="5" ry="4.3" fill="${C.ink}"/>`;
+const MOUTHS = {
+  smile: ink(brush([[0,16],[0,22]], 2.2, { taper:'none', seed:41 })) + ink(brush([[0,21.5],[-2,25.5],[-7,26],[-10,22.5]], 2.3, { seed:42 })) + ink(brush(mirror([[0,21.5],[-2,25.5],[-7,26],[-10,22.5]]), 2.3, { seed:43 })),
+  open: ink(brush([[0,15.5],[0,20]], 2.2, { taper:'none', seed:44 })) + `<path d="M-8 20 Q0 22.5 8 20 Q8 31 0 32 Q-8 31 -8 20Z" fill="${C.ink}"/><path d="M-5 26 Q0 24 5 26 Q5.5 36 0 37 Q-5.5 36 -5 26Z" fill="${C.tongue}"/>`,
+  frown: ink(brush([[0,16],[0,21]], 2.2, { taper:'none', seed:45 })) + ink(brush([[-8,26.5],[-5,21.5],[5,21.5],[8,26.5]], 2.3, { seed:46 })),
+  o: ink(brush([[0,16],[0,19]], 2.2, { taper:'none', seed:47 })) + `<ellipse cx="0" cy="23" rx="2.6" ry="3.2" fill="${C.ink}"/>`,
+  flat: ink(brush([[0,16],[0,21]], 2.2, { taper:'none', seed:48 })) + ink(brush([[-7,23.5],[-3,22.5],[3,22.5],[7,23.5]], 2.2, { taper:'none', seed:49 })),
+};
+const BROWS = {
+  none: '',
+  curious: lid(brush([[-15,-12],[-12,-16.5],[-8,-16.5],[-5,-14]], 2.2, { seed:51 })) + lid(brush([[5,-12],[8,-12.8],[12,-12.8],[15,-12]], 2.2, { seed:52 })),
+  sad: lid(brush([[-15,-10],[-12,-11],[-8,-12.6],[-5,-15]], 2.2, { seed:53 })) + lid(brush(mirror([[-15,-10],[-12,-11],[-8,-12.6],[-5,-15]]), 2.2, { seed:54 })),
+  flat: lid(brush([[-15,-10],[-12,-10.6],[-8,-10.6],[-5,-10]], 2.3, { taper:'none', seed:55 })) + lid(brush([[5,-10],[8,-10.6],[12,-10.6],[15,-10]], 2.3, { taper:'none', seed:56 })),
+};
+const QMARK = ink(brush([[-6,-8],[-5,-17],[9,-17],[6,-6]], 2.8, { seed:61 })) + ink(brush([[6,-6],[1,-2],[0,0],[0,5]], 2.8, { seed:62 })) + `<circle cx="0" cy="11" r="2" fill="${C.ink}"/>`;
+const zPath = (s, seed) => strokePts(resample([[0,0],[s,0],[0,s],[s,s]], 1.2), 2.2, { taper:'none', seed });
+const GROUND = brush([[30,161.5],[100,160.2],[170,162.6],[240,161]], 2.6, { seed:10 });
+
+// Mảng nâu vàng của lông đen – nâu vàng (màu Dackel gốc), chỉ hiện khi bộ lông có --tan:
+// mõm và hàm (cắt theo đầu), chấm lông mày (toạ độ mắt), ngực và cẳng chân (tính mỗi khung trong render).
+const MUZZLE_MARK = 'M14 4 C24 1 38 5 49 3 L54 26 L6 36 C4 22 8 10 14 4Z';
+// Lông tối làm mắt dạng nét (híp, nhắm, lườm) chìm mất. Lót mảng sáng quanh mắt trông như đeo kính bảo hộ (người dùng
+// chê), nên thay vào đó các nét mi, mí và lông mày dùng --lid: trên lông tối là nâu vàng nhạt, còn lại vẫn mực đen.
+const BROW_MARKS = `<g class="browMarks"><ellipse cx="-10" cy="-12.5" rx="3.4" ry="2.6" style="fill:var(--tan,none)"/><ellipse cx="10" cy="-12.5" rx="3.4" ry="2.6" style="fill:var(--tan,none)"/></g>`;
+// Đầu và tai (toạ độ trong đầu): dùng chung cho phần tô và nét viền chỗ đè lên bộ phận khác.
+// Đầu nhìn chéo 3/4: sọ tròn cộng mõm Dackel dài chìa sang phải (hướng Bello nhìn).
+const HEAD_SEGS = [[[0,-28],[16,-28],[25,-20],[24,-9]], [[24,-9],[32,-8],[44,-7],[48,0]], [[48,0],[51,6],[49,17],[41,19]], [[41,19],[32,21],[22,24],[12,30]], [[12,30],[4,35],[-12,34],[-18,28]], [[-18,28],[-26,22],[-30,12],[-30,0]], [[-30,0],[-30,-16],[-18,-28],[0,-28]]];
+// Mắt, lông mày, kính dời về phía mõm và hẹp lại theo chiều ngang; miệng nằm dưới mũi ở mõm.
+// Tai xa nằm sau sọ, chỉ ló ở đỉnh đầu phía sau trán.
+const FAR_EAR_AT = 'translate(-12 -9)';
+const EYES_AT = 'translate(10 -6) scale(.85 1)', MOUTH_AT = 'translate(42 -8) scale(.7)';
+const EAR_SEGS = [[[-21,-21],[-34,-17],[-40,4],[-38,22]], [[-38,22],[-37,32],[-28,36],[-22,30]], [[-22,30],[-18,22],[-16,0],[-15,-14]], [[-15,-14],[-21,-21]]];
+const EAR_SEGS_R = EAR_SEGS.map(mirror);
+const segsD = segs => 'M' + segs[0][0].join(' ') + segs.map(s => s.length === 4 ? 'C' + s.slice(1).map(p => p.join(' ')).join(' ') : 'L' + s[1].join(' ')).join('') + 'Z';
+const segsPts = segs => segs.flatMap((s, i) => bezPts(s, 18).slice(i ? 1 : 0));
+const HEAD_D = segsD(HEAD_SEGS), EAR_L_D = segsD(EAR_SEGS), EAR_R_D = segsD(EAR_SEGS_R);
+const HEAD_LINE = strokePts(segsPts(HEAD_SEGS), 2.3, { seed:81 });
+const EAR_LINE_L = strokePts(segsPts(EAR_SEGS), 2.3, { seed:82 });
+const EAR_LINE_R = strokePts(segsPts(EAR_SEGS_R), 2.3, { seed:83 });
+// Các bộ phận nằm sau đầu/tai: nét viền đầu và tai chỉ hiện trên vùng này (tai đè lên mặt thì không có nét).
+const BEHIND = ['body', 'hn', 'hf', 'fn', 'ff'];
+
+/* ---------- dấu hiệu riêng (toạ độ trong đầu) ---------- */
+const BANDANA_D = 'M-17 28 Q0 38 17 28 L16.5 34 C15 35 13.5 35.6 12 36 C8 42 4 49 0 55 C-4 49 -8 42 -12 36 C-13.5 35.6 -15 35 -16.5 34Z';
+const BANDANA = `<path d="${BANDANA_D}" fill="${C.red}"/>` + [[-11,32.6],[-3,35],[5,34.4],[12,31.6],[-4,42],[4,45],[0,50.5]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.3" fill="#fff"/>`).join('');
+// Viền khăn bỏ mép trên (mép nằm dưới cằm), chỉ hiện chỗ khăn đè lên cổ/ngực.
+const BANDANA_LINE = strokePts(segsPts([[[17,28],[16.5,34]], [[16.5,34],[15,35],[13.5,35.6],[12,36]], [[12,36],[8,42],[4,49],[0,55]], [[0,55],[-4,49],[-8,42],[-12,36]], [[-12,36],[-13.5,35.6],[-15,35],[-16.5,34]], [[-16.5,34],[-17,28]]]), 2.2, { seed:85 });
+const FEATHER = [[10,-31],[15,-39],[20,-46],[27,-53]];
+const HAT = `<g>
+  <path d="M-14.5 -27.5 C-15.5 -38 -11 -45 -4 -44.5 Q0 -41.5 4 -44.5 C11 -45 15.5 -38 14.5 -27.5Z" fill="#2F6B4E"/>
+  <path d="M-15 -32 Q0 -30 15 -32 L14.8 -28 Q0 -26 -14.8 -28Z" fill="${C.red}"/>
+  <path d="M-26 -26.5 Q-13 -29 0 -29 Q13 -29 26 -26.5 Q27 -23.5 24 -23 Q12 -25 0 -25 Q-12 -25 -24 -23 Q-27 -23.5 -26 -26.5Z" fill="#2F6B4E"/>
+  <path d="${brush(FEATHER, 6, { seed:91 })}" fill="${C.gold}"/>${ink(brush(FEATHER, 1.2, { taper:'none', seed:92 }))}
+</g>`;
+const GLASSES = `<circle cx="-10" cy="-3" r="7.6" fill="none" stroke="${C.ink}" stroke-width="2"/><circle cx="10" cy="-3" r="7.6" fill="none" stroke="${C.ink}" stroke-width="2"/>`
+  + ink(brush([[-2.6,-4.5],[-1,-6.5],[1,-6.5],[2.6,-4.5]], 1.9, { taper:'none', seed:93 }))
+  + ink(brush([[-17.5,-4],[-20,-5],[-23,-6],[-26,-6]], 1.9, { seed:94 })) + ink(brush(mirror([[-17.5,-4],[-20,-5],[-23,-6],[-26,-6]]), 1.9, { seed:95 }));
+// Khăn len sọc: dải quấn dưới cằm + một đầu khăn rủ bên phải; nét viền bỏ mép trên (nằm dưới cằm).
+const SCARF_C = { wool:'#2F5D8C', stripe:'#F3E9D2' };
+const SCARF = `<path d="M5 37 Q11 39 16 36 L18 51 Q12 53 7 52Z" fill="${SCARF_C.wool}"/>`
+  + `<path d="M5.8 42 Q11.5 44 16.7 41 L17.1 44.5 Q11.8 47 6.2 45.5Z" fill="${SCARF_C.stripe}"/>`
+  + [[8,52.2],[11,52.6],[14,52.4],[17,51.6]].map(([x, y], i) => `<path d="${brush([[x, y], [x + .3, y + 3.2]], 1.7, { taper:'none', seed:100 + i })}" fill="${SCARF_C.wool}"/>`).join('')
+  + `<path d="M-19 26 Q0 37 19 26 L18.5 35 Q0 46 -18.5 35Z" fill="${SCARF_C.wool}"/>`
+  + `<path d="M-11.5 29.6 L-8.5 30.4 L-8.4 39.4 L-11.4 38.6Z M2.5 31.5 L5.5 31 L5.6 40 L2.6 40.4Z M12.5 29 L15.5 28 L15.6 37 L12.6 37.8Z" fill="${SCARF_C.stripe}"/>`;
+const SCARF_LINE = ink(strokePts(segsPts([[[19,26],[18.5,35]], [[18.5,35],[6.17,42.33],[-6.17,42.33],[-18.5,35]], [[-18.5,35],[-19,26]]]), 2.2, { seed:104 }))
+  + ink(strokePts(segsPts([[[16,36],[18,51]], [[18,51],[15,52.5],[10,52.6],[7,52]], [[7,52],[5,37]]]), 2, { seed:105 }));
+// Mũ tốt nghiệp: chỏm mũ, tấm vuông nhìn chéo, núm và tua vàng rủ bên phải.
+const CAP_C = { cloth:'#23262F', top:'#353A47' };
+const GRADCAP = `<g transform="translate(0 3)">
+  <path d="M-15.5 -25 Q0 -31 15.5 -25 L14.8 -36 Q0 -39 -14.8 -36Z" fill="${CAP_C.cloth}"/>
+  <path d="M-27 -40 L0 -33 L27 -40 L27 -38 L0 -31 L-27 -38Z" fill="${CAP_C.cloth}"/>
+  <path d="M0 -47 L27 -40 L0 -33 L-27 -40Z" fill="${CAP_C.top}"/>
+  <circle cx="0" cy="-40" r="1.8" fill="${C.gold}"/>
+  <path d="${brush([[1,-40],[9,-39.6],[16,-39.2],[20,-37.5]], 1.6, { taper:'none', seed:96 })}" fill="${C.gold}"/>
+  <path d="${brush([[20,-37.5],[20.4,-33],[20.8,-29],[21,-26]], 1.6, { taper:'none', seed:97 })}" fill="${C.gold}"/>
+  <path d="${brush([[21,-18],[21,-21],[21,-24],[21,-27]], 5.5, { taper:'end', seed:98 })}" fill="${C.gold}"/>
+</g>`;
+/* ---------- vật phẩm mới: nước Đức và việc học (toạ độ trong đầu nhìn 3/4) ---------- */
+// Đồ treo ở cổ (mề đay, Brezel) đặt như khăn đỏ: giữa dưới cằm (x = 0, mép trên y ≈ 28) — người dùng xác nhận
+// chỗ này đúng; dời lùi về sau (x −7) đã bị chê lệch. Phần treo bọc trong data-hang="x y" (điểm treo): render
+// xoay ngược góc đầu quanh điểm đó để mặt dây luôn rủ thẳng xuống khi đầu ngẩng hay nghiêng.
+const hang = (x, y, inner) => `<g data-hang="${x} ${y}">${inner}</g>`;
+// Thanh thẳng có bề dày (bút chì): đa giác từ a tới b, rộng w.
+function bar(a, b, w) { const d = norm(sub(b, a)), n = [-d[1] * w / 2, d[0] * w / 2]; return poly([add(a, n), add(b, n), sub(b, n), sub(a, n)]); }
+const at = (a, b, t) => lerp2(a, b, t);
+// Bút chì cài trên tai gần, chéo qua đỉnh đầu: tẩy hồng, khâu bạc, thân vàng, gỗ, ngòi chì.
+const PEN_A = [-37, -14], PEN_B = [1, -35];
+const PENCIL = `<path d="${bar(PEN_A, at(PEN_A, PEN_B, .1), 6)}" fill="#F28CA0"/>`
+  + `<path d="${bar(at(PEN_A, PEN_B, .1), at(PEN_A, PEN_B, .17), 6.4)}" fill="#B9B4AC"/>`
+  + `<path d="${bar(at(PEN_A, PEN_B, .17), at(PEN_A, PEN_B, .82), 6)}" fill="${C.gold}"/>`
+  + `<path d="${poly([add(at(PEN_A, PEN_B, .82), [-1.6, -2.6]), PEN_B, add(at(PEN_A, PEN_B, .82), [1.6, 2.6])])}" fill="#E9C9A0"/>`
+  + `<path d="${poly([at(PEN_A, PEN_B, .93), PEN_B, add(at(PEN_A, PEN_B, .93), [.9, 1.4])])}" fill="${C.ink}"/>`
+  + ink(brush([at(PEN_A, PEN_B, .2), at(PEN_A, PEN_B, .8)], 1.1, { taper:'none', seed:131 }), 'opacity=".35"');
+// Mũ len đen – đỏ – vàng có quả bông; mép vành dừng trên lông mày (y −21) để không che biểu cảm.
+const BEANIE = `<path d="M-23 -27 C-24 -45 22 -47 22 -27 Q0 -32 -23 -27Z" fill="#2A2421"/>`
+  + `<path d="M-23.3 -33 Q0 -38.5 22.4 -33 L22 -37.5 Q0 -43 -22.6 -37.5Z" fill="${C.red}"/>`
+  + `<path d="M-25 -21 Q0 -26 23 -21 L23 -27.5 Q0 -32.5 -25 -27.5Z" fill="${C.gold}"/>`
+  + `<circle cx="0" cy="-46" r="5.6" fill="${C.gold}"/>`;
+// Vòng cổ Brezel: dây nâu dưới cằm, bánh Brezel nâu bóng có hạt muối.
+const BREZEL_C = '#B4652A';
+const BREZEL = `<g>` + `<path d="${brush([[-15, 27], [-8, 38], [8, 38], [15, 26]], 1.6, { taper:'none', seed:141 })}" fill="#6B3E1E"/>` + hang(0, 38, ''
+  + [[[-8, 43], [-11, 53], [11, 53], [8, 43]], [[-8, 43], [-4, 37], [4, 45], [7, 50]], [[8, 43], [4, 37], [-4, 45], [-7, 50]]]
+      .map((seg, i) => `<path d="${brush(seg, 3.6, { taper:'none', seed:142 + i })}" fill="${BREZEL_C}"/>`).join('')
+  + [[-9, 48], [9, 48], [0, 52.5], [-3, 41], [3, 41]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#fff"/>`).join('')) + '</g>';
+// Huy chương: ruy băng sọc đen – đỏ – vàng hình chữ V, mề đay vàng có ngôi sao.
+const ribbon = (x0, x1) => ['#2A2421', C.red, C.gold].map((c, i) => {
+  const a = x0 + (x1 - x0) * i / 3, b = x0 + (x1 - x0) * (i + 1) / 3;
+  return `<path d="M${a} 28 L${b} 28 L${b * .25} 44 L${a * .25} 44Z" fill="${c}"/>`;
+}).join('');
+const STAR = Array.from({ length: 10 }, (_, i) => { const r = i % 2 ? 1.9 : 4.2, t = -Math.PI / 2 + i * Math.PI / 5; return [r * Math.cos(t), 49 + r * Math.sin(t)]; });
+const MEDAL = `<g>` + hang(0, 30, ribbon(-14, -5) + ribbon(5, 14)
+  + `<circle cx="0" cy="49" r="7.6" fill="#D9A21B"/><circle cx="0" cy="49" r="5.9" fill="${C.gold}"/><path d="${poly(STAR)}" fill="#D9A21B"/>`) + '</g>';
+// Kính đọc sách nửa vầng trăng: đặt thấp dưới mắt (toạ độ mắt, bọc EYES_AT), không tô tròng.
+const READERS = `<path d="M-16.5 6 A6.5 6.5 0 0 0 -3.5 6Z M3.5 6 A6.5 6.5 0 0 0 16.5 6Z" fill="none" stroke="${C.ink}" stroke-width="2" stroke-linejoin="round"/>`
+  + ink(brush([[-3.5, 6.3], [-1.5, 4.7], [1.5, 4.7], [3.5, 6.3]], 1.8, { taper:'none', seed:151 }))
+  + ink(brush([[-16.5, 6], [-20, 4], [-24, 2], [-27, 1]], 1.8, { seed:152 }));
+
+/* ---------- vật phẩm (F17) ----------
+   Mỗi món thuộc một chỗ mặc; mỗi chỗ tối đa một món. neck/head/face vẽ trong toạ độ của đầu (tâm đầu 0,0,
+   xem skill bello); coat chỉ đổi màu. `unlock` ở đây chỉ để hiện chữ trong phòng thử: luật mở thật nằm ở
+   SPEC F17 và lib/bello-items.ts. `hideIn`: các trạng thái phải ẩn món (vd khăn bị cằm đè xuống đất khi ngủ).
+   `rough: false`: không làm mép cọ khô (món toàn nét mảnh như kính sẽ bị ăn đứt). */
+const SLOTS = ['neck', 'head', 'face', 'coat'];
+const SLOT_VI = { neck:'Cổ', head:'Đầu', face:'Mặt', coat:'Màu lông' };
+const DEFAULT_COAT = { fur:'#E9A15B', ear:'#C67636', far:'#C67636' };
+const ITEMS = {
+  bandana: { slot:'neck', label:'Khăn đỏ chấm bi', unlock:'xong bài học đầu tiên', hideIn:['sleep', 'roll'],
+             draw: uid => BANDANA + `<g clip-path="url(#hb-${uid})">${ink(BANDANA_LINE)}</g>` },
+  glasses: { slot:'face', label:'Kính tròn', unlock:'qua kiểm tra chặng đầu tiên', rough:false, draw: () => `<g transform="${EYES_AT}">${GLASSES}</g>` },
+  tirol:   { slot:'head', label:'Mũ Tirol', unlock:'qua thi thử A1', hideIn:['roll'], draw: () => HAT },
+  // Màu Dackel gốc: thân đen, mảng nâu vàng ở mõm, lông mày, ngực, cẳng chân; nét chỗ đè chỉ nhạt hơn lông một chút (nét xám rõ trông như dây đai).
+  blacktan:{ slot:'coat', label:'Đen – nâu vàng (màu gốc)', unlock:'đề xuất: mặc định từ đầu', coat:{ fur:'#2E2724', ear:'#211B19', far:'#231D1B', tan:'#C98A4B', paw:'#C98A4B', farpaw:'#A06A36', seam:'#4E413B', glint:'#F4EDE4', lid:'#D9A66A' } },
+  flag:    { slot:'coat', label:'Lông đen – đỏ – vàng', unlock:'qua thi thử A2', coat:{ fur:'#F2B33D', ear:'#2A2421', far:'#D9962A' } },
+  scarf:   { slot:'neck', label:'Khăn len sọc', unlock:'qua thi thử B1', hideIn:['sleep', 'roll'],
+             draw: uid => SCARF + `<g clip-path="url(#hb-${uid})">${SCARF_LINE}</g>` },
+  gradcap: { slot:'head', label:'Mũ tốt nghiệp', unlock:'qua thi thử B2', hideIn:['roll'], draw: () => GRADCAP },
+  // Món mới (đề xuất, chưa có trong SPEC): mốc mở đều đọc được từ lesson_progress, stage_tests, level_tests.
+  pencil:  { slot:'head', label:'Bút chì cài tai', unlock:'xong 10 bài học', hideIn:['roll'], draw: () => PENCIL },
+  beanie:  { slot:'head', label:'Mũ len đen – đỏ – vàng', unlock:'qua kiểm tra 5 chặng', hideIn:['roll'], draw: () => BEANIE },
+  brezel:  { slot:'neck', label:'Vòng cổ Brezel', unlock:'qua kiểm tra 3 chặng', hideIn:['sleep', 'roll'], draw: () => BREZEL },
+  medal:   { slot:'neck', label:'Huy chương đen – đỏ – vàng', unlock:'qua cả bốn kỳ thi thử A1–B2', hideIn:['sleep', 'roll'], draw: () => MEDAL },
+  readers: { slot:'face', label:'Kính đọc sách', unlock:'xong 50 bài học', rough:false, draw: () => `<g transform="${EYES_AT}">${READERS}</g>` },
+  cream:   { slot:'coat', label:'Lông kem', unlock:'xong mọi bài một cấp (A1)', coat:{ fur:'#F1D3A1', ear:'#D29A5C', far:'#DDB57E' } },
+};
+
+function createDog(container, uid) {
+  const sw = (set, name) => Object.entries(set).map(([k, v]) => `<g data-${name}="${k}" display="none">${v}</g>`).join('');
+  const behind = tag => BEHIND.map(k => `<path data-${tag}="${k}"/>`).join('');
+  // Mép cọ khô: mỗi mảng màu (đuôi, chân xa, thân + chân gần, đầu, tai, đồ) có mép lởm chởm như cọ khô,
+  // kể cả chỗ mảng này nằm trên mảng khác màu. Các mảng cùng màu gộp chung một nhóm để không lộ đường nối.
+  const rough = `data-rough filter="url(#r-${uid})"`;
+  const slotLayer = slot => Object.entries(ITEMS).filter(([, it]) => it.slot === slot).map(([id, it]) => `<g data-item="${id}" display="none" ${it.rough === false ? '' : rough}>${it.draw(uid)}</g>`).join('');
+  // Viền thân/chân sau vẽ dày rồi bị phần tô đè lên: chỉ còn nửa ngoài nằm trên đuôi, không lộ đường nối bên trong thân.
+  const overLine = cls => `<path class="${cls}" fill="none" style="stroke:var(--seam,${C.ink})" stroke-width="5.2" stroke-linejoin="round"/>`;
+  // Nét chỗ đè dùng --seam (không dùng --line: trang và app đã có --line là màu viền xám của giao diện): lông đen thì nét đổi sang nâu xám cho khỏi chìm. Mắt, mũi, miệng vẫn mực đen.
+  const line = d => `<path d="${d}" style="fill:var(--seam,${C.ink});stroke:var(--seam,${C.ink})" stroke-width=".5" stroke-linejoin="round"/>`;
+  container.innerHTML = `
+<svg viewBox="0 -16 260 196" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Chó Bello">
+  <defs>
+    <filter id="f-${uid}" x="-6%" y="-6%" width="112%" height="112%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="1" seed="1" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="r-${uid}" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3" result="g"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0.9" result="s"/>
+      <feComposite in="s" in2="g" operator="arithmetic" k1="0" k2="1" k3="0.9" k4="-0.45" result="m"/>
+      <feComponentTransfer in="m" result="mask"><feFuncA type="linear" slope="6" intercept="-2.6"/></feComponentTransfer>
+      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+    </filter>
+    <clipPath id="c-${uid}"><path class="clip"/><path class="clipHf"/><path class="clipFf"/></clipPath>
+    <clipPath id="t-${uid}"><path class="clipTail"/></clipPath>
+    <clipPath id="bd-${uid}"><path class="clipBody"/></clipPath>
+    <clipPath id="hd-${uid}"><path d="${HEAD_D}"/></clipPath>
+    <clipPath id="hb-${uid}">${behind('hb')}</clipPath>
+    <clipPath id="el-${uid}">${behind('el')}</clipPath>
+    <clipPath id="er-${uid}">${behind('er')}</clipPath>
+  </defs>
+  <g class="root" filter="url(#f-${uid})">
+    <g ${rough}><path class="tail" style="fill:var(--fur);stroke:var(--fur)" stroke-width=".5" stroke-linejoin="round"/></g>
+    <g clip-path="url(#t-${uid})">${overLine('tailUnderBody')}${overLine('tailUnderLeg')}</g>
+    <g ${rough}>
+      <path class="hf" style="fill:var(--far)"/><path class="pawHf" style="fill:var(--farpaw,none)"/><ellipse class="hfFoot" style="fill:var(--farpaw,var(--far))"/>
+      <path class="ff" style="fill:var(--far)"/><path class="pawFf" style="fill:var(--farpaw,none)"/><ellipse class="ffFoot" style="fill:var(--farpaw,var(--far))"/>
+    </g>
+    <g ${rough}>
+      <path class="torso" style="fill:var(--fur)"/>
+      <ellipse class="chestMark" clip-path="url(#bd-${uid})" style="fill:var(--tan,none)"/>
+      <path class="hn" style="fill:var(--fur)"/><path class="pawHn" style="fill:var(--paw,none)"/><ellipse class="hnFoot" style="fill:var(--paw,var(--fur))"/>
+      <path class="fn" style="fill:var(--fur)"/><path class="pawFn" style="fill:var(--paw,none)"/><ellipse class="fnFoot" style="fill:var(--paw,var(--fur))"/>
+    </g>
+    <g clip-path="url(#c-${uid})"><path class="c0" style="fill:var(--seam,${C.ink})"/><path class="c1" style="fill:var(--seam,${C.ink})"/><path class="c2" style="fill:var(--seam,${C.ink})"/></g>
+    <g class="toes"><path class="toeHn" style="fill:var(--seam,${C.ink})"/><path class="toeFn" style="fill:var(--seam,${C.ink})"/></g>
+    <g class="head">
+      <g transform="${FAR_EAR_AT}"><g class="earR"><path d="${EAR_R_D}" style="fill:var(--ear)" ${rough}/><g clip-path="url(#er-${uid})">${line(EAR_LINE_R)}</g></g></g>
+      <path d="${HEAD_D}" style="fill:var(--fur)" ${rough}/>
+      <path d="${MUZZLE_MARK}" clip-path="url(#hd-${uid})" style="fill:var(--tan,none)"/>
+      <g clip-path="url(#hb-${uid})">${line(HEAD_LINE)}</g>
+      ${slotLayer('neck')}
+      <g class="earL"><path d="${EAR_L_D}" style="fill:var(--ear)" ${rough}/><g clip-path="url(#el-${uid})">${line(EAR_LINE_L)}</g></g>
+      ${slotLayer('head')}
+      <g transform="${EYES_AT}">${BROW_MARKS}${sw(EYE_SETS, 'eyes')}${sw(BROWS, 'brows')}</g>${NOSE}<g transform="${MOUTH_AT}">${sw(MOUTHS, 'mouth')}</g>
+      ${slotLayer('face')}
+    </g>
+    <g class="q" display="none">${QMARK}</g>
+    <g class="z" display="none">${[[0,0,6],[10,-16,8],[22,-32,10]].map(([x, y, s], i) => `<path data-z="${i}" transform="translate(${x} ${y})" d="${zPath(s, 70 + i)}" fill="${C.ink}"/>`).join('')}</g>
+    ${ink(GROUND, rough)}
+  </g>
+</svg>`;
+  const svg = container.querySelector('svg'), q = s => svg.querySelector(s), qa = s => [...svg.querySelectorAll(s)];
+  const R = { root:q('.root'), turb:q(`#f-${uid} feTurbulence`), roughTurb:q(`#r-${uid} feTurbulence`), disp:q('feDisplacementMap'),
+    roughEls:qa('[data-rough]'), toes:{ hn:q('.toeHn'), fn:q('.toeFn') }, tail:q('.tail'), torso:q('.torso'),
+    clip:q('.clip'), clipHf:q('.clipHf'), clipFf:q('.clipFf'), clipTail:q('.clipTail'), tailUnderBody:q('.tailUnderBody'), tailUnderLeg:q('.tailUnderLeg'),
+    head:q('.head'), earL:q('.earL'), earR:q('.earR'), items:qa('[data-item]'), hangs:qa('[data-hang]'),
+    behind:{ hb:qa('[data-hb]'), el:qa('[data-el]'), er:qa('[data-er]') },
+    q:q('.q'), z:q('.z'), cont:[q('.c0'), q('.c1'), q('.c2')] };
+  R.chestMark = q('.chestMark'); R.browMarks = q('.browMarks'); R.clipBody = q('.clipBody');
+  for (const k of ['hn','hf','fn','ff']) { R['paw' + k[0].toUpperCase() + k[1]] = q('.paw' + k[0].toUpperCase() + k[1]); }
+  for (const k of ['hn','hf','fn','ff']) { R[k] = q('.' + k); R[k + 'Foot'] = q('.' + k + 'Foot'); }
+  const show = (attr, val) => svg.querySelectorAll(`[data-${attr}]`).forEach(el => el.setAttribute('display', el.dataset[attr] === val ? 'inline' : 'none'));
+  const f2 = n => n.toFixed(2);
+  let lastFace = '', worn = [], toesOn = true;
+  return {
+    // outfit: { neck, head, face, coat } → mã món hoặc null.
+    setOutfit(outfit) {
+      worn = Object.values(outfit).filter(Boolean);
+      const coat = (outfit.coat && ITEMS[outfit.coat].coat) || DEFAULT_COAT;
+      for (const k of ['fur', 'ear', 'far', 'tan', 'paw', 'farpaw', 'seam', 'glint', 'lid']) {
+        if (coat[k]) svg.style.setProperty('--' + k, coat[k]); else svg.style.removeProperty('--' + k);
+      }
+    },
+    setBoil(on, amt) { R.root.setAttribute('filter', on && amt > 0 ? `url(#f-${uid})` : 'none'); R.disp.setAttribute('scale', amt); },
+    setRough(on) { R.roughEls.forEach(el => el.setAttribute('filter', on ? `url(#r-${uid})` : 'none')); },
+    setToes(on) { toesOn = on; },
+    render(P, tick) {
+      const T = P.torso, body = T.slice(1).map((j, i) => capsule(T[i], j)).join('');
+      const parts = { body: body + capsule(T[T.length - 1], P.neck[0]) + capsule(P.neck[0], P.neck[1]) };
+      for (const k of ['hn','hf','fn','ff']) {
+        const c = P[k], f = P.feet[k], foot = R[k + 'Foot'];
+        parts[k] = capsule(c[0], c[1]) + capsule(c[1], c[2]);
+        R[k].setAttribute('d', parts[k]);
+        // Cẳng chân nâu vàng: nửa dưới đoạn khuỷu → bàn.
+        const knee = c[1], paw = c[2], m = .6, mid = [knee[0] + (paw[0] - knee[0]) * m, knee[1] + (paw[1] - knee[1]) * m, knee[2] + (paw[2] - knee[2]) * m];
+        R['paw' + k[0].toUpperCase() + k[1]].setAttribute('d', capsule([mid[0], mid[1], mid[2] * .92], [paw[0], paw[1], paw[2] * .92]));
+        if (f[2] < .5) foot.setAttribute('display', 'none');
+        else { foot.setAttribute('display', 'inline'); foot.setAttribute('cx', c[2][0] + f[0]); foot.setAttribute('cy', c[2][1] + f[1]); foot.setAttribute('rx', f[2]); foot.setAttribute('ry', f[3]); }
+      }
+      R.torso.setAttribute('d', parts.body);
+      R.clipBody.setAttribute('d', parts.body);
+      { const ch = P.torso[P.torso.length - 1], r = ch[2];
+        R.chestMark.setAttribute('cx', ch[0] + r * .62); R.chestMark.setAttribute('cy', ch[1] + r * .15);
+        R.chestMark.setAttribute('rx', r * .42); R.chestMark.setAttribute('ry', r * .6); }
+      R.clip.setAttribute('d', parts.body); R.clipHf.setAttribute('d', parts.hf); R.clipFf.setAttribute('d', parts.ff);
+
+      // Đuôi bắt đầu sâu trong mông để nối liền; thân và chân sau đè lên gốc đuôi thì có nét viền.
+      const [bx, by, ang, len, bend] = P.tail, dir = [Math.cos(ang * D2R), Math.sin(ang * D2R)], perp = [-dir[1], dir[0]];
+      const s0 = sub([bx, by], mul(dir, 12)), L2 = len + 12;
+      const tail = brush([s0, add(add(s0, mul(dir, L2 * .35)), mul(perp, bend)), add(add(s0, mul(dir, L2 * .7)), mul(perp, bend * 1.2)), add(s0, mul(dir, L2))], 13, { taper:'end', seed:3 });
+      R.tail.setAttribute('d', tail); R.clipTail.setAttribute('d', tail);
+      R.tailUnderBody.setAttribute('d', parts.body); R.tailUnderLeg.setAttribute('d', parts.hn);
+
+      R.cont.forEach((el, i) => { const c = P.contours[i]; el.setAttribute('d', c ? contour(P[c[0]], c[1], c[2], 20 + i) : ''); });
+      for (const k of ['hn', 'fn']) R.toes[k].setAttribute('d', toesOn ? toeMarks(P[k], P.feet[k], k === 'hn' ? 111 : 121) : '');
+
+      const [hx, hy, hr] = P.head, [eL, eR] = P.ears;
+      // flip = −1: đầu lật dọc (nằm ngửa: đỉnh sọ xuống đất, cằm hướng lên, mõm vẫn chỉ sang phải).
+      // Khi chuyển, flip đi qua 0 nên chặn ở ±0,05 để phép biến đổi ngược của vùng cắt không vô hạn.
+      // flipX = −1: đầu quay ngược sang trái (ngoái nhìn ra sau). Cùng cách chặn như flip.
+      const fl = Math.abs(P.flip) < .05 ? (P.flip < 0 ? -.05 : .05) : P.flip;
+      const fx = Math.abs(P.flipX) < .05 ? (P.flipX < 0 ? -.05 : .05) : P.flipX;
+      R.head.setAttribute('transform', `translate(${f2(hx)} ${f2(hy)}) rotate(${f2(hr)}) scale(${(1.1 * fx).toFixed(4)} ${(1.1 * fl).toFixed(4)})`);
+      // Trong khung bị lật, chiều xoay đảo ngược: nhân dấu để mặt dây vẫn rủ thẳng.
+      R.hangs.forEach(el => el.setAttribute('transform', `rotate(${f2(-hr * Math.sign(fx * fl))} ${el.dataset.hang})`));
+      R.earL.setAttribute('transform', `rotate(${f2(eL)} -17 -19)`);
+      R.earR.setAttribute('transform', `rotate(${f2(eR)} 17 -19)`);
+      // Vùng cắt tính trong toạ độ của đầu/tai: đưa thân (toạ độ thật) về đó bằng phép biến đổi ngược.
+      const inv = `scale(${(1 / (1.1 * fx)).toFixed(5)} ${(1 / (1.1 * fl)).toFixed(5)}) rotate(${f2(-hr)}) translate(${f2(-hx)} ${f2(-hy)})`;
+      const unEarL = `rotate(${f2(-eL)} -17 -19)`, unEarR = `rotate(${f2(-eR)} 17 -19)`;
+      for (const [tag, pre] of [['hb', ''], ['el', unEarL + ' '], ['er', unEarR + ' ']]) {
+        R.behind[tag].forEach(el => { el.setAttribute('d', parts[el.dataset[tag]]); el.setAttribute('transform', pre + inv); });
+      }
+
+      let eyes = P.face.eyes;
+      if (P.blink && (eyes === 'open' || eyes === 'wide')) eyes = P.blink === 2 ? 'closed' : 'half';
+      else if (P.blink && eyes === 'halfsad') eyes = 'closed';
+      const face = eyes + P.face.mouth + P.face.brows;
+      // Chấm lông mày nâu vàng chỉ hiện khi biểu cảm không có lông mày riêng, kẻo hai lớp chồng nhau (dáng Buồn, Tò mò, Lườm).
+      R.browMarks.setAttribute('display', P.face.brows === 'none' ? 'inline' : 'none');
+      if (face !== lastFace) { show('eyes', eyes); show('mouth', P.face.mouth); show('brows', P.face.brows); lastFace = face; }
+      R.q.setAttribute('display', P.prop === 'q' ? 'inline' : 'none');
+      if (P.prop === 'q') R.q.setAttribute('transform', `translate(${f2(hx + 44)} ${f2(hy - 28 + P.propT)})`);
+      R.z.setAttribute('display', P.prop === 'z' ? 'inline' : 'none');
+      if (P.prop === 'z') {
+        const ph = mod(P.propT, 2.4) / 2.4;
+        R.z.setAttribute('transform', `translate(${f2(hx + 34)} ${f2(hy - 30 - 5 * ph)})`);
+        R.z.querySelectorAll('[data-z]').forEach((el, i) => el.setAttribute('display', ph > i * .22 ? 'inline' : 'none'));
+      }
+      R.items.forEach(el => { const id = el.dataset.item; el.setAttribute('display', worn.includes(id) && !(ITEMS[id].hideIn || []).includes(P.name) ? 'inline' : 'none'); });
+      R.turb.setAttribute('seed', 1 + (tick % 4) * 5);
+      R.roughTurb.setAttribute('seed', 3 + (tick % 3) * 7); // sợi cọ ở mép đổi theo nhịp rung, chậm hơn một chút
+    },
+  };
+}
+
+/* ---------- chạy ---------- */
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+const actors = [];
+function actor(el, uid, state, offset = 0) {
+  const a = { dog: createDog(el, uid), state, offset, from: null, t0: 0, last: null };
+  actors.push(a); return a;
+}
+const big = actor($('big'), 'big', 'stand');
+STATES.forEach(([key, label, use], i) => {
+  const chip = document.createElement('button');
+  chip.className = 'chip'; chip.textContent = label; chip.dataset.state = key;
+  chip.onclick = () => setState(key); $('chips').appendChild(chip);
+  const cell = document.createElement('button');
+  cell.className = 'cell'; cell.innerHTML = `<div></div><b>${label}</b><span>${use}</span>`;
+  cell.onclick = () => { setState(key); $('big').scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+  $('grid').appendChild(cell);
+  actor(cell.firstChild, 'm' + i, key, i * .37);
+});
+let tick = 0, clock = 0, timer = null;
+// Vào hay ra khỏi Lăn ngửa thì nằm xuống trước (qua Nằm chờ), rồi mới lăn: thân không lật thẳng từ dáng đứng hay ngồi.
+const VIA = { roll: 'lie' };
+function route(from, to) {
+  const via = VIA[to] || VIA[from];
+  return via && from !== via && to !== via ? [via, to] : [to];
+}
+function startTransition(a, key) {
+  const [first, ...rest] = route(a.state, key);
+  a.from = a.last; a.t0 = clock; a.state = first; a.queue = rest;
+}
+function setState(key) {
+  startTransition(big, key);
+  document.querySelectorAll('#chips .chip').forEach(c => c.setAttribute('aria-pressed', c.dataset.state === key));
+}
+function frame() {
+  const T = reduce ? 0 : clock;
+  for (const a of actors) {
+    const target = applyLife(POSES[a.state], lifeLag(a.state, T + a.offset));
+    let P = target;
+    if (a.from) {
+      const e = Math.min(1, (T - a.t0) / .6); P = mix(a.from, target, reduce ? 1 : easeIO(e));
+      if (e >= 1) { a.from = null; if (a.queue?.length) { a.last = P; a.from = P; a.t0 = T; a.state = a.queue.shift(); } }
+    }
+    a.last = P; a.dog.render(P, tick);
+  }
+  tick++; clock += 1 / FPS;
+}
+function syncBoil() { const on = $('boil').checked && !reduce, amt = +$('amt').value; actors.forEach((a, i) => a.dog.setBoil(on, i ? amt * .8 : amt)); }
+$('boil').oninput = syncBoil; $('amt').oninput = syncBoil;
+$('rough').oninput = () => actors.forEach(a => a.dog.setRough($('rough').checked));
+$('toes').oninput = () => actors.forEach(a => a.dog.setToes($('toes').checked));
+setState('stand'); syncBoil(); frame();
+function syncFps() { FPS = +$('fps').value; $('fpsOut').textContent = FPS; clearInterval(timer); if (!reduce) timer = setInterval(frame, 1000 / FPS); }
+$('fps').oninput = syncFps; syncFps();
+const outfit = { neck:null, head:null, face:null, coat:null };
+function wear(id) {
+  const slot = ITEMS[id].slot;
+  outfit[slot] = outfit[slot] === id ? null : id;
+  actors.forEach(a => a.dog.setOutfit(outfit));
+  document.querySelectorAll('#looks .chip').forEach(c => c.setAttribute('aria-pressed', outfit[ITEMS[c.dataset.item].slot] === c.dataset.item));
+}
+Object.entries(ITEMS).forEach(([id, it]) => {
+  const chip = document.createElement('button');
+  chip.className = 'chip'; chip.textContent = it.label; chip.dataset.item = id; chip.title = `${SLOT_VI[it.slot]} · mở khi ${it.unlock}`;
+  chip.onclick = () => wear(id); $('looks').appendChild(chip);
+});
+actors.forEach(a => a.dog.setOutfit(outfit));
+/* ---------- kiểm hình (skill bello) ----------
+   BelloLab.grid({ states, times, outfit, from, cols, viewBox }) vẽ lưới ảnh tĩnh (không rung nét) để soi:
+   - times: các thời điểm (giây) của chuyển động sống; khi có `from` thì times là tiến độ chuyển 0..1 từ `from` sang từng state.
+   - viewBox: phóng to một vùng, vd '40 40 90 90' để soi gốc đuôi. Chạm lưới hoặc BelloLab.close() để đóng.
+   - rough, toes: bật/tắt mép cọ khô và nét ngón chân để so; width: ép bề ngang mỗi ô (px) để soi ở cỡ nhỏ. */
+window.BelloLab = {
+  grid({ states = Object.keys(POSES), times = [.3], outfit = {}, from = null, cols = 3, viewBox = null, rough = true, toes = true, width = null } = {}) {
+    this.close();
+    const box = document.createElement('div');
+    box.id = 'lab-grid';
+    box.style.cssText = `position:fixed;inset:0;z-index:99;overflow:auto;background:#fff5d1;display:grid;grid-template-columns:repeat(${cols},1fr);align-content:start`;
+    box.onclick = () => this.close();
+    document.body.appendChild(box);
+    let n = 0;
+    for (const s of states) for (const t of times) {
+      const cell = document.createElement('div'); box.appendChild(cell);
+      const dog = createDog(cell, 'g' + n++);
+      dog.setOutfit({ neck:null, head:null, face:null, coat:null, ...outfit });
+      dog.setRough(rough); dog.setToes(toes);
+      if (width) cell.style.cssText = `width:${width}px`;
+      const L = lifeLag(s, from ? 0 : t); L.blink = 0;
+      let P = applyLife(POSES[s], L);
+      if (from) { const A = applyLife(POSES[from], lifeLag(from, 0)); A.blink = 0; P = mix(A, P, easeIO(t)); }
+      dog.render(P, 0); dog.setBoil(false, 0);
+      if (viewBox) cell.querySelector('svg').setAttribute('viewBox', viewBox);
+    }
+    return n;
+  },
+  close() { document.getElementById('lab-grid')?.remove(); },
+};
+</script>
+</body>
+</html>

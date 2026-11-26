@@ -1,14 +1,19 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { DailyTasks, type DailyTask } from '@/components/home/DailyTasks';
-import { Icon } from '@/components/Icon';
+import { Icon, type IconName } from '@/components/Icon';
+import { GeoArt } from '@/components/art/GeoArt';
+import { BelloWardrobe } from '@/components/mascot/Wardrobe';
 import { PageHeader } from '@/components/PageHeader';
+import { ProgressBar } from '@/components/ProgressBar';
+import { blockLabelClass, primaryClass } from '@/components/ui';
 import { dailyWritingPrompt } from '@/lib/ai/writing-prompt';
 import { STAGE_LESSONS } from '@/data/lessons';
 import { STAGES } from '@/data/roadmap';
 import { findLesson } from '@/lib/course/catalog';
 import { stageTestSize } from '@/lib/course/stage-test';
-import { loadCourseState } from '@/lib/course/db';
+import { unlockedItems } from '@/lib/bello-items';
+import { loadBelloProgress, loadCourseState } from '@/lib/course/db';
 import { courseHref, coursePosition, lessonDone, stepLabel } from '@/lib/course/position';
 import { goalMet, shortfall, shortfallText } from '@/lib/daily-goal';
 import { loadTodayStatus } from '@/lib/daily-goal-db';
@@ -17,13 +22,13 @@ import { loadReviewCounts } from '@/lib/review/load';
 import { daysUntil } from '@/lib/stats';
 import { loadSettings, type UserSettings } from '@/lib/supabase/queries';
 import { getPageSession, type Session } from '@/lib/supabase/session';
-import { addDays, localDate } from '@/lib/time';
+import { addDays, APP_TIME_ZONE, localDate } from '@/lib/time';
 
 export default function Page() {
   return (
     <>
       <PageHeader title="Hôm nay" />
-      <Suspense fallback={<div className="mb-3 h-44 rounded-block bg-pastel-yellow" />}>
+      <Suspense fallback={<div className="mb-3 h-44 animate-pulse rounded-block bg-pastel-yellow" />}>
         <Today />
       </Suspense>
     </>
@@ -36,81 +41,118 @@ async function Today() {
   if (!session) return null;
   const settings = await loadSettings(session);
   return (
-    <>
-      <Suspense fallback={<div className="mb-3 h-36 rounded-block bg-surface" />}>
+    <div className="stagger">
+      <Suspense fallback={<div className="mb-3 h-80 animate-pulse rounded-block bg-surface" />}>
         <GoalBlock session={session} settings={settings} />
       </Suspense>
       <ReviewBlocks session={session} settings={settings} />
-      <Suspense fallback={<div className="mb-3 h-36 rounded-block bg-pastel-sky" />}>
+      <Suspense fallback={<div className="mb-3 h-36 animate-pulse rounded-block bg-pastel-sky" />}>
         <LessonBlock session={session} settings={settings} />
       </Suspense>
-      <Suspense fallback={<div className="mb-3 h-32 rounded-block bg-surface" />}>
+      <Suspense fallback={<div className="mb-3 h-32 animate-pulse rounded-block bg-surface" />}>
         <TasksBlock session={session} />
       </Suspense>
-      <Suspense fallback={<div className="mb-3 h-28 rounded-block bg-pastel-lilac" />}>
+      <Suspense fallback={<div className="mb-3 h-28 animate-pulse rounded-block bg-pastel-lilac" />}>
         <WritingBlock session={session} settings={settings} />
       </Suspense>
-      <Suspense fallback={<div className="mb-3 h-36 rounded-block bg-pastel-sage" />}>
+      <Suspense fallback={<div className="mb-3 h-36 animate-pulse rounded-block bg-pastel-sage" />}>
         <ProgressBlock session={session} settings={settings} />
       </Suspense>
-    </>
+    </div>
   );
 }
 
-const blockLabel = 'text-[13px] font-semibold uppercase tracking-[.06em] opacity-70';
+const blockLabel = blockLabelClass;
 
-/** Chỉ tiêu hôm nay (SPEC F16): số bài cần xong để kịp ngày thi, thẻ đến hạn, phút học; giục phần còn thiếu. */
+/** Ô biểu tượng ở đầu khối (mỗi khối chức năng một màu, DESIGN.md). */
+function BlockIcon({ name, tone }: { name: IconName; tone: string }) {
+  return (
+    <span aria-hidden className={`grid size-11 shrink-0 place-items-center rounded-xl ${tone}`}>
+      <Icon name={name} size={22} strokeWidth={2.2} />
+    </span>
+  );
+}
+
+/** Lời chào tiếng Đức theo giờ Việt Nam. */
+function greeting(): string {
+  const hour = Number(new Intl.DateTimeFormat('en-US', { timeZone: APP_TIME_ZONE, hour: 'numeric', hourCycle: 'h23' }).format(new Date()));
+  return hour < 11 ? 'Guten Morgen!' : hour < 18 ? 'Guten Tag!' : 'Guten Abend!';
+}
+
+/**
+ * Chỉ tiêu hôm nay (SPEC F16): số bài cần xong để kịp ngày thi, thẻ đến hạn, phút học; giục phần còn thiếu.
+ * Bello ở đầu khối (F17): hăng hái khi chưa học phút nào, vui khi đạt chỉ tiêu; chạm để mở tủ đồ.
+ */
 async function GoalBlock({ session, settings }: { session: Session; settings: UserSettings }) {
-  const status = await loadTodayStatus(session, settings);
+  const [status, belloProgress] = await Promise.all([loadTodayStatus(session, settings), loadBelloProgress(session)]);
   const today = localDate(new Date());
   const countdown = daysUntil(settings.next_exam_date, today);
   const left = shortfall(status);
   const met = goalMet(status);
   const minutes = Math.round(status.minutesToday);
-  const row = (done: boolean, label: string, value: string) => (
-    <li className="flex items-center gap-3 py-1.5">
-      <span
-        aria-hidden
-        className={`flex size-6 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${done ? 'bg-ok text-on-primary' : 'outline-2 outline-line'}`}
-      >
-        {done ? '✓' : ''}
-      </span>
-      <span className="flex-1 text-[15px]">{label}</span>
-      <span className="text-[15px] font-semibold tabular-nums">{value}</span>
-      <span className="sr-only">{done ? 'đã xong' : 'chưa xong'}</span>
+  const bello = met ? 'happy' : status.minutesToday === 0 ? 'energetic' : 'stand';
+  const row = (done: boolean, label: string, value: string, progress?: { value: number; max: number }) => (
+    <li className="flex flex-col gap-1.5 py-2">
+      <div className="flex items-center gap-3">
+        <span
+          aria-hidden
+          className={`flex size-6 shrink-0 items-center justify-center rounded-full ${done ? 'animate-pop-in bg-green text-white' : 'border-[1.5px] border-line-strong'}`}
+        >
+          {done && <Icon name="check" size={14} strokeWidth={3.4} />}
+        </span>
+        <span className={`flex-1 text-[15px] font-medium ${done ? 'text-muted line-through' : ''}`}>{label}</span>
+        <span className={`text-[15px] font-bold tabular-nums ${done ? 'text-ok' : ''}`}>{value}</span>
+        <span className="sr-only">{done ? 'đã xong' : 'chưa xong'}</span>
+      </div>
+      {progress && <ProgressBar value={progress.value} max={progress.max} tone={done ? 'green' : 'gold'} height="h-2" className="ml-9" />}
     </li>
   );
   return (
-    <section className="mb-3 rounded-block bg-surface p-5 outline-2 outline-line">
-      <p className={blockLabel}>
-        Chỉ tiêu hôm nay
-        {countdown !== null && countdown >= 0 && ` · ${settings.next_exam_name ?? 'Kỳ thi'} còn ${countdown} ngày`}
-      </p>
-      <p className="mt-1 text-[18px] font-bold leading-snug">
-        {met ? 'Đã đạt chỉ tiêu hôm nay. Giỏi lắm!' : `Còn thiếu: ${shortfallText(left)}`}
-      </p>
-      <ul className="mt-2">
-        {status.lesson &&
-          row(
-            left.units === 0,
-            `Bài mới / kiểm tra (tới hết ${settings.exam_level})`,
-            `${Math.min(status.lesson.doneToday, status.lesson.target)}/${status.lesson.target}`,
+    <>
+      <section className="mb-3 overflow-hidden rounded-block bg-surface">
+        <div className="relative bg-pastel-yellow px-4 pt-1">
+          <BelloWardrobe state={bello} unlocked={[...unlockedItems(belloProgress)]} />
+          {countdown !== null && countdown >= 0 && (
+            <span className="absolute right-4 top-3 flex flex-col items-center rounded-xl bg-surface px-3 py-1.5 text-center leading-tight">
+              <span className="text-[20px] font-extrabold tabular-nums">{countdown}</span>
+              <span className="text-[11px] font-medium text-muted">ngày tới {settings.next_exam_name ?? 'thi'}</span>
+            </span>
           )}
-        {row(left.cards === 0, 'Ôn hết thẻ đến hạn', left.cards === 0 ? 'xong' : `còn ${left.cards}`)}
-        {row(left.minutes === 0, 'Phút học', `${minutes}/${status.minutesTarget}`)}
-      </ul>
-      {status.lesson?.heavy && (
-        <p className="mt-2 rounded-[16px] bg-pastel-pink p-3 text-[14px] leading-snug">
-          Còn {status.lesson.remaining} phần trong {status.lesson.studyDays} ngày học: cần {status.lesson.target} phần mỗi ngày, rất khó
-          kịp. Cân nhắc học thêm ngày trong tuần hoặc dời ngày thi.
-        </p>
-      )}
-      {!status.lesson && (
-        <Link href="/settings" className="mt-2 block text-[14px] font-semibold underline">
-          {settings.next_exam_date ? 'Ngày thi đã qua: đặt kỳ thi mới' : 'Đặt ngày thi để biết mỗi ngày cần học mấy bài'} →
-        </Link>
-      )}
-    </section>
+        </div>
+        <div className="p-5">
+        <div className="min-w-0">
+          <p className="text-[14px] font-medium text-muted" lang="de">
+            {met ? 'Super gemacht!' : greeting()}
+          </p>
+          <p className="mt-0.5 text-[21px] font-extrabold leading-snug">
+            {met ? 'Đã đạt chỉ tiêu hôm nay. Giỏi lắm!' : `Hôm nay còn: ${shortfallText(left)}`}
+          </p>
+        </div>
+        <p className={`${blockLabel} mt-4`}>Chỉ tiêu hôm nay</p>
+        <ul className="mt-1 divide-y-[1.5px] divide-line">
+          {status.lesson &&
+            row(
+              left.units === 0,
+              `Bài mới / kiểm tra (tới hết ${settings.exam_level})`,
+              `${Math.min(status.lesson.doneToday, status.lesson.target)}/${status.lesson.target}`,
+            )}
+          {row(left.cards === 0, 'Ôn hết thẻ đến hạn', left.cards === 0 ? 'xong' : `còn ${left.cards}`)}
+          {row(left.minutes === 0, 'Phút học', `${minutes}/${status.minutesTarget}`, { value: minutes, max: status.minutesTarget })}
+        </ul>
+        {status.lesson?.heavy && (
+          <p className="mt-2 rounded-xl bg-bad-soft p-3 text-[14px] leading-snug">
+            Còn {status.lesson.remaining} phần trong {status.lesson.studyDays} ngày học: cần {status.lesson.target} phần mỗi ngày, rất khó
+            kịp. Cân nhắc học thêm ngày trong tuần hoặc dời ngày thi.
+          </p>
+        )}
+        {!status.lesson && (
+          <Link href="/settings" className="mt-2 block text-[14px] font-semibold text-blue">
+            {settings.next_exam_date ? 'Ngày thi đã qua: đặt kỳ thi mới' : 'Đặt ngày thi để biết mỗi ngày cần học mấy bài'} →
+          </Link>
+        )}
+        </div>
+      </section>
+    </>
   );
 }
 
@@ -120,28 +162,31 @@ async function ReviewBlocks({ session, settings }: { session: Session; settings:
   return (
     <>
       <section className="scribble mb-3 rounded-block bg-pastel-yellow p-5">
-        <p className={blockLabel}>Ôn thẻ</p>
-        <p className="mt-1 text-[34px] font-bold leading-none">{total}</p>
-        <p className="mt-1 text-[15px] opacity-80">
-          {counts.due} đến hạn · {counts.fresh} thẻ mới
-          {counts.reviewedToday > 0 && ` · đã ôn ${counts.reviewedToday} lần hôm nay`}
-        </p>
-        <Link
-          href="/review"
-          className="mt-4 flex h-13 items-center justify-center gap-2 rounded-full bg-primary text-[16px] font-semibold text-on-primary"
-        >
+        <div className="flex items-center gap-3">
+          <BlockIcon name="cards" tone="bg-gold text-ink" />
+          <div className="min-w-0 flex-1">
+            <p className={blockLabel}>Ôn thẻ</p>
+            <p className="text-[15px] font-medium text-muted">
+              {counts.due} đến hạn · {counts.fresh} thẻ mới
+            </p>
+          </div>
+          <p className="text-[38px] font-extrabold leading-none tabular-nums">{total}</p>
+        </div>
+        {counts.reviewedToday > 0 && <p className="mt-2 text-[14px] text-muted">Đã ôn {counts.reviewedToday} lần hôm nay</p>}
+        <Link href="/review" className={`${primaryClass} mt-4`}>
           {total > 0 ? 'Bắt đầu ôn' : 'Mở phiên ôn'}
-          <Icon name="arrow" />
         </Link>
       </section>
       {/* Sổ lỗi (F7 mục 2): thẻ sửa lỗi đã nằm trong phiên ôn, nên chỉ là một hàng gọn để nhấn mạnh, không chiếm cả khối. */}
-      <Link href="/errors" className="mb-3 flex min-h-14 items-center gap-3 rounded-[20px] bg-pastel-pink px-5 py-3">
-        <span className="text-[22px] font-bold leading-none">{counts.errorFixDue}</span>
-        <span className="min-w-0 flex-1 text-[14px] leading-snug">
-          <b className="block text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Sổ lỗi</b>
+      <Link href="/errors" className="card mb-3 flex min-h-16 items-center gap-3 rounded-2xl px-4 py-3 active:translate-y-0.5">
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-pastel-pink text-[18px] font-extrabold text-bad">
+          {counts.errorFixDue}
+        </span>
+        <span className="min-w-0 flex-1 text-[14px] leading-snug text-muted">
+          <b className="block text-[15px] font-bold text-ink">Sổ lỗi</b>
           thẻ sửa lỗi đến hạn, nằm trong phiên ôn
         </span>
-        <Icon name="back" className="rotate-180 opacity-60" />
+        <Icon name="back" strokeWidth={2.4} className="rotate-180 text-muted" />
       </Link>
     </>
   );
@@ -155,26 +200,27 @@ async function LessonBlock({ session, settings }: { session: Session; settings: 
   const resuming = next.kind === 'lesson' && next.state && !lessonDone(next.state);
   const step = next.kind === 'lesson' ? stepLabel(next.state) : null;
   return (
-    <section className="scribble mb-3 rounded-block bg-pastel-sky p-5">
-      <p className={blockLabel}>
-        {next.kind === 'lesson' ? 'Bài học' : 'Kiểm tra chặng'} · {next.stage.stage_id.toUpperCase()}
-      </p>
-      <p className="mt-1 text-[20px] font-bold leading-tight">
-        {next.kind === 'lesson' ? next.lesson.title_vi : STAGES.find((s) => s.id === next.stage.stage_id)?.title_vi}
-      </p>
-      <p className="mt-1 text-[14px] opacity-80">
-        {next.kind === 'lesson' ? `~30 phút${step ? ` · đang ở ${step}` : ''}` : `${stageTestSize(next.stage.points.length).total} câu · đạt từ ${stageTestSize(next.stage.points.length).pass} câu`}
-      </p>
-      {counts.due > REVIEW_FIRST && (
-        <p className="mt-2 text-[14px] font-semibold">Còn {counts.due} thẻ đến hạn: ôn trước sẽ nhớ bài mới tốt hơn.</p>
-      )}
-      <Link
-        href={courseHref(next)}
-        className="mt-4 flex h-13 items-center justify-center gap-2 rounded-full bg-primary text-[16px] font-semibold text-on-primary"
-      >
-        {next.kind === 'test' ? 'Làm kiểm tra' : resuming ? 'Học tiếp' : 'Bắt đầu bài'}
-        <Icon name="arrow" />
-      </Link>
+    <section className="mb-3 overflow-hidden rounded-block bg-surface">
+      <div className="bg-pastel-sky px-6 py-3">
+        <GeoArt seed={next.stage.stage_id} className="mx-auto h-32 w-full max-w-xs" />
+      </div>
+      <div className="p-5">
+        <p className={blockLabel}>
+          {next.kind === 'lesson' ? 'Học tiếp' : 'Kiểm tra chặng'} · {next.stage.stage_id.toUpperCase()}
+        </p>
+        <p className="mt-0.5 text-[22px] font-extrabold leading-tight">
+          {next.kind === 'lesson' ? next.lesson.title_vi : STAGES.find((s) => s.id === next.stage.stage_id)?.title_vi}
+        </p>
+        <p className="mt-1 text-[14px] text-muted">
+          {next.kind === 'lesson' ? `~30 phút${step ? ` · đang ở ${step}` : ''}` : `${stageTestSize(next.stage.points.length).total} câu · đạt từ ${stageTestSize(next.stage.points.length).pass} câu`}
+        </p>
+        {counts.due > REVIEW_FIRST && (
+          <p className="mt-2 text-[14px] font-semibold">Còn {counts.due} thẻ đến hạn: ôn trước sẽ nhớ bài mới tốt hơn.</p>
+        )}
+        <Link href={courseHref(next)} className={`${primaryClass} mt-4`}>
+          {next.kind === 'test' ? 'Làm kiểm tra' : resuming ? 'Học tiếp' : 'Bắt đầu bài'}
+        </Link>
+      </div>
     </section>
   );
 }
@@ -213,10 +259,13 @@ async function WritingBlock({ session, settings }: { session: Session; settings:
   const lessonPrompt = last ? findLesson(last.lesson_id as string)?.lesson.writing_prompt_vi : undefined;
   const prompt = lessonPrompt ?? (await dailyWritingPrompt(localDate(new Date()), settings.current_level, label));
   return (
-    <Link href={`/write?prompt=${encodeURIComponent(prompt)}`} className="scribble mb-3 block rounded-block bg-pastel-lilac p-5">
-      <p className={blockLabel}>Viết 5 câu</p>
-      <p className="mt-1 text-[16px] font-semibold leading-snug">{prompt}</p>
-      <p className="mt-2 text-[14px] opacity-80">Chạm để viết →</p>
+    <Link href={`/write?prompt=${encodeURIComponent(prompt)}`} className="scribble mb-3 flex items-start gap-3 rounded-block bg-pastel-lilac p-5">
+      <BlockIcon name="pen" tone="bg-purple text-white" />
+      <span className="min-w-0 flex-1">
+        <span className={`${blockLabel} block`}>Viết 5 câu</span>
+        <span className="mt-1 block text-[16px] font-semibold leading-snug">{prompt}</span>
+        <span className="mt-2 block text-[14px] font-semibold text-purple">Chạm để viết →</span>
+      </span>
     </Link>
   );
 }
@@ -224,18 +273,20 @@ async function WritingBlock({ session, settings }: { session: Session; settings:
 async function ProgressBlock({ session, settings }: { session: Session; settings: UserSettings }) {
   const p = await loadProgress(session, settings, 1);
   const minutes = Math.round(p.minutesToday);
-  const pct = Math.min(100, (minutes / Math.max(1, settings.daily_minutes_target)) * 100);
   const countdown = daysUntil(settings.next_exam_date, p.today);
   return (
     <Link href="/progress" className="scribble mb-3 block rounded-block bg-pastel-sage p-5">
-      <p className={blockLabel}>Tiến độ</p>
-      <p className="mt-1 text-[15px]">
-        <span className="text-[22px] font-bold">{minutes}</span> / {settings.daily_minutes_target} phút hôm nay
-      </p>
-      <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-surface" role="progressbar" aria-valuenow={minutes} aria-valuemax={settings.daily_minutes_target} aria-label="Phút học hôm nay">
-        <div className="h-full rounded-full bg-ink" style={{ width: `${pct}%` }} />
+      <div className="flex items-center gap-3">
+        <BlockIcon name="chart" tone="bg-green text-white" />
+        <p className="min-w-0 flex-1">
+          <span className={`${blockLabel} block`}>Tiến độ</span>
+          <span className="text-[15px] font-medium">
+            <span className="text-[24px] font-extrabold">{minutes}</span> / {settings.daily_minutes_target} phút hôm nay
+          </span>
+        </p>
       </div>
-      <p className="mt-2 text-[14px]">
+      <ProgressBar value={minutes} max={Math.max(1, settings.daily_minutes_target)} label="Phút học hôm nay" className="mt-3 bg-surface" />
+      <p className="mt-2 text-[14px] text-muted">
         Tuần này: {p.thisWeek.days}/{settings.weekly_days_target} ngày học
         {countdown !== null && countdown >= 0 && ` · ${settings.next_exam_name ?? 'Kỳ thi'} còn ${countdown} ngày`}
       </p>

@@ -2,10 +2,11 @@ import type { Metadata, Viewport } from 'next';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import './globals.css';
 
+// Be Vietnam Pro: chữ hình học gọn như Brilliant, đủ dấu tiếng Việt và ä ö ü ß (design/DESIGN.md).
 const beVietnam = Be_Vietnam_Pro({
   variable: '--font-be-vietnam',
   subsets: ['latin', 'latin-ext', 'vietnamese'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 });
 
@@ -24,8 +25,8 @@ export const viewport: Viewport = {
   // Bàn phím ảo thu nhỏ vùng hiển thị thay vì che ô nhập.
   interactiveWidget: 'resizes-content',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f2f3f7' },
-    { media: '(prefers-color-scheme: dark)', color: '#111216' },
+    { media: '(prefers-color-scheme: light)', color: '#f6f6f3' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f0f10' },
   ],
 };
 

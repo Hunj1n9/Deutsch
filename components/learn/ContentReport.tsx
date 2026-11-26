@@ -40,7 +40,7 @@ export function ContentReport({ target, excerpt, className = '' }: { target: str
   }
 
   return (
-    <div className={`flex flex-col gap-2 rounded-[20px] bg-surface p-3 ${className}`}>
+    <div className={`flex flex-col gap-2 rounded-2xl bg-surface p-3 ${className}`}>
       <label htmlFor={`report-${target}`} className="text-[13px] font-semibold text-muted">
         Sai ở đâu? (không bắt buộc)
       </label>
@@ -61,7 +61,7 @@ export function ContentReport({ target, excerpt, className = '' }: { target: str
           type="button"
           onClick={send}
           disabled={pending}
-          className="h-10 flex-1 rounded-full bg-primary text-[14px] font-semibold text-on-primary disabled:opacity-50"
+          className="h-10 flex-1 rounded-2xl bg-primary text-[14px] font-semibold text-on-primary disabled:opacity-50"
         >
           {pending ? 'Đang gửi…' : 'Gửi'}
         </button>

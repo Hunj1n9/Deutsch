@@ -84,7 +84,7 @@ export function GrammarStep({
       <div className="flex flex-col gap-3">
         {header}
         <section className="scribble flex flex-col gap-3 rounded-block bg-pastel-lilac p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">
+          <p className="text-[13px] font-semibold opacity-70">
             Giải thích {entry.section + 1}/{lesson.grammar.sections.length}
           </p>
           <RichText text={s.text_vi} />
@@ -125,7 +125,7 @@ export function GrammarStep({
       <div className="flex flex-col gap-3">
         {header}
         <section className="scribble rounded-block bg-pastel-lilac p-5">
-          <p className="text-[13px] font-semibold uppercase tracking-[.06em] opacity-70">Luyện tổng hợp</p>
+          <p className="text-[13px] font-semibold opacity-70">Luyện tổng hợp</p>
           <p className="mt-2 text-[17px] leading-relaxed">
             Các bài tập sau trộn cả bài, không có giải thích trước. Câu sai ở phần này được ghi vào sổ lỗi để ôn lại sau.
           </p>

@@ -84,7 +84,7 @@ export function SourcePicker({
           </button>
         </div>
       ) : (
-        <div className="flex flex-col gap-2 rounded-[20px] bg-surface p-3 outline-1 outline-line">
+        <div className="flex flex-col gap-2 rounded-2xl bg-surface p-3 outline-1 outline-line">
           <select
             aria-label="Loại nguồn"
             value={kind}
@@ -120,7 +120,7 @@ export function SourcePicker({
               type="button"
               disabled={pending || !title.trim()}
               onClick={create}
-              className="flex h-11 flex-1 items-center justify-center rounded-full bg-primary text-[15px] font-semibold text-on-primary disabled:opacity-50"
+              className="flex h-11 flex-1 items-center justify-center rounded-2xl bg-primary text-[15px] font-semibold text-on-primary disabled:opacity-50"
             >
               {pending ? 'Đang tạo…' : 'Tạo nguồn'}
             </button>

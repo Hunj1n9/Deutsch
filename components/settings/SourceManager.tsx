@@ -61,7 +61,7 @@ export function SourceManager({ sources }: { sources: SourceOption[] }) {
                       }),
                     )
                   }
-                  className="h-11 flex-1 rounded-full bg-primary text-[14px] font-semibold text-on-primary"
+                  className="h-11 flex-1 rounded-2xl bg-primary text-[14px] font-semibold text-on-primary"
                 >
                   Lưu
                 </button>
